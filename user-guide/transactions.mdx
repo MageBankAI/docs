@@ -1,0 +1,92 @@
+---
+title: "Transactions"
+description: "Process and manage financial transactions with MageBank"
+icon: "money-bill-transfer"
+---
+
+# Transactions
+
+Learn how to initiate, track, and manage transactions with your MageBank agents.
+
+## Transaction Overview
+
+MageBank agents can perform various financial operations:
+
+-   Send payments to other agents or external accounts
+-   Receive deposits
+-   Transfer funds between accounts
+-   Execute complex financial workflows
+
+<Frame>
+    <img src="/images/transactions-overview.png" alt="Transactions Dashboard" />
+</Frame>
+
+## Creating a Transaction
+
+<Steps>
+    <Step title="Navigate to Transactions">
+        Go to the [Transactions](https://www.magebank.ai/dashboard/transactions)
+        section in your dashboard.
+    </Step>
+
+    <Step title="Initiate New Transaction">
+        Click on "New Transaction" to start the process.
+        <Frame>
+            <img
+                src="/images/new-transaction-button.png"
+                alt="New Transaction Button"
+            />
+        </Frame>
+    </Step>
+
+    <Step title="Select Transaction Type">
+        Choose the type of transaction: - **Transfer**: Move funds between your
+        agents - **Payment**: Send funds to external accounts - **Withdrawal**:
+        Move funds to an external wallet
+    </Step>
+
+    <Step title="Enter Transaction Details">
+        Fill in the required information: - **Source Agent**: Agent initiating
+        the transaction - **Destination**: Recipient agent or account -
+        **Amount**: Transaction value in USDC - **Description** (optional):
+        Purpose of the transaction - **Reference ID** (optional): Your internal
+        reference
+        <Frame>
+            <img src="/images/transaction-form.png" alt="Transaction Form" />
+        </Frame>
+    </Step>
+
+    <Step title="Confirm and Execute">
+        Review transaction details and click "Execute Transaction"
+        <Note>
+            Depending on your agent's approval rules, some transactions may
+            require manual approval.
+        </Note>
+    </Step>
+</Steps>
+
+## Using the API for Transactions
+
+Create transactions programmatically using the API:
+
+```javascript
+// Example transaction via API
+const createTransaction = async () => {
+    const response = await fetch("https://api.magebank.ai/v1/transactions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.PAYMAN_API_SECRET}`,
+        },
+        body: JSON.stringify({
+            agent_id: "agent_ezTBtc92qLE2kDJyMiF...",
+            destination: "agent_vMvpzdTo5Rt6peL4fAd...",
+            amount: "1.5",
+            currency: "USDC",
+            description: "Monthly subscription payment",
+        }),
+    });
+
+    return await response.json();
+};
+```

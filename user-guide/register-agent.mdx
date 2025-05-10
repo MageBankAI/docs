@@ -1,0 +1,103 @@
+### 2. register-agent.mdx
+
+````mdx
+---
+title: "Register Agent"
+description: "Create and manage AI agents on MageBank"
+icon: "robot"
+---
+
+# Register Your Agent
+
+AI agents on MageBank can handle payments, transactions, and financial operations on your behalf. This guide explains how to register and manage your agents.
+
+## Creating a New Agent
+
+<Steps>
+    <Step title="Access Your Agents Dashboard">
+        Navigate to the [Your
+        Agents](https://www.magebank.ai/dashboard/your-agents) section in the
+        MageBank dashboard.
+        <Frame>
+            <img
+                src="/images/your-agents-dashboard.png"
+                alt="Agents Dashboard"
+            />
+        </Frame>
+    </Step>
+
+    <Step title="Add New Agent">
+        Click the "Add new agent" button in the top right corner.
+        <Frame>
+            <img src="/images/add-new-agent.png" alt="Add New Agent Button" />
+        </Frame>
+    </Step>
+
+    <Step title="Configure Your Agent">
+        Fill in the required details: - **Name**: A descriptive name for your
+        agent - **Description** (optional): Purpose or function of the agent -
+        **Approval Rules**: Set transaction approval conditions - **Tags**
+        (optional): Add tags for better organization
+        <Frame>
+            <img
+                src="/images/agent-configuration.png"
+                alt="Agent Configuration Form"
+            />
+        </Frame>
+    </Step>
+
+    <Step title="Set Approval Rules">
+        Determine how your agent handles transactions: - **All Transactions**:
+        Agent can execute any transaction - **Above Threshold**: Transactions
+        above a certain amount require approval - **Custom Rules**: Create
+        specific conditions for transactions
+    </Step>
+
+    <Step title="Finish Registration">
+        Click "Create Agent" to register your new agent. You'll be provided with
+        a unique Agent ID.
+        <Note>
+            Make note of your Agent ID - you'll need it when making API calls.
+        </Note>
+    </Step>
+</Steps>
+
+## Agent Management
+
+Your registered agents appear in a table showing:
+
+-   **Name**: The agent's display name
+-   **Agent ID**: Unique identifier for the agent
+-   **Tags**: Custom labels for organization
+-   **Status**: Active or Inactive
+-   **Balance**: Current USDC balance
+-   **Approval Rules**: Transaction validation conditions
+-   **Created**: Date and time of creation
+-   **Actions**: Options like Deposit, Edit, or Delete
+
+<Frame>
+    <img
+        src="/images/agent-management-table.png"
+        alt="Agent Management Table"
+    />
+</Frame>
+
+## Agent API Integration
+
+To connect your code to a registered agent, use the Agent ID and your API key in your requests:
+
+```javascript
+// Example using JavaScript
+const response = await fetch("https://api.magebank.ai/v1/transactions", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.PAYMAN_API_SECRET}`,
+    },
+    body: JSON.stringify({
+        agent_id: "agent_ezTBtc92qLE2kDJyMiF...",
+        // other transaction details
+    }),
+});
+```
+````

@@ -1,0 +1,84 @@
+---
+title: "Get API Key"
+description: "Generate and manage your MageBank API key"
+icon: "key"
+---
+
+Your API key is essential for authenticating your agents and connecting to the MageBank platform. Follow these steps to get your API key.
+
+## Quick Start
+
+<Steps>
+    <Step title="Visit MageBank Dashboard">
+        Navigate to the [MageBank Dashboard](https://www.magebank.ai/dashboard/)
+        <Frame>
+            <img src="/images/get-api-key/dashboard-login.png" alt="MageBank Dashboard" />
+        </Frame>
+    </Step>
+
+    <Step title="Sign up or sign in">
+        Create a new account or sign in to your existing account.
+        <Note>
+            When you first sign up, an API key will be automatically generated for your account.
+        </Note>
+    </Step>
+
+    <Step title="Navigate to Integrate Agent section">
+        Once logged in, navigate to the [Integrate Agent](https://www.magebank.ai/dashboard/integrate-agent) section from the sidebar menu.
+        <Frame>
+            <img src="/images/get-api-key/integrate-agent-menu.png" alt="Integrate Agent Menu" />
+        </Frame>
+    </Step>
+
+    <Step title="Access your API key">
+        Click on the "API Key" button which will open a modal dialog.
+        <Frame>
+            <img src="/images/get-api-key/api-key-modal.png" alt="API Key Modal" />
+        </Frame>
+    </Step>
+
+    <Step title="Copy your key">
+        Copy your API key for use in your applications.
+        <Warning>
+            Keep your API key secure. Anyone with your key can perform actions on behalf of your account.
+        </Warning>
+    </Step>
+</Steps>
+
+## Using Your API Key
+
+Your API key must be included in all API requests to the server in the `x-api-key` header:
+
+```bash
+x-api-key: YOUR_API_KEY
+```
+
+### Example Request
+
+```javascript
+// Example using fetch
+const response = await fetch('https://api.magebank.ai/v1/agents', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': YOUR_API_KEY
+  }
+});
+
+const data = await response.json();
+```
+
+## API Key Security Best Practices
+
+Protecting your API key is critical - anyone with your key can perform actions on behalf of your account. Follow these security practices:
+
+- **Never expose your API key in client-side code** - Always make API calls from your server
+- **Don't store keys in code repositories** - Even private repositories can be compromised
+- **Use environment variables** - Store your key in environment variables or a secure secrets manager
+- **Restrict network access** - Limit API calls to specific IP addresses when possible
+- **Rotate keys periodically** - Generate a new key and deprecate old ones on a regular schedule
+- **Use dedicated keys for different environments** - Separate keys for development and production
+
+## Regenerating Your API Key
+
+If your key has been compromised or you need to generate a new one:
