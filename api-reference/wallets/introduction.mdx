@@ -1,163 +1,57 @@
 ---
-title: 'Get Wallet Balance'
-api: 'GET /user/wallet-balance'
-description: 'Retrieve the balance of a user\'s wallet'
+title: 'Introduction'
+description: 'Manage blockchain wallets and balances'
 ---
 
-Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance.
+The Wallets API allows you to interact with blockchain wallets associated with users and agents. You can use these endpoints to check balances and manage wallet-related operations.
 
-## Request Headers
+## Wallet Model
 
-<ParamField header="x-api-key" type="string" required>
-  Your API key for authentication
-</ParamField>
+Each wallet in the MageBank system consists of:
 
-## Response
+- **Address**: The blockchain address that can receive and send funds
+- **Network**: The blockchain network the wallet operates on (e.g., "base-sepolia")
+- **Balance**: The current amount of cryptocurrency held in the wallet
+- **Asset**: The cryptocurrency type (typically USDC)
 
-<ResponseField name="success" type="boolean">
-  Whether the balance retrieval was successful
-</ResponseField>
+## Available Endpoints
 
-<ResponseField name="balance" type="string">
-  Current wallet balance
-</ResponseField>
+<CardGroup>
+  <Card title="Get Wallet Balance" icon="money-bill" href="/api-reference/wallets/get-wallet-balance">
+    Retrieve the balance of a user's wallet
+  </Card>
+</CardGroup>
 
-<ResponseField name="asset" type="string">
-  Asset type (cryptocurrency)
-</ResponseField>
+## Understanding Wallet Operations
 
-<ResponseField name="message" type="string">
-  Additional information about the balance retrieval
-</ResponseField>
+Wallets in MageBank have several key characteristics:
 
-<ResponseField name="source" type="string">
-  Source of the balance information
-</ResponseField>
+1. **Automatically Created**: Each agent automatically gets a dedicated wallet upon creation
+2. **Network Specific**: Wallets operate on specific blockchain networks (mainnet or testnets)
+3. **Balance Reporting**: All balances are retrieved in real-time from the blockchain
+4. **Fallback Strategy**: Balance retrieval follows a fallback strategy to ensure reliability
 
-## Example Request
+## Wallet Networks
 
-<CodeGroup>
+MageBank supports the following blockchain networks:
 
-```bash cURL
-curl -X GET "https://api.magebank.ai/user/wallet-balance" \
-  -H "x-api-key: YOUR_API_KEY"
-```
+| Network | Type | Description |
+|---------|------|-------------|
+| base | Mainnet | Base L2 mainnet (production) |
+| base-sepolia | Testnet | Base L2 testnet (development/testing) |
 
-```javascript Node.js
-const axios = require('axios');
+## Best Practices
 
-async function getWalletBalance() {
-  try {
-    const response = await axios.get('https://api.magebank.ai/user/wallet-balance', {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log('Wallet balance:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving wallet balance:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
+- Regularly check wallet balances to ensure sufficient funds for operations
+- For production use, use the mainnet network ("base")
+- For development and testing, use the testnet ("base-sepolia")
+- Use appropriate error handling when dealing with blockchain operations
+- Consider gas fees and network congestion when performing transactions
 
-getWalletBalance();
-```
+## Next Steps
 
-```python Python
-import requests
+Use the endpoints in this section to manage wallet operations. After checking balances, you can:
 
-def get_wallet_balance():
-    url = "https://api.magebank.ai/user/wallet-balance"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        balance_data = response.json()
-        print("Wallet balance:", balance_data)
-        return balance_data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_wallet_balance()
-```
-
-</CodeGroup>
-
-## Example Responses
-
-<ResponseExample>
-```json USDC Balance
-{
-  "success": true,
-  "balance": "100.50",
-  "asset": "USDC",
-  "message": "Balance retrieved successfully",
-  "source": "blockchain"
-}
-```
-
-```json ETH Balance
-{
-  "success": true,
-  "balance": "0.05",
-  "asset": "ETH",
-  "message": "USDC balance not found, using ETH balance",
-  "source": "blockchain"
-}
-```
-
-```json Zero Balance
-{
-  "success": true,
-  "balance": "0.00",
-  "message": "All balance fetching methods failed",
-  "source": "blockchain"
-}
-```
-</ResponseExample>
-
-## Error Responses
-
-<ResponseExample>
-```json 400 Bad Request
-{
-  "error": "Invalid wallet address format"
-}
-```
-
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
-}
-```
-</ResponseExample>
-
-## Status Codes
-
-| Status Code | Description |
-|-------------|-------------|
-| 200 | Wallet balance retrieved successfully |
-| 400 | Bad Request - Invalid wallet address |
-| 401 | Unauthorized - Invalid or missing API key |
-| 500 | Internal Server Error |
-
-## Notes
-
-- The API automatically determines the user's wallet address from their account.
-- The endpoint follows a fallback strategy, checking for USDC first, then ETH, and finally any other tokens.
-- Balance is returned as a string to preserve precision for financial calculations.
-- If no wallet is found or all balance fetching methods fail, the API will return a successful response with a zero balance.
-- The `source` field indicates where the balance information was retrieved from (typically "blockchain").
+- [Create agents](/api-reference/agents/create-agent) with specific funding
+- [Deposit funds](/api-reference/agents/deposit) to agent wallets
+- [Withdraw funds](/api-reference/agents/withdraw) from agent wallets

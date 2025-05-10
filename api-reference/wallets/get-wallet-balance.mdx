@@ -1,7 +1,7 @@
 ---
 title: 'Get Wallet Balance'
 api: 'GET /user/wallet-balance'
-description: 'Retrieve the balance of a user\'s wallet'
+description: "Retrieve the balance of a user's wallet"
 ---
 
 Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance.
