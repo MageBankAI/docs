@@ -1,146 +1,226 @@
 ---
 title: "Savings Vault"
-description: "Manage and optimize your USDC holdings"
+description: "Earn interest on your USDC holdings"
 icon: "vault"
 ---
 
-# Savings Vault
+The MageBank Savings Vault allows you to earn interest on your USDC while maintaining full control and liquidity of your funds. Deposit from any of your agents and watch your savings grow in real-time.
 
-The MageBank Savings Vault allows you to earn yield on your USDC holdings while maintaining liquidity for your agents.
+## Savings Dashboard
 
-## About Savings Vault
-
-The Savings Vault provides:
-
--   Competitive yield on your USDC deposits
--   Instant liquidity for your agents
--   Automated optimization of idle funds
--   Detailed analytics on earnings
+The Savings Vault dashboard provides a comprehensive overview of your savings performance:
 
 <Frame>
-    <img
-        src="/images/savings-vault-overview.png"
-        alt="Savings Vault Dashboard"
-    />
+  <img src="/images/savings-vault/dashboard-overview.png" alt="Savings Vault Dashboard" />
 </Frame>
 
-## Getting Started with Savings Vault
+### Key Dashboard Elements
+
+- **Total Savings**: Real-time display of your total savings balance with live updates
+- **APY**: Current annual percentage yield (interest rate)
+- **Invested**: Total amount deposited into savings
+- **1-year Projection**: Estimated value of your savings after one year at the current APY
+
+### Transaction History
+
+The dashboard includes a detailed table showing all your active investments:
+
+| Column | Description |
+|--------|-------------|
+| Agent | The agent that funded the investment |
+| Invested Amount | Principal amount deposited |
+| Current Value | Real-time value including accrued interest |
+| Interest Earned | Total interest earned since deposit |
+| Duration | Time elapsed since investment |
+| Current Balance | Available balance in the agent's wallet |
+
+## Depositing Funds
+
+Earn interest by depositing funds from your agent accounts into the Savings Vault:
 
 <Steps>
-    <Step title="Access Savings Vault">
-        Navigate to the [Savings
-        Vault](https://www.magebank.ai/dashboard/savings-vault) section from the
-        sidebar menu.
-        <Frame>
-            <img
-                src="/images/savings-vault-menu.png"
-                alt="Savings Vault Menu"
-            />
-        </Frame>
-    </Step>
-
-    <Step title="Activate Your Vault">
-        If this is your first time, click "Activate Vault" to set up your
-        savings account.
-        <Frame>
-            <img src="/images/activate-vault.png" alt="Activate Vault Button" />
-        </Frame>
-    </Step>
-
-    <Step title="Deposit Funds">
-        Click "Deposit" to add funds to your Savings Vault.
-        <Note>
-            You can deposit directly from your connected bank account or
-            transfer from your agent balances.
-        </Note>
-        <Frame>
-            <img src="/images/vault-deposit.png" alt="Vault Deposit Form" />
-        </Frame>
-    </Step>
-
-    <Step title="Configure Settings">
-        Set your preferences: - **Auto-Optimization**: Automatically move idle
-        funds to earn yield - **Liquidity Threshold**: Minimum balance to keep
-        available for transactions - **Yield Strategy**: Conservative, Balanced,
-        or Growth
-    </Step>
+  <Step title="Click Deposit">
+    From the Savings Vault dashboard, click the "Deposit" button.
+  </Step>
+  
+  <Step title="Select Agent and Amount">
+    The deposit modal will appear with the following options:
+    
+    - Select the agent to fund the deposit
+    - Enter the amount to deposit (up to the agent's available balance)
+    - View the current APY and projected interest
+    
+    <Frame>
+      <img src="/images/savings-vault/deposit-modal.png" alt="Deposit Modal" />
+    </Frame>
+    
+    <Note>
+      The system automatically calculates your projected earnings at the current APY rate and displays the estimated total value after one year.
+    </Note>
+  </Step>
+  
+  <Step title="Confirm Deposit">
+    Review the deposit details:
+    
+    - Source agent
+    - Deposit amount
+    - Current APY
+    - Projected yearly interest
+    
+    Click "Confirm deposit" to proceed.
+    
+    <Frame>
+      <img src="/images/savings-vault/deposit-confirmation.png" alt="Confirm Deposit" />
+    </Frame>
+  </Step>
+  
+  <Step title="Deposit Complete">
+    Once the transaction is processed, you'll see a confirmation screen with the transaction summary.
+    
+    <Frame>
+      <img src="/images/savings-vault/deposit-confirmed.png" alt="Deposit Success" />
+    </Frame>
+    
+    <Warning>
+      The transaction might take a few minutes to process on the blockchain. Your dashboard will update automatically once the deposit is confirmed.
+    </Warning>
+  </Step>
 </Steps>
-
-## Vault Management
-
-The Savings Vault dashboard provides comprehensive information:
-
--   **Current Balance**: Total funds in your vault
--   **Earned Interest**: Total yield earned to date
--   **Current APY**: Annual percentage yield being earned
--   **Transaction History**: Record of deposits and withdrawals
-
-<Frame>
-    <img src="/images/vault-dashboard.png" alt="Vault Management Dashboard" />
-</Frame>
 
 ## Withdrawing Funds
 
+You can withdraw your funds at any time without penalties or waiting periods:
+
 <Steps>
-    <Step title="Initiate Withdrawal">
-        Click the "Withdraw" button on your Savings Vault dashboard.
-        <Frame>
-            <img src="/images/vault-withdraw.png" alt="Withdraw Button" />
-        </Frame>
-    </Step>
+  <Step title="Click Withdraw">
+    From the Savings Vault dashboard, click the "Withdraw" button.
+  </Step>
+  
+  <Step title="Select Investment">
+    The withdrawal modal will appear:
+    
+    - Select the agent investment you wish to withdraw from
+    - View the investment details including principal, interest earned, and duration
+    
+    <Frame>
+      <img src="/images/savings-vault/withdrawal-modal.png" alt="Withdraw Modal" />
+    </Frame>
+    
+    When selecting an agent, you'll see a dropdown with all your active investments, including:
+    - Agent name
+    - Investment duration
+    - Current value with earned interest
+    
+    <Frame>
+      <img src="/images/savings-vault/withdrawal-agent-select.png" alt="Agent Selection" />
+    </Frame>
+  </Step>
+  
+  <Step title="Confirm Withdrawal">
+    Review the withdrawal details:
+    
+    - Principal amount
+    - Interest earned
+    - Total withdrawal amount
+    
+    Click "Confirm withdrawal" to proceed.
+    
+    <Frame>
+      <img src="/images/savings-vault/withdrawal-confirmation.png" alt="Confirm Withdrawal" />
+    </Frame>
+    
+    <Note>
+      The entire investment (principal plus earned interest) will be transferred back to the selected agent's wallet.
+    </Note>
+  </Step>
+  
+  <Step title="Withdrawal Complete">
+    After processing, your funds will be available in the selected agent's wallet.
+     
+    <Frame>
+      <img src="/images/savings-vault/withdrawal-confirmed.png" alt="Deposit Success" />
+    </Frame>
 
-    <Step title="Specify Details">
-        Enter withdrawal amount and select destination: - Transfer to an agent
-        balance - Withdraw to external wallet - Transfer to bank account
-    </Step>
-
-    <Step title="Confirm Withdrawal">
-        Review the details and confirm your withdrawal.
-        <Note>
-            Standard withdrawals process within 1 business day. Express
-            withdrawals are available for a small fee.
-        </Note>
-    </Step>
+    <Warning>
+      The blockchain transaction might take a few minutes to complete. The agent's balance will update once the transaction is confirmed.
+    </Warning>
+  </Step>
 </Steps>
 
-## API Access to Savings Vault
+## How Interest Works
 
-Manage your Savings Vault programmatically:
+The Savings Vault uses a compound interest model to grow your savings:
+
+- **Interest Rate**: The current APY (Annual Percentage Yield) is displayed on the dashboard can be updated to as high as 12.5%
+- **Real-time Calculation**: Interest accrues continuously and is calculated in real-time
+- **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
+- **Interest Disbursement**: Interest is added directly to your investment's current value
+
+### Interest Calculation Formula
+
+Your interest is calculated using the standard compound interest formula:
+
+```
+A = P(1 + r/n)^(nt)
+```
+
+Where:
+- A = Final amount
+- P = Principal (initial deposit)
+- r = Annual interest rate (APY)
+- n = Number of times interest is compounded per year
+- t = Time (in years)
+
+For the MageBank Savings Vault, interest is compounded continuously, resulting in the most favorable growth rate for your savings.
+
+## API Integration
+
+Integrate savings functionality into your applications using the MageBank API:
 
 ```javascript
-// Example: Check Vault Balance
-const getVaultBalance = async () => {
-    const response = await fetch(
-        "https://api.magebank.ai/v1/savings-vault/balance",
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${process.env.PAYMAN_API_SECRET}`,
-            },
-        }
-    );
-
-    return await response.json();
+// Example: Deposit to savings
+const depositToSavings = async (agentId, amount) => {
+  const response = await fetch('https://api.magebank.ai/savings/deposit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': 'YOUR_API_KEY'
+    },
+    body: JSON.stringify({
+      agentId: agentId,
+      amount: amount
+    })
+  });
+  
+  return await response.json();
 };
 
-// Example: Deposit to Vault from Agent
-const depositToVault = async (agentId, amount) => {
-    const response = await fetch(
-        "https://api.magebank.ai/v1/savings-vault/deposit",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.PAYMAN_API_SECRET}`,
-            },
-            body: JSON.stringify({
-                agent_id: agentId,
-                amount: amount,
-                currency: "USDC",
-            }),
-        }
-    );
+// Example: Withdraw from savings
+const withdrawFromSavings = async (investmentId) => {
+  const response = await fetch('https://api.magebank.ai/savings/withdraw', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': 'YOUR_API_KEY'
+    },
+    body: JSON.stringify({
+      investmentId: investmentId
+    })
+  });
+  
+  return await response.json();
+};
 
-    return await response.json();
+// Example: Get savings dashboard data
+const getSavingsDashboard = async () => {
+  const response = await fetch('https://api.magebank.ai/savings/dashboard', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': 'YOUR_API_KEY'
+    }
+  });
+  
+  return await response.json();
 };
 ```
