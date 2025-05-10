@@ -91,11 +91,6 @@
         "global": {
             "anchors": [
                 {
-                    "anchor": "Documentation",
-                    "href": "https://api.magebank.ai/docs",
-                    "icon": "book-open-cover"
-                },
-                {
                     "anchor": "API Reference",
                     "href": "https://api.magebank.ai/api-docs",
                     "icon": "code"
