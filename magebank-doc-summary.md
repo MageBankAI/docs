@@ -1,6 +1,6 @@
-# MageBank API Documentation - Summary
+# MageBank API Documentation - Summary (Updated)
 
-This document provides a summary of all the files created for the MageBank API documentation.
+This document provides a summary of all the files created for the MageBank API documentation, with the updated organizational structure.
 
 ## Main Configuration and Project Files
 
@@ -16,6 +16,10 @@ This document provides a summary of all the files created for the MageBank API d
 - **api-reference/introduction.mdx** - Overview of the MageBank API
 - **api-reference/openapi.json** - OpenAPI specification for the API
 
+### Users API (Updated to include Wallet functionality)
+- **api-reference/users/introduction.mdx** - Introduction to the Users and Wallet API
+- **api-reference/users/get-wallet-balance.mdx** - Get wallet balance
+
 ### Agents API
 - **api-reference/agents/introduction.mdx** - Introduction to the Agents API
 - **api-reference/agents/get-agent.mdx** - Get agent details
@@ -23,19 +27,6 @@ This document provides a summary of all the files created for the MageBank API d
 - **api-reference/agents/get-user-agents.mdx** - List all agents for a user
 - **api-reference/agents/deposit.mdx** - Deposit funds to an agent
 - **api-reference/agents/withdraw.mdx** - Withdraw funds from an agent
-
-### Wallets API
-- **api-reference/wallets/introduction.mdx** - Introduction to the Wallets API
-- **api-reference/wallets/get-wallet-balance.mdx** - Get wallet balance
-
-### Transactions API
-- **api-reference/transactions/introduction.mdx** - Introduction to the Transactions API
-- **api-reference/transactions/get-transaction-summary.mdx** - Get transaction summary
-
-### Investments API
-- **api-reference/investments/introduction.mdx** - Introduction to the Investments API
-- **api-reference/investments/get-interest-rate.mdx** - Get current interest rate
-- **api-reference/investments/calculate-interest.mdx** - Calculate potential interest
 
 ### Payments API
 - **api-reference/payments/introduction.mdx** - Introduction to the Payments API
@@ -46,11 +37,14 @@ This document provides a summary of all the files created for the MageBank API d
 - **api-reference/payments/get-user-payments.mdx** - List user payments
 - **api-reference/payments/export-payments.mdx** - Export payments data
 
-### Users API
-- **api-reference/users/introduction.mdx** - Introduction to the Users API
+### Transactions API
+- **api-reference/transactions/introduction.mdx** - Introduction to the Transactions API
+- **api-reference/transactions/get-transaction-summary.mdx** - Get transaction summary
 
-### Savings API
-- **api-reference/savings/introduction.mdx** - Introduction to the Savings API
+### Savings API (Updated to include Investment functionality)
+- **api-reference/savings/introduction.mdx** - Introduction to the Savings and Investment API
+- **api-reference/savings/get-interest-rate.mdx** - Get current interest rate (moved from Investments)
+- **api-reference/savings/calculate-interest.mdx** - Calculate potential interest (moved from Investments)
 - **api-reference/savings/deposit.mdx** - Deposit funds into savings account
 - **api-reference/savings/withdraw.mdx** - Withdraw funds from savings account
 - **api-reference/savings/get-dashboard.mdx** - Get savings dashboard
@@ -75,6 +69,14 @@ This document provides a summary of all the files created for the MageBank API d
 
 - **copy-openapi-script** - Script to copy the OpenAPI specification to the API reference folder
 - **project-structure** - Script to create the project structure
+
+## Reorganization Overview
+
+The documentation has been reorganized with the following changes:
+
+1. **Wallets merged with Users**: The wallet functionality is now integrated into the Users API section
+2. **Investments merged with Savings**: All investment-related endpoints are now part of the Savings API section
+3. **Order changed**: The sections are now ordered as: Users, Agents, Payments, Transactions, Savings
 
 ## Running the Documentation Locally
 

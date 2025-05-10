@@ -1,16 +1,20 @@
 ---
 title: 'Introduction'
-description: 'Manage user accounts and associated data'
+description: 'Manage user accounts, wallet balances, and related data'
 ---
 
-The Users API provides endpoints for managing user accounts and accessing user-related information. These endpoints enable you to retrieve wallet balances, payment history, and other user-specific data.
+The Users API provides endpoints for managing user accounts, accessing wallet balances, and retrieving user-related information. These endpoints enable you to check your wallet balance, view payment history, and manage other user-specific data.
 
-## User Model
+## User and Wallet Model
 
-The MageBank platform maintains user accounts with the following characteristics:
+Each user in the MageBank platform includes:
 
 1. **Identity**: Unique user ID and profile information
-2. **Wallets**: Associated cryptocurrency wallets for funding agents
+2. **Wallet**: Associated blockchain wallet for funding agents and receiving withdrawals
+   - **Address**: The blockchain address that can receive and send funds
+   - **Network**: The blockchain network the wallet operates on (e.g., "base-sepolia")
+   - **Balance**: The current amount of cryptocurrency held in the wallet
+   - **Asset**: The cryptocurrency type (typically USDC)
 3. **Agents**: Collection of AI financial agents created by the user
 4. **Payments**: History of financial transactions involving the user's agents
 5. **Savings**: Interest-bearing investments made by the user
@@ -18,13 +22,29 @@ The MageBank platform maintains user accounts with the following characteristics
 ## Available Endpoints
 
 <CardGroup>
-  <Card title="Get Wallet Balance" icon="wallet" href="/api-reference/wallets/get-wallet-balance">
+  <Card title="Get Wallet Balance" icon="wallet" href="/api-reference/users/get-wallet-balance">
     Retrieve the user's wallet balance
   </Card>
-  <Card title="List User Payments" icon="credit-card" href="/api-reference/payments/get-user-payments">
-    Get all payments related to the user's agents
-  </Card>
 </CardGroup>
+
+## Wallet Operations
+
+Wallets in MageBank have several key characteristics:
+
+1. **Associated with User**: Each user has a primary wallet for funding agents
+2. **Automatic Agent Wallets**: Each agent also automatically gets a dedicated wallet upon creation
+3. **Network Specific**: Wallets operate on specific blockchain networks (mainnet or testnets)
+4. **Balance Reporting**: All balances are retrieved in real-time from the blockchain
+5. **Fallback Strategy**: Balance retrieval follows a fallback strategy to ensure reliability
+
+## Wallet Networks
+
+MageBank supports the following blockchain networks:
+
+| Network | Type | Description |
+|---------|------|-------------|
+| base | Mainnet | Base L2 mainnet (production) |
+| base-sepolia | Testnet | Base L2 testnet (development/testing) |
 
 ## User Authentication
 
@@ -47,16 +67,18 @@ x-api-key: YOUR_API_KEY
 
 ## Best Practices
 
-- Check wallet balances before creating agents or processing payments
-- Regularly review payment history for unauthorized transactions
-- Utilize the Export Payments endpoint for record-keeping and accounting
-- Implement proper error handling for all API calls
-- Consider setting up webhooks for real-time notifications (if available)
+- Regularly check wallet balances to ensure sufficient funds for operations
+- For production use, use the mainnet network ("base")
+- For development and testing, use the testnet ("base-sepolia")
+- Use appropriate error handling when dealing with blockchain operations
+- Consider gas fees and network congestion when performing transactions
+- Review payment history for unauthorized transactions
+- Export payment data periodically for record-keeping and accounting
 
 ## Next Steps
 
 Use the endpoints in this section to manage user-related operations. After accessing user data, you can:
 
 - [Create agents](/api-reference/agents/create-agent) to automate financial operations
-- [Process payments](/api-reference/payments/approve-payment) between agents
+- [Process payments](/api-reference/payments/register-payment) between agents
 - [Set up savings](/api-reference/savings/deposit) to earn interest on idle funds
