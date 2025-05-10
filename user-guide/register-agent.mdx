@@ -1,103 +1,144 @@
-### 2. register-agent.mdx
-
-````mdx
 ---
 title: "Register Agent"
 description: "Create and manage AI agents on MageBank"
 icon: "robot"
 ---
 
-# Register Your Agent
-
-AI agents on MageBank can handle payments, transactions, and financial operations on your behalf. This guide explains how to register and manage your agents.
+Create an AI agent to execute transactions and manage funds on your behalf. Agents can be configured with custom spending limits and approval requirements.
 
 ## Creating a New Agent
 
 <Steps>
-    <Step title="Access Your Agents Dashboard">
-        Navigate to the [Your
-        Agents](https://www.magebank.ai/dashboard/your-agents) section in the
-        MageBank dashboard.
-        <Frame>
-            <img
-                src="/images/your-agents-dashboard.png"
-                alt="Agents Dashboard"
-            />
-        </Frame>
-    </Step>
-
-    <Step title="Add New Agent">
-        Click the "Add new agent" button in the top right corner.
-        <Frame>
-            <img src="/images/add-new-agent.png" alt="Add New Agent Button" />
-        </Frame>
-    </Step>
-
-    <Step title="Configure Your Agent">
-        Fill in the required details: - **Name**: A descriptive name for your
-        agent - **Description** (optional): Purpose or function of the agent -
-        **Approval Rules**: Set transaction approval conditions - **Tags**
-        (optional): Add tags for better organization
-        <Frame>
-            <img
-                src="/images/agent-configuration.png"
-                alt="Agent Configuration Form"
-            />
-        </Frame>
-    </Step>
-
-    <Step title="Set Approval Rules">
-        Determine how your agent handles transactions: - **All Transactions**:
-        Agent can execute any transaction - **Above Threshold**: Transactions
-        above a certain amount require approval - **Custom Rules**: Create
-        specific conditions for transactions
-    </Step>
-
-    <Step title="Finish Registration">
-        Click "Create Agent" to register your new agent. You'll be provided with
-        a unique Agent ID.
-        <Note>
-            Make note of your Agent ID - you'll need it when making API calls.
-        </Note>
-    </Step>
+  <Step title="Navigate to Integrate Agent">
+    Access the Integrate Agent section from the sidebar menu.
+    
+    <Frame>
+      <img src="/images/register-agent/integrate-agent-menu.png" alt="Integrate Agent Menu" />
+    </Frame>
+  </Step>
+  
+  <Step title="Click Add New Agent">
+    Click the "Add new agent" button in the top right corner to begin the agent creation process.
+    
+    <Frame>
+      <img src="/images/register-agent/add-new-agent-button.png" alt="Add New Agent Button" />
+    </Frame>
+  </Step>
+  
+  <Step title="Fill the KYA Form">
+    The first step displays your current wallet balance and requires you to enter basic information about your agent:
+    
+    - **Name**: A descriptive name for your agent
+    - **Description**: Purpose and functionality of the agent
+    - **Allocated Balance**: Amount to fund your agent (this will be deducted from your main wallet)
+      - Select from preset amounts or use the custom amount option
+      - For custom amounts, enter a value and click "Set Amount"
+    - **Tags** (optional): Add up to 5 tags to categorize your agent
+    
+    <Frame>
+      <img src="/images/register-agent/agent-form.png" alt="Agent Information Form" />
+    </Frame>
+  </Step>
+  
+  <Step title="Configure Payment Rules">
+    In the second step, you'll set transaction limits and approval requirements:
+    
+    - **Daily Limit**: Maximum amount the agent can spend in a single day
+    - **Transaction Limit**: Maximum amount for a single transaction
+    - **Require Approval Above Amount**: Transactions above this amount will require your manual approval
+    - **Require Approval For All Transactions**: Toggle to require approval for all transactions regardless of amount
+    
+    <Frame>
+      <img src="/images/register-agent/payment-rules.png" alt="Payment Rules Configuration" />
+    </Frame>
+  </Step>
+  
+  <Step title="Complete Agent Registration">
+    After clicking "Next", your agent will be created. The confirmation screen displays:
+    
+    - **Agent ID**: Unique identifier for your agent (copy this for API calls)
+    - **API Key**: Your MageBank API key (same for all your agents)
+    - **Balance**: The amount allocated to your agent
+    - **Payment Rules**: Summary of all transaction limits and approval settings
+    - **Updated Balance**: Your remaining wallet balance after funding the agent
+    
+    <Frame>
+      <img src="/images/register-agent/agent-created.png" alt="Agent Created Successfully" />
+    </Frame>
+    
+    <Note>
+      Keep your API key secure and never share it publicly. You'll need both the API key and Agent ID to make transactions with this agent.
+    </Note>
+  </Step>
 </Steps>
 
-## Agent Management
+## Understanding Agent Configuration
 
-Your registered agents appear in a table showing:
+### Balance Allocation
 
--   **Name**: The agent's display name
--   **Agent ID**: Unique identifier for the agent
--   **Tags**: Custom labels for organization
--   **Status**: Active or Inactive
--   **Balance**: Current USDC balance
--   **Approval Rules**: Transaction validation conditions
--   **Created**: Date and time of creation
--   **Actions**: Options like Deposit, Edit, or Delete
+When you create an agent, you allocate funds from your main wallet to the agent's wallet. This amount is deducted immediately and becomes available for the agent to use within its configured limits.
 
-<Frame>
-    <img
-        src="/images/agent-management-table.png"
-        alt="Agent Management Table"
-    />
-</Frame>
+### Payment Rules
 
-## Agent API Integration
+Payment rules determine how your agent can spend funds:
 
-To connect your code to a registered agent, use the Agent ID and your API key in your requests:
+1. **Daily Limit**: Restricts the total amount an agent can spend in a 24-hour period
+2. **Transaction Limit**: Caps the size of individual transactions
+3. **Approval Requirements**: Configure when you need to manually approve transactions:
+   - Above a specific amount
+   - For all transactions (regardless of amount)
+
+### Tags
+
+Tags help organize your agents and make them easier to find. You can add up to 5 tags per agent and use them to filter your agents list. Common tag examples include:
+
+- Project names (e.g., "marketing", "development")
+- Agent functions (e.g., "payments", "subscriptions")
+- Business units (e.g., "finance", "operations")
+
+## Using Your Agent
+
+Once created, your agent can:
+
+- Make payments to external accounts
+- Transfer funds between other agents
+- Automatically process transactions within set limits
+- Request approval for transactions exceeding limits
+
+Access your agent in code using its unique Agent ID and your API key:
 
 ```javascript
-// Example using JavaScript
-const response = await fetch("https://api.magebank.ai/v1/transactions", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.PAYMAN_API_SECRET}`,
+// Example API call using your agent
+const response = await fetch('https://api.magebank.ai/payments/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    senderagentid: 'agent_9LsHq7YUoDEuFrzBjO9paJ', // Your unique Agent ID
+    receiveragentid: 'RECIPIENT_AGENT_ID',
+    paymentdetails: {
+      amount: 10,
+      currency: 'USDC',
+      method: 'CRYPTO_ADDRESS'
     },
-    body: JSON.stringify({
-        agent_id: "agent_ezTBtc92qLE2kDJyMiF...",
-        // other transaction details
-    }),
+    name: 'Payment description',
+    type: 'EXTERNAL'
+  })
 });
 ```
-````
+
+## Managing Agents
+
+After creating agents, you can:
+
+- View all your agents in the Agents dashboard
+- Monitor their transaction history
+- Modify payment rules
+- Add or remove funds
+- Deactivate agents when no longer needed
+
+<Frame>
+  <img src="/images/register-agent/agents-dashboard.png" alt="Agents Dashboard" />
+</Frame>
