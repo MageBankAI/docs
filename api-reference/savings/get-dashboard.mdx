@@ -1,0 +1,186 @@
+---
+title: 'Get Savings Dashboard'
+api: 'GET /savings/dashboard'
+description: 'Get a comprehensive overview of the user\'s savings portfolio'
+---
+
+Provides a comprehensive overview of the user's savings portfolio. Includes total savings, current interest rate, total invested amount, one-year projection, and detailed information about investments by agent. Calculates real-time investment values based on the current interest rate and the exact duration of each investment.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+## Response
+
+<ResponseField name="totalSavings" type="number">
+  Total current value of all investments including interest
+</ResponseField>
+
+<ResponseField name="interestRate" type="number">
+  Current interest rate applied to investments
+</ResponseField>
+
+<ResponseField name="totalInvested" type="number">
+  Total principal amount invested by the user
+</ResponseField>
+
+<ResponseField name="yearProjection" type="number">
+  Projected value of investments after one year at current rate
+</ResponseField>
+
+<ResponseField name="agents" type="array">
+  <Expandable title="Agent Investment Details">
+    <ResponseField name="agent" type="string">
+      Name of the agent
+    </ResponseField>
+    <ResponseField name="investment_id" type="string">
+      Investment ID in short format
+    </ResponseField>
+    <ResponseField name="totalBalance" type="number">
+      Total balance including investment value
+    </ResponseField>
+    <ResponseField name="investedAmount" type="number">
+      Principal amount invested
+    </ResponseField>
+    <ResponseField name="currentValue" type="number">
+      Current value with interest
+    </ResponseField>
+    <ResponseField name="interest" type="number">
+      Interest earned to date
+    </ResponseField>
+    <ResponseField name="current" type="number">
+      Current balance in agent's account
+    </ResponseField>
+    <ResponseField name="daysInvested" type="number">
+      Days the investment has been active
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.magebank.ai/savings/dashboard" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function getSavingsDashboard() {
+  try {
+    const response = await axios.get('https://api.magebank.ai/savings/dashboard', {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY'
+      }
+    });
+    
+    console.log('Savings dashboard:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error retrieving savings dashboard:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+getSavingsDashboard();
+```
+
+```python Python
+import requests
+
+def get_savings_dashboard():
+    url = "https://api.magebank.ai/savings/dashboard"
+    headers = {
+        "x-api-key": "YOUR_API_KEY"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        dashboard = response.json()
+        print(f"Total savings: {dashboard['totalSavings']} USDC")
+        print(f"Current interest rate: {dashboard['interestRate']}%")
+        print(f"Number of active investments: {len(dashboard['agents'])}")
+        return dashboard
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+get_savings_dashboard()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "totalSavings": 1500.75,
+  "interestRate": 5,
+  "totalInvested": 1000,
+  "yearProjection": 1050,
+  "agents": [
+    {
+      "agent": "Payment Assistant",
+      "investment_id": "inv_k77NTwxp2Ym3JCmVsKtXQA",
+      "totalBalance": 1200.5,
+      "investedAmount": 1000,
+      "currentValue": 1200.5,
+      "interest": 200.5,
+      "current": 1000,
+      "daysInvested": 365
+    },
+    {
+      "agent": "Marketing Budget",
+      "investment_id": "inv_j88MTaxp3Zm3KDnWtLuPpB",
+      "totalBalance": 300.25,
+      "investedAmount": 300,
+      "currentValue": 300.25,
+      "interest": 0.25,
+      "current": 500,
+      "daysInvested": 2
+    }
+  ]
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Savings dashboard data retrieved successfully |
+| 401 | Unauthorized - Invalid or missing API key |
+| 500 | Internal Server Error |
+
+## Notes
+
+- The dashboard only includes active investments; completed or cancelled investments are not included.
+- Interest calculations are performed in real-time based on the current platform interest rate.
+- The `yearProjection` value shows the estimated total value after one year if all current investments remain active at the current interest rate.
+- The `daysInvested` field shows the number of days each investment has been active, used for interest calculations.
+- The `totalBalance` for each agent includes both the current investment value and the agent's regular wallet balance.
+- If there are no active investments, the `agents` array will be empty and totals will be zero.
+- All monetary values are in USDC by default.
+- The interest rate is expressed as an annual percentage yield (APY).

@@ -1,0 +1,82 @@
+---
+title: 'Savings API'
+description: 'Manage interest-bearing savings accounts'
+---
+
+The Savings API allows you to deposit funds into interest-bearing accounts, withdraw funds with earned interest, and monitor investment performance. These endpoints enable you to optimize idle funds by earning competitive interest rates on your USDC holdings.
+
+## Savings Model
+
+Each savings investment in the MageBank system consists of:
+
+- **Identity**: Unique investment ID and associated agent ID
+- **Principal**: Amount initially invested
+- **Status**: Current state of the investment (active, completed, cancelled)
+- **Duration**: Time elapsed since the investment was created
+- **Performance**: Current value and interest earned to date
+
+```json
+{
+  "id": "inv_k77NTwxp2Ym3JCmVsKtXQA",
+  "agent_id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+  "amount": 1000,
+  "invested_at": "2025-04-15T11:00:08.432269+00:00",
+  "status": "active",
+  "current_value": "1050.00",
+  "interest_earned": "50.00"
+}
+```
+
+## Available Endpoints
+
+<CardGroup>
+  <Card title="Deposit Savings" icon="arrow-down" href="/api-reference/savings/deposit">
+    Deposit funds into a savings account
+  </Card>
+  <Card title="Withdraw Savings" icon="arrow-up" href="/api-reference/savings/withdraw">
+    Withdraw funds from a savings account
+  </Card>
+  <Card title="Get Savings Dashboard" icon="gauge" href="/api-reference/savings/get-dashboard">
+    Get an overview of all savings investments
+  </Card>
+  <Card title="Get Agent Investments" icon="clipboard-list" href="/api-reference/savings/get-agent-investments">
+    Get all investments for a specific agent
+  </Card>
+  <Card title="Get User Investments" icon="user-chart" href="/api-reference/savings/get-user-investments">
+    Get all active investments for the authenticated user
+  </Card>
+</CardGroup>
+
+## How Interest Works
+
+MageBank uses continuous compounding to calculate interest, which maximizes returns on your investments:
+
+1. **Current Rate**: Interest rate is set at the platform level and can be checked via the [Get Interest Rate](/api-reference/investments/get-interest-rate) endpoint
+2. **Daily Calculation**: Interest is calculated daily and added to your investment's current value
+3. **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
+4. **Real-time Tracking**: Current value and interest earned are updated in real-time
+
+## Investment Lifecycle
+
+The typical lifecycle of a savings investment includes:
+
+1. **Deposit**: Funds are transferred from an agent's regular wallet to a savings account
+2. **Growth Period**: The investment earns interest over time at the current platform rate
+3. **Withdrawal**: When ready, funds (principal + interest) are returned to the agent's wallet
+4. **Completion**: The investment is marked as "completed" after withdrawal
+
+## Best Practices
+
+- Monitor interest rates regularly to optimize investment timing
+- Use the dashboard to track overall investment performance
+- Consider distributing funds across multiple agents for different purposes
+- Calculate potential returns before investing using the [Calculate Interest](/api-reference/investments/calculate-interest) endpoint
+- Regularly review the accumulated interest to inform withdrawal decisions
+
+## Next Steps
+
+Use the endpoints in this section to manage savings investments. After setting up savings accounts, you can:
+
+- [Approve payments](/api-reference/payments/approve-payment) using earned interest
+- [Monitor transactions](/api-reference/transactions/get-transaction-summary) to track financial flow
+- [Calculate potential returns](/api-reference/investments/calculate-interest) for different investment scenarios

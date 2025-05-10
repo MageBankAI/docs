@@ -1,0 +1,198 @@
+---
+title: 'Deposit Savings'
+api: 'POST /savings/deposit'
+description: 'Deposit funds into an agent\'s savings account'
+---
+
+Creates a new investment by depositing funds into an agent's savings account. The operation converts the agent ID to UUID format if provided in short format, validates the deposit amount, and creates a new investment record.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="agentId" type="string" required>
+  The short ID or UUID of the agent
+</ParamField>
+
+<ParamField body="amount" type="number" required>
+  Amount to deposit (must be positive)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Whether the deposit was successful
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Information about the deposit
+</ResponseField>
+
+<ResponseField name="investmentId" type="string">
+  The ID of the newly created investment
+</ResponseField>
+
+<ResponseField name="transaction" type="object">
+  <Expandable title="properties">
+    <ResponseField name="txHash" type="string">
+      Transaction hash on the blockchain
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Status of the transaction
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST "https://api.magebank.ai/savings/deposit" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agentId": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+    "amount": 100.5
+  }'
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function depositSavings(agentId, amount) {
+  try {
+    const response = await axios.post('https://api.magebank.ai/savings/deposit', {
+      agentId: agentId,
+      amount: amount
+    }, {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY',
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    console.log('Deposit result:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error depositing savings:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+depositSavings('agent_k77NTwxp2Ym3JCmVsKtXQA', 100.5);
+```
+
+```python Python
+import requests
+import json
+
+def deposit_savings(agent_id, amount):
+    url = "https://api.magebank.ai/savings/deposit"
+    headers = {
+        "x-api-key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "agentId": agent_id,
+        "amount": amount
+    }
+    
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    
+    if response.status_code == 200:
+        result = response.json()
+        print("Deposit result:", result)
+        return result
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.5)
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "success": true,
+  "message": "Successfully invested 100.5 USDC.",
+  "investmentId": "inv_k77NTwxp2Ym3JCmVsKtXQA",
+  "transaction": {
+    "txHash": "0x123...abc",
+    "status": "completed"
+  }
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Missing Parameters
+{
+  "error": "agentId and amount are required"
+}
+```
+
+```json 400 Invalid Amount
+{
+  "error": "Amount must be a positive number"
+}
+```
+
+```json 400 Insufficient Balance
+{
+  "error": "Agent has insufficient balance"
+}
+```
+
+```json 404 Agent Not Found
+{
+  "error": "Agent not found"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Deposit completed successfully |
+| 400 | Bad Request - Invalid or missing parameters |
+| 401 | Unauthorized - Invalid or missing API key |
+| 404 | Not Found - Agent not found |
+| 500 | Internal Server Error |
+
+## Notes
+
+- The agent must have sufficient funds in its wallet to complete the deposit.
+- The amount must be a positive number.
+- The deposit will create a new savings investment associated with the specified agent.
+- Interest will begin accruing immediately at the current platform rate.
+- The transaction may take a few moments to be confirmed on the blockchain.
+- The returned investment ID can be used to track the investment or to withdraw funds later.
+- The agent ID can be in either short format or UUID format.

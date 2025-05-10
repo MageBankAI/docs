@@ -1,0 +1,228 @@
+---
+title: 'Withdraw Savings'
+api: 'POST /savings/withdraw'
+description: 'Withdraw funds from a savings investment'
+---
+
+Closes an active investment and returns funds to the user's account. The operation validates the investment ID, converts it to UUID format if needed, and processes the withdrawal by updating the investment status.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="investmentId" type="string" required>
+  The short ID or UUID of the investment
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Whether the withdrawal was successful
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Information about the withdrawal
+</ResponseField>
+
+<ResponseField name="withdrawalDetails" type="object">
+  <Expandable title="properties">
+    <ResponseField name="principal" type="string">
+      Original amount invested
+    </ResponseField>
+    <ResponseField name="interest" type="string">
+      Interest earned during the investment period
+    </ResponseField>
+    <ResponseField name="totalAmount" type="string">
+      Total amount withdrawn (principal + interest)
+    </ResponseField>
+    <ResponseField name="duration" type="object">
+      <Expandable title="properties">
+        <ResponseField name="days" type="number">
+          Number of days the investment was active
+        </ResponseField>
+        <ResponseField name="hours" type="number">
+          Number of hours beyond whole days
+        </ResponseField>
+        <ResponseField name="minutes" type="number">
+          Number of minutes beyond whole hours
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="transaction" type="object">
+  <Expandable title="properties">
+    <ResponseField name="txHash" type="string">
+      Transaction hash on the blockchain
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Status of the transaction
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="agentId" type="string">
+  The ID of the agent that owned the investment
+</ResponseField>
+
+<ResponseField name="updatedBalance" type="string">
+  New balance of the agent after the withdrawal
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST "https://api.magebank.ai/savings/withdraw" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "investmentId": "inv_k77NTwxp2Ym3JCmVsKtXQA"
+  }'
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function withdrawSavings(investmentId) {
+  try {
+    const response = await axios.post('https://api.magebank.ai/savings/withdraw', {
+      investmentId: investmentId
+    }, {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY',
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    console.log('Withdrawal result:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error withdrawing savings:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+withdrawSavings('inv_k77NTwxp2Ym3JCmVsKtXQA');
+```
+
+```python Python
+import requests
+import json
+
+def withdraw_savings(investment_id):
+    url = "https://api.magebank.ai/savings/withdraw"
+    headers = {
+        "x-api-key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "investmentId": investment_id
+    }
+    
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    
+    if response.status_code == 200:
+        result = response.json()
+        print("Withdrawal result:", result)
+        return result
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+withdraw_savings("inv_k77NTwxp2Ym3JCmVsKtXQA")
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "success": true,
+  "message": "Withdrawal completed successfully.",
+  "withdrawalDetails": {
+    "principal": "1000.00",
+    "interest": "45.75",
+    "totalAmount": "1045.75",
+    "duration": {
+      "days": 30,
+      "hours": 5,
+      "minutes": 23
+    }
+  },
+  "transaction": {
+    "txHash": "0x123...abc",
+    "status": "completed"
+  },
+  "agentId": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+  "updatedBalance": "1545.75"
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Missing Investment ID
+{
+  "error": "Investment ID is required"
+}
+```
+
+```json 404 Investment Not Found
+{
+  "error": "Investment not found"
+}
+```
+
+```json 400 Already Completed
+{
+  "error": "Investment has already been completed or cancelled"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Withdrawal completed successfully |
+| 400 | Bad Request - Invalid or missing parameters |
+| 401 | Unauthorized - Invalid or missing API key |
+| 404 | Not Found - Investment not found |
+| 500 | Internal Server Error |
+
+## Notes
+
+- Only active investments can be withdrawn. Completed or cancelled investments will return an error.
+- The withdrawal will return the principal amount plus any interest earned during the investment period.
+- Interest is calculated up to the moment of withdrawal, ensuring maximum returns.
+- The transaction may take a few moments to be confirmed on the blockchain.
+- After withdrawal, the investment status will be changed to "completed".
+- The funds will be transferred back to the associated agent's regular wallet.
+- The investment ID can be in either short format or UUID format.
+- The withdrawal cannot be undone. To reinvest funds, create a new deposit.

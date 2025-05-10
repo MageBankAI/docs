@@ -1,0 +1,185 @@
+---
+title: 'Get Agent Investments'
+api: 'GET /savings/{agentId}'
+description: 'Get all investments for a specific agent'
+---
+
+Retrieves all investments (both active and completed) associated with a specific agent. For active investments, calculates the current value and interest earned based on the principal amount, interest rate, and investment duration. Returns detailed information including investment status and creation timestamp.
+
+## Path Parameters
+
+<ParamField path="agentId" type="string" required>
+  The short ID or UUID of the agent
+</ParamField>
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+## Response
+
+<ResponseField name="investments" type="array">
+  <Expandable title="Investment Object">
+    <ResponseField name="id" type="string">
+      Unique investment identifier in short ID format
+    </ResponseField>
+    <ResponseField name="agent_id" type="string">
+      ID of the agent associated with this investment
+    </ResponseField>
+    <ResponseField name="amount" type="number">
+      Principal amount invested
+    </ResponseField>
+    <ResponseField name="invested_at" type="string">
+      Timestamp when the investment was created
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Current status of the investment (active, completed, cancelled)
+    </ResponseField>
+    <ResponseField name="current_value" type="string">
+      Current value of the investment including earned interest
+    </ResponseField>
+    <ResponseField name="interest_earned" type="string">
+      Interest earned on the investment to date
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.magebank.ai/savings/agent_k77NTwxp2Ym3JCmVsKtXQA" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function getAgentInvestments(agentId) {
+  try {
+    const response = await axios.get(`https://api.magebank.ai/savings/${agentId}`, {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY'
+      }
+    });
+    
+    console.log(`Found ${response.data.investments.length} investments for agent`);
+    return response.data;
+  } catch (error) {
+    console.error('Error retrieving agent investments:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+getAgentInvestments('agent_k77NTwxp2Ym3JCmVsKtXQA');
+```
+
+```python Python
+import requests
+
+def get_agent_investments(agent_id):
+    url = f"https://api.magebank.ai/savings/{agent_id}"
+    headers = {
+        "x-api-key": "YOUR_API_KEY"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        investments = data.get('investments', [])
+        print(f"Found {len(investments)} investments for agent")
+        for i, inv in enumerate(investments):
+            status = inv.get('status')
+            amount = inv.get('amount')
+            current = inv.get('current_value')
+            interest = inv.get('interest_earned')
+            print(f"Investment {i+1}: {status}, {amount} USDC invested, {current} USDC current value, {interest} USDC interest")
+        return data
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+get_agent_investments("agent_k77NTwxp2Ym3JCmVsKtXQA")
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "investments": [
+    {
+      "id": "inv_k77NTwxp2Ym3JCmVsKtXQA",
+      "agent_id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+      "amount": 1000,
+      "invested_at": "2025-04-15T11:00:08.432269+00:00",
+      "status": "active",
+      "current_value": "1050.00",
+      "interest_earned": "50.00"
+    },
+    {
+      "id": "inv_p99QTaxp3Zm3KDnWtLuRrD",
+      "agent_id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+      "amount": 500,
+      "invested_at": "2025-03-10T09:15:22.123456+00:00",
+      "status": "completed",
+      "current_value": "515.25",
+      "interest_earned": "15.25"
+    }
+  ]
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Bad Request
+{
+  "error": "Invalid agent ID format"
+}
+```
+
+```json 404 Not Found
+{
+  "error": "Agent not found"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | List of investments retrieved successfully |
+| 400 | Bad Request - Invalid agent ID format |
+| 401 | Unauthorized - Invalid or missing API key |
+| 404 | Not Found - Agent not found |
+| 500 | Internal Server Error |
+
+## Notes
+
+- The endpoint returns all investments for the agent, regardless of status (active, completed, cancelled).
+- For active investments, the `current_value` and `interest_earned` fields are calculated in real-time based on the current platform interest rate.
+- For completed investments, the `current_value` and `interest_earned` fields show the final values at the time of withdrawal.
+- If the agent has no investments, an empty array will be returned.
+- The agent ID can be in either short format or UUID format.
+- All monetary values are in USDC by default.
+- The `invested_at` timestamp is in ISO 8601 format with timezone information.
