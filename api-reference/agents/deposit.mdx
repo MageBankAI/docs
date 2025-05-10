@@ -1,0 +1,199 @@
+---
+title: 'Deposit to Agent'
+api: 'POST /agents/deposit'
+description: 'Deposit funds into an agent\'s wallet'
+---
+
+Transfers funds from the user's wallet to the specified agent's wallet. The operation includes:
+1. Verification of user and agent existence
+2. Validation of deposit amount
+3. Transfer of funds on blockchain
+4. Update of agent balance in database
+5. Creation of transaction record
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="userid" type="string" required>
+  ID of the user initiating the deposit
+</ParamField>
+
+<ParamField body="agentid" type="string" required>
+  ID of the agent receiving the deposit
+</ParamField>
+
+<ParamField body="amount" type="number" required>
+  Amount to deposit
+</ParamField>
+
+<ParamField body="currency" type="string" default="USDC">
+  Currency type to deposit
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Whether the deposit was successful
+</ResponseField>
+
+<ResponseField name="txHash" type="string">
+  Transaction hash on the blockchain
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Information about the deposit
+</ResponseField>
+
+<ResponseField name="updatedBalance" type="string">
+  New balance of the agent after the deposit
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST "https://api.magebank.ai/agents/deposit" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userid": "user_piXARPaD2jefNBGxzb84Qd",
+    "agentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+    "amount": 50,
+    "currency": "USDC"
+  }'
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function depositToAgent(userId, agentId, amount, currency = "USDC") {
+  try {
+    const response = await axios.post('https://api.magebank.ai/agents/deposit', {
+      userid: userId,
+      agentid: agentId,
+      amount: amount,
+      currency: currency
+    }, {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY',
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    console.log('Deposit result:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error depositing to agent:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+depositToAgent('user_piXARPaD2jefNBGxzb84Qd', 'agent_k77NTwxp2Ym3JCmVsKtXQA', 50);
+```
+
+```python Python
+import requests
+import json
+
+def deposit_to_agent(user_id, agent_id, amount, currency="USDC"):
+    url = "https://api.magebank.ai/agents/deposit"
+    headers = {
+        "x-api-key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "userid": user_id,
+        "agentid": agent_id,
+        "amount": amount,
+        "currency": currency
+    }
+    
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    
+    if response.status_code == 200:
+        result = response.json()
+        print("Deposit result:", result)
+        return result
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+deposit_to_agent("user_piXARPaD2jefNBGxzb84Qd", "agent_k77NTwxp2Ym3JCmVsKtXQA", 50)
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "success": true,
+  "txHash": "0x123...abc",
+  "message": "Successfully deposited 50 USDC to agent",
+  "updatedBalance": "150"
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Missing Parameters
+{
+  "error": "userid, agentid, and amount are required."
+}
+```
+
+```json 400 Invalid Amount
+{
+  "error": "Invalid deposit amount"
+}
+```
+
+```json 400 Wallet Not Found
+{
+  "error": "User wallet not found or inaccessible"
+}
+```
+
+```json 404 Not Found
+{
+  "error": "Agent not found"
+}
+```
+
+```json 500 Transaction Failed
+{
+  "success": false,
+  "error": "Transfer failed on-chain: insufficient funds"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Funds deposited successfully |
+| 400 | Bad Request - Invalid or missing parameters |
+| 404 | Not Found - Agent or user not found |
+| 500 | Internal Server Error - Transaction failed |
+
+## Notes
+
+- The amount must be a positive number.
+- The user must have sufficient funds in their wallet to complete the deposit.
+- The transaction may take a few moments to be confirmed on the blockchain.
+- The updated balance is returned as a string to preserve precision for financial calculations.
+- Both user ID and agent ID can be in either short format or UUID format.

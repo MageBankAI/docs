@@ -1,7 +1,7 @@
 {
     "$schema": "https://mintlify.com/docs.json",
     "theme": "mint",
-    "name": "MageBank Docs",
+    "name": "MageBank API Documentation",
     "colors": {
         "primary": "#FF5722",
         "light": "#FF7043",
@@ -36,18 +36,70 @@
                 "tab": "API Reference",
                 "groups": [
                     {
-                        "group": "API Documentation",
+                        "group": "Introduction",
                         "pages": [
                             "api-reference/introduction"
                         ]
                     },
                     {
-                        "group": "Endpoint Examples",
+                        "group": "Agents",
                         "pages": [
-                            "api-reference/endpoint/get",
-                            "api-reference/endpoint/create",
-                            "api-reference/endpoint/delete",
-                            "api-reference/endpoint/webhook"
+                            "api-reference/agents/introduction",
+                            "api-reference/agents/get-agent",
+                            "api-reference/agents/create-agent",
+                            "api-reference/agents/get-user-agents",
+                            "api-reference/agents/deposit",
+                            "api-reference/agents/withdraw"
+                        ]
+                    },
+                    {
+                        "group": "Wallets",
+                        "pages": [
+                            "api-reference/wallets/introduction",
+                            "api-reference/wallets/get-wallet-balance"
+                        ]
+                    },
+                    {
+                        "group": "Transactions",
+                        "pages": [
+                            "api-reference/transactions/introduction",
+                            "api-reference/transactions/get-transaction-summary"
+                        ]
+                    },
+                    {
+                        "group": "Investments",
+                        "pages": [
+                            "api-reference/investments/introduction",
+                            "api-reference/investments/get-interest-rate",
+                            "api-reference/investments/calculate-interest"
+                        ]
+                    },
+                    {
+                        "group": "Payments",
+                        "pages": [
+                            "api-reference/payments/introduction",
+                            "api-reference/payments/approve-payment",
+                            "api-reference/payments/decline-payment",
+                            "api-reference/payments/get-payment",
+                            "api-reference/payments/get-user-payments",
+                            "api-reference/payments/export-payments"
+                        ]
+                    },
+                    {
+                        "group": "Users",
+                        "pages": [
+                            "api-reference/users/introduction"
+                        ]
+                    },
+                    {
+                        "group": "Savings",
+                        "pages": [
+                            "api-reference/savings/introduction",
+                            "api-reference/savings/deposit",
+                            "api-reference/savings/withdraw",
+                            "api-reference/savings/get-dashboard",
+                            "api-reference/savings/get-agent-investments",
+                            "api-reference/savings/get-user-investments"
                         ]
                     }
                 ]
@@ -57,18 +109,18 @@
             "anchors": [
                 {
                     "anchor": "Documentation",
-                    "href": "https://mintlify.com/docs",
+                    "href": "https://api.magebank.ai/docs",
                     "icon": "book-open-cover"
                 },
                 {
-                    "anchor": "Community",
-                    "href": "https://mintlify.com/community",
-                    "icon": "slack"
+                    "anchor": "API Reference",
+                    "href": "https://api.magebank.ai/api-docs",
+                    "icon": "code"
                 },
                 {
-                    "anchor": "Blog",
-                    "href": "https://mintlify.com/blog",
-                    "icon": "newspaper"
+                    "anchor": "Dashboard",
+                    "href": "https://www.magebank.ai/dashboard",
+                    "icon": "gauge"
                 }
             ]
         }
@@ -96,5 +148,17 @@
             "github": "https://github.com/magebank",
             "linkedin": "https://linkedin.com/company/magebank"
         }
-    }
+    },
+    "api": {
+        "baseUrl": "https://api.magebank.ai",
+        "auth": {
+            "method": "key",
+            "name": "x-api-key",
+            "inputPrefix": ""
+        },
+        "playground": {
+            "mode": "show"
+        }
+    },
+    "openapi": "/api-reference/openapi.json"
 }

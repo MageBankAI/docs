@@ -1,33 +1,130 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Introduction'
+description: 'Overview of the MageBank API for AI-Driven Financial Agents'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+The MageBank API enables developers to integrate AI-driven financial agent functionality into their applications. This section provides a comprehensive reference for all available endpoints.
 
-## Welcome
+## API Base URL
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+All API endpoints are accessible at:
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://api.magebank.ai
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Every API request must include your API key in the `x-api-key` header:
+
+```bash
+x-api-key: YOUR_API_KEY
+```
+
+<Note>
+  To get your API key, visit the [MageBank Dashboard](https://www.magebank.ai/dashboard) and navigate to the "Integrate Agent" section.
+</Note>
+
+## API Endpoints
+
+The MageBank API is organized into the following categories:
+
+<CardGroup cols={2}>
+  <Card title="Agents" icon="robot" href="/api-reference/agents/introduction">
+    Create and manage AI financial agents
+  </Card>
+  <Card title="Wallets" icon="wallet" href="/api-reference/wallets/introduction">
+    Manage wallet addresses and balances
+  </Card>
+  <Card title="Transactions" icon="exchange" href="/api-reference/transactions/introduction">
+    View and manage on-chain transactions
+  </Card>
+  <Card title="Investments" icon="chart-line" href="/api-reference/investments/introduction">
+    Interest rate information and calculations
+  </Card>
+  <Card title="Payments" icon="credit-card" href="/api-reference/payments/introduction">
+    Process payments between agents and external accounts
+  </Card>
+  <Card title="Users" icon="user" href="/api-reference/users/introduction">
+    User account management
+  </Card>
+  <Card title="Savings" icon="piggy-bank" href="/api-reference/savings/introduction">
+    Interest-bearing savings accounts
+  </Card>
+</CardGroup>
+
+## Response Format
+
+All API responses are returned in JSON format. Successful responses typically include:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "success": true,
+  "... additional data fields ..."
+}
 ```
+
+## Error Handling
+
+When an error occurs, the API returns an appropriate HTTP status code and a JSON object explaining the error:
+
+```json
+{
+  "error": "Descriptive error message"
+}
+```
+
+Common HTTP status codes:
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Success |
+| 400 | Bad Request - Invalid parameters or request format |
+| 401 | Unauthorized - Invalid or missing API key |
+| 404 | Not Found - Resource does not exist |
+| 429 | Too Many Requests - Rate limit exceeded |
+| 500 | Internal Server Error - Something went wrong on our end |
+
+## Pagination
+
+For endpoints that return lists of resources, pagination is supported through the following query parameters:
+
+- `page`: Page number (starts at 1)
+- `limit`: Number of items per page (default: 20, max: 100)
+
+Example:
+
+```
+GET https://api.magebank.ai/user/payments?page=2&limit=50
+```
+
+## Rate Limiting
+
+To ensure service stability, API requests are rate-limited to:
+
+- 100 requests per minute per API key
+- 5,000 requests per day per API key
+
+If you exceed these limits, you'll receive a `429 Too Many Requests` status code. The response headers include information about your current rate limit status:
+
+- `X-RateLimit-Limit`: The maximum number of requests allowed in the current time window
+- `X-RateLimit-Remaining`: The number of requests remaining in the current time window
+- `X-RateLimit-Reset`: The time when the current rate limit window resets (Unix timestamp)
+
+## Explore the API
+
+Explore the various endpoints through the interactive API playground available in each endpoint's documentation. You can test requests directly and see responses in real-time.
+
+## API Versioning
+
+The current API version is v1. When breaking changes are introduced, we'll release a new version and provide migration guides. To ensure compatibility, you can specify the API version in your requests:
+
+```
+https://api.magebank.ai/v1/agents
+```
+
+The current version (v1) is used by default if no version is specified.
+
+## Support
+
+If you encounter any issues or have questions about the API, reach out to our support team at [support@magebank.ai](mailto:support@magebank.ai).
