@@ -91,14 +91,14 @@
         "global": {
             "anchors": [
                 {
-                    "anchor": "API Reference",
-                    "href": "https://api.magebank.ai/api-docs",
-                    "icon": "code"
-                },
-                {
                     "anchor": "Dashboard",
                     "href": "https://www.magebank.ai/dashboard",
                     "icon": "gauge"
+                },
+                {
+                    "anchor": "LLM.txt",
+                    "href": "https://github.com/MageBankAI/docs/blob/master/LLM.txt",
+                    "icon": "robot"
                 }
             ]
         }
@@ -125,6 +125,11 @@
             "x": "https://x.com/magebank",
             "github": "https://github.com/magebank",
             "linkedin": "https://linkedin.com/company/magebank"
+        }
+    },
+    "api": {
+        "playground": {
+            "display": "interactive"
         }
     }
 }

@@ -8,6 +8,10 @@
         "email": "support@magebank.com"
       }
     },
+	"externalDocs": {
+		"description": "Mage Bank AI Documentation",
+		"url": "https://api.magebank.ai"
+	},
     "tags": [
       {
         "name": "Agents",
