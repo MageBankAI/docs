@@ -1,0 +1,163 @@
+---
+title: 'Get Wallet Balance'
+api: 'GET /user/wallet-balance'
+description: 'Retrieve the balance of a user\'s wallet'
+---
+
+Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Whether the balance retrieval was successful
+</ResponseField>
+
+<ResponseField name="balance" type="string">
+  Current wallet balance
+</ResponseField>
+
+<ResponseField name="asset" type="string">
+  Asset type (cryptocurrency)
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Additional information about the balance retrieval
+</ResponseField>
+
+<ResponseField name="source" type="string">
+  Source of the balance information
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.magebank.ai/user/wallet-balance" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function getWalletBalance() {
+  try {
+    const response = await axios.get('https://api.magebank.ai/user/wallet-balance', {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY'
+      }
+    });
+    
+    console.log('Wallet balance:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error retrieving wallet balance:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+getWalletBalance();
+```
+
+```python Python
+import requests
+
+def get_wallet_balance():
+    url = "https://api.magebank.ai/user/wallet-balance"
+    headers = {
+        "x-api-key": "YOUR_API_KEY"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        balance_data = response.json()
+        print("Wallet balance:", balance_data)
+        return balance_data
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+get_wallet_balance()
+```
+
+</CodeGroup>
+
+## Example Responses
+
+<ResponseExample>
+```json USDC Balance
+{
+  "success": true,
+  "balance": "100.50",
+  "asset": "USDC",
+  "message": "Balance retrieved successfully",
+  "source": "blockchain"
+}
+```
+
+```json ETH Balance
+{
+  "success": true,
+  "balance": "0.05",
+  "asset": "ETH",
+  "message": "USDC balance not found, using ETH balance",
+  "source": "blockchain"
+}
+```
+
+```json Zero Balance
+{
+  "success": true,
+  "balance": "0.00",
+  "message": "All balance fetching methods failed",
+  "source": "blockchain"
+}
+```
+</ResponseExample>
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Bad Request
+{
+  "error": "Invalid wallet address format"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Wallet balance retrieved successfully |
+| 400 | Bad Request - Invalid wallet address |
+| 401 | Unauthorized - Invalid or missing API key |
+| 500 | Internal Server Error |
+
+## Notes
+
+- The API automatically determines the user's wallet address from their account.
+- The endpoint follows a fallback strategy, checking for USDC first, then ETH, and finally any other tokens.
+- Balance is returned as a string to preserve precision for financial calculations.
+- If no wallet is found or all balance fetching methods fail, the API will return a successful response with a zero balance.
+- The `source` field indicates where the balance information was retrieved from (typically "blockchain").
