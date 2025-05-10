@@ -1,0 +1,75 @@
+---
+title: 'Investments API'
+description: 'Access interest rates and calculate potential earnings'
+---
+
+The Investments API provides endpoints to retrieve current interest rates and calculate potential earnings for investments. These endpoints allow you to make informed decisions about utilizing the MageBank Savings Vault.
+
+## Available Endpoints
+
+<CardGroup>
+  <Card title="Get Interest Rate" icon="percent" href="/api-reference/investments/get-interest-rate">
+    Get the current annual interest rate
+  </Card>
+  <Card title="Calculate Interest" icon="calculator" href="/api-reference/investments/calculate-interest">
+    Calculate potential interest for a given amount and period
+  </Card>
+</CardGroup>
+
+## Interest Rate Model
+
+The MageBank platform offers competitive interest rates on USDC holdings. The interest rate:
+
+1. **Centrally Managed**: The rate is set at the platform level and applies to all savings accounts
+2. **Regularly Updated**: Rates may be adjusted based on market conditions
+3. **Compounding**: Interest is calculated using continuous compounding for maximum returns
+4. **Transparent**: Current rates are always accessible through the API
+
+## Interest Calculation Methodology
+
+MageBank uses standard compound interest formulas to calculate earnings:
+
+```
+A = P(1 + r/n)^(nt)
+```
+
+Where:
+- A = Final amount
+- P = Principal (initial deposit)
+- r = Annual interest rate (APY)
+- n = Number of times interest is compounded per year
+- t = Time (in years)
+
+For continuous compounding (as used in MageBank), the formula simplifies to:
+
+```
+A = P * e^(rt)
+```
+
+Where:
+- e = Euler's number (approximately 2.71828)
+
+## Use Cases
+
+The Investment API endpoints can be used for:
+
+1. **Rate Monitoring**: Track interest rate changes over time
+2. **Financial Planning**: Calculate potential earnings for different investment scenarios
+3. **Savings Strategy**: Determine optimal investment amounts and time periods
+4. **Automated Decision-Making**: Build agents that make investment decisions based on current rates
+5. **Reporting**: Include interest projections in financial reports
+
+## Best Practices
+
+- Regularly check the current interest rate, as it may change over time
+- Use the calculation endpoint to compare different investment scenarios
+- Consider the time value of money when making investment decisions
+- Combine with the Savings API to implement automated investment strategies
+
+## Next Steps
+
+Use the endpoints in this section to access interest rate information and calculate potential earnings. After utilizing these endpoints, you can:
+
+- Set up [savings deposits](/api-reference/savings/deposit) to start earning interest
+- Monitor [savings performance](/api-reference/savings/get-dashboard) through the dashboard
+- Manage [agent balances](/api-reference/agents/deposit) based on interest rate opportunities

@@ -1,0 +1,121 @@
+---
+title: 'Get Interest Rate'
+api: 'GET /investment/interest-rate'
+description: 'Get the current annual interest rate for investments'
+---
+
+Retrieves the current annual interest rate for investments and the timestamp when it was last updated. This rate is used for all savings calculations in the platform.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+## Response
+
+<ResponseField name="interestRate" type="number">
+  Current annual interest rate for investments (percentage)
+</ResponseField>
+
+<ResponseField name="lastUpdated" type="string">
+  Timestamp when the interest rate was last updated (ISO 8601 format)
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.magebank.ai/investment/interest-rate" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function getInterestRate() {
+  try {
+    const response = await axios.get('https://api.magebank.ai/investment/interest-rate', {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY'
+      }
+    });
+    
+    console.log('Current interest rate:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error retrieving interest rate:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+getInterestRate();
+```
+
+```python Python
+import requests
+
+def get_interest_rate():
+    url = "https://api.magebank.ai/investment/interest-rate"
+    headers = {
+        "x-api-key": "YOUR_API_KEY"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        rate_data = response.json()
+        print(f"Current interest rate: {rate_data['interestRate']}%")
+        print(f"Last updated: {rate_data['lastUpdated']}")
+        return rate_data
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+get_interest_rate()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "interestRate": 4.5,
+  "lastUpdated": "2025-05-04T12:00:00.000Z"
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Interest rate retrieved successfully |
+| 401 | Unauthorized - Invalid or missing API key |
+| 500 | Internal Server Error |
+
+## Notes
+
+- The interest rate is expressed as an annual percentage yield (APY).
+- Interest rates may change over time based on market conditions.
+- The `lastUpdated` timestamp indicates when the interest rate was last modified.
+- Interest is calculated using continuous compounding for maximum returns.
+- The current annual percentage yield can be up to 12.5% but is subject to change.

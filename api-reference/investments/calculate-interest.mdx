@@ -1,0 +1,232 @@
+---
+title: 'Calculate Interest'
+api: 'POST /investment/calculator'
+description: 'Calculate potential interest for a given investment amount and period'
+---
+
+Calculates the potential interest earned for a given investment amount and period. Uses the platform's current interest rate by default, but allows specifying a custom rate for scenario planning. Returns a detailed breakdown of the calculation with step-by-step formula application.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="amount" type="number" required>
+  Principal amount to invest
+</ParamField>
+
+<ParamField body="days" type="number" required>
+  Investment duration in days
+</ParamField>
+
+<ParamField body="customRate" type="number">
+  Optional custom interest rate (annual percentage)
+</ParamField>
+
+## Response
+
+<ResponseField name="principal" type="number">
+  Principal amount for the calculation
+</ResponseField>
+
+<ResponseField name="days" type="number">
+  Investment duration in days
+</ResponseField>
+
+<ResponseField name="interestRate" type="number">
+  Annual interest rate applied to the calculation
+</ResponseField>
+
+<ResponseField name="interestEarned" type="string">
+  Interest amount earned over the period
+</ResponseField>
+
+<ResponseField name="totalAmount" type="string">
+  Total amount including principal and interest
+</ResponseField>
+
+<ResponseField name="annualYield" type="string">
+  Effective annual yield as a percentage
+</ResponseField>
+
+<ResponseField name="calculation" type="object">
+  <Expandable title="properties">
+    <ResponseField name="formula" type="string">
+      Formula used for calculation
+    </ResponseField>
+    <ResponseField name="steps" type="array">
+      Step-by-step calculation process
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST "https://api.magebank.ai/investment/calculator" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 1000,
+    "days": 365,
+    "customRate": 4.5
+  }'
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function calculateInterest(amount, days, customRate = null) {
+  try {
+    const payload = {
+      amount: amount,
+      days: days
+    };
+    
+    if (customRate !== null) {
+      payload.customRate = customRate;
+    }
+    
+    const response = await axios.post('https://api.magebank.ai/investment/calculator', payload, {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY',
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    console.log('Interest calculation:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error calculating interest:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+// Calculate interest for $1000 over 1 year at 4.5% APY
+calculateInterest(1000, 365, 4.5);
+```
+
+```python Python
+import requests
+import json
+
+def calculate_interest(amount, days, custom_rate=None):
+    url = "https://api.magebank.ai/investment/calculator"
+    headers = {
+        "x-api-key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "amount": amount,
+        "days": days
+    }
+    
+    if custom_rate is not None:
+        payload["customRate"] = custom_rate
+    
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    
+    if response.status_code == 200:
+        calculation = response.json()
+        print(f"For ${amount} over {days} days at {calculation['interestRate']}% APY:")
+        print(f"Interest earned: ${calculation['interestEarned']}")
+        print(f"Total amount: ${calculation['totalAmount']}")
+        return calculation
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+# Calculate interest for $1000 over 1 year at 4.5% APY
+calculate_interest(1000, 365, 4.5)
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "principal": 1000,
+  "days": 365,
+  "interestRate": 4.5,
+  "interestEarned": "45.00",
+  "totalAmount": "1045.00",
+  "annualYield": "4.50%",
+  "calculation": {
+    "formula": "principal × rate × (days ÷ 365)",
+    "steps": [
+      "1000 × 0.045 × 365/365",
+      "1000 × 0.045 × 1.000000",
+      "1000 × 0.045000",
+      "45.000000"
+    ]
+  }
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Missing Parameters
+{
+  "success": false,
+  "error": "Amount and days are required"
+}
+```
+
+```json 400 Invalid Amount
+{
+  "success": false,
+  "error": "Amount must be a positive number"
+}
+```
+
+```json 400 Invalid Days
+{
+  "success": false,
+  "error": "Days must be a positive number"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Interest calculation completed successfully |
+| 400 | Bad Request - Invalid or missing parameters |
+| 401 | Unauthorized - Invalid or missing API key |
+| 500 | Internal Server Error |
+
+## Notes
+
+- If `customRate` is not provided, the current platform interest rate will be used.
+- The `amount` and `days` parameters must be positive numbers.
+- Interest is calculated using the formula: `principal × rate × (days ÷ 365)`.
+- For investments longer than one year, compound interest is used for more accurate projections.
+- The `interestEarned` and `totalAmount` values are returned as strings to preserve precision for financial calculations.
+- The `calculation` object provides transparency into the calculation process, showing the formula and step-by-step application.
+- This endpoint is useful for financial planning and comparing different investment scenarios.
