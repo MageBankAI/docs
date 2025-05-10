@@ -131,6 +131,6 @@
         "playground": {
             "display": "interactive"
         },
-        "openapi": "/api-reference/openapi.json"
+        "openapi": "./api-reference/openapi.json"
     }
 }
