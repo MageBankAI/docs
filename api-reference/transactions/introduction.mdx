@@ -1,0 +1,75 @@
+---
+title: 'Transactions API'
+description: 'Track and analyze blockchain transactions'
+---
+
+The Transactions API allows you to monitor and analyze blockchain transactions between agents and external wallets. These endpoints provide visibility into the flow of funds and financial activity within your MageBank account.
+
+## Transaction Model
+
+Each transaction in the MageBank system consists of:
+
+- **Transaction Hash**: Unique blockchain transaction identifier (txHash)
+- **Status**: Current state of the transaction (pending, completed, failed)
+- **Amount**: Value transferred in the transaction
+- **Currency**: Type of cryptocurrency used
+- **Sender/Receiver**: Wallet addresses involved in the transaction
+- **Timestamp**: When the transaction occurred
+
+```json
+{
+  "txHash": "0x123...abc",
+  "status": "completed",
+  "amount": "50",
+  "currency": "USDC",
+  "from_wallet": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6",
+  "to_wallet": "0xb66C42bA7B639bB9CEc2dB2520aC8Cff588895f6",
+  "timestamp": "2025-05-03T18:52:39.911685+00:00"
+}
+```
+
+## Available Endpoints
+
+<CardGroup>
+  <Card title="Transaction Summary" icon="chart-bar" href="/api-reference/transactions/get-transaction-summary">
+    Get a summary of financial activity for a date range
+  </Card>
+</CardGroup>
+
+## Understanding Transactions
+
+Transactions in MageBank have several key characteristics:
+
+1. **On-Chain Execution**: All financial movements between wallets occur on the blockchain
+2. **Immutable Record**: Once confirmed, transactions cannot be altered or deleted
+3. **Status Tracking**: Transactions progress through various states (pending, completed, failed)
+4. **Financial Reporting**: Transaction data forms the basis for financial reports and analytics
+
+## Types of Transactions
+
+MageBank tracks several types of transactions:
+
+| Type | Description |
+|------|-------------|
+| Deposits | Funds transferred from user wallet to agent wallet |
+| Withdrawals | Funds transferred from agent wallet to user wallet |
+| Agent-to-Agent | Transfers between different agent wallets |
+| External Payments | Payments to external wallets outside MageBank |
+| Savings Deposits | Funds transferred to savings accounts |
+| Savings Withdrawals | Funds transferred from savings accounts |
+
+## Best Practices
+
+- Regularly review transaction summaries to monitor financial activity
+- Keep track of transaction hashes for reference and troubleshooting
+- Allow sufficient time for transactions to be confirmed on the blockchain
+- Use date ranges to filter transactions for specific reporting periods
+- Consider implementing webhooks to receive real-time transaction notifications
+
+## Next Steps
+
+Use the endpoints in this section to track and analyze transactions. After reviewing transactions, you can:
+
+- Create [payment reports](/api-reference/payments/export-payments) for accounting purposes
+- Set up [savings accounts](/api-reference/savings/introduction) to earn interest on idle funds
+- Manage [agent funding](/api-reference/agents/deposit) based on transaction patterns
