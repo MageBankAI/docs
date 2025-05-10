@@ -1,0 +1,215 @@
+---
+title: 'Get Payment'
+api: 'GET /payments/{id}'
+description: 'Fetch details of a specific payment'
+---
+
+Retrieves detailed information about a specific payment based on its ID. Converts short ID format to UUID format internally before querying the database.
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  Payment ID in the format `payee_xxx`
+</ParamField>
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  Unique payment identifier in short ID format
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name or description of the payment
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of payment (EXTERNAL or INTERNAL)
+</ResponseField>
+
+<ResponseField name="senderagentid" type="string">
+  ID of the agent sending the payment
+</ResponseField>
+
+<ResponseField name="receiveragentid" type="string">
+  ID of the agent receiving the payment
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current status of the payment (New, Confirmed, Completed, Failed)
+</ResponseField>
+
+<ResponseField name="approvalstatus" type="string">
+  Approval status of the payment (Approved, Declined, Pending, Waiting, Waiting for Sender Approval)
+</ResponseField>
+
+<ResponseField name="approvalrequired" type="boolean">
+  Whether this payment requires approval
+</ResponseField>
+
+<ResponseField name="paymentdetails" type="object">
+  <Expandable title="properties">
+    <ResponseField name="method" type="string">
+      Payment method used
+    </ResponseField>
+    <ResponseField name="amount" type="number">
+      Payment amount
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Payment currency
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="contactdetails" type="object">
+  <Expandable title="properties">
+    <ResponseField name="email" type="string">
+      Contact email for the payment recipient
+    </ResponseField>
+    <ResponseField name="phoneNumber" type="string">
+      Contact phone number for the payment recipient
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Tags or categories for the payment
+</ResponseField>
+
+<ResponseField name="createdat" type="string">
+  Timestamp when the payment was created
+</ResponseField>
+
+<ResponseField name="approvedat" type="string">
+  Timestamp when the payment was approved/declined
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.magebank.ai/payments/payee_8tJo7vZb1RKo4oeyWuqgK" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+async function getPayment(paymentId) {
+  try {
+    const response = await axios.get(`https://api.magebank.ai/payments/${paymentId}`, {
+      headers: {
+        'x-api-key': 'YOUR_API_KEY'
+      }
+    });
+    
+    console.log('Payment details:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error retrieving payment:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+getPayment('payee_8tJo7vZb1RKo4oeyWuqgK');
+```
+
+```python Python
+import requests
+
+def get_payment(payment_id):
+    url = f"https://api.magebank.ai/payments/{payment_id}"
+    headers = {
+        "x-api-key": "YOUR_API_KEY"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        payment_data = response.json()
+        print("Payment details:", payment_data)
+        return payment_data
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+get_payment("payee_8tJo7vZb1RKo4oeyWuqgK")
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": "payee_wDG5cavUCoK53uvFzTvkey",
+  "name": "Vendor XYZ Payment",
+  "type": "EXTERNAL",
+  "senderagentid": "agent_eC6ZezevNsqxvoKmQrUuoU",
+  "receiveragentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
+  "status": "New",
+  "approvalstatus": "Waiting for Sender Approval",
+  "approvalrequired": true,
+  "paymentdetails": {
+    "method": "CRYPTO_ADDRESS",
+    "amount": 6,
+    "currency": "USDC"
+  },
+  "contactdetails": {
+    "email": "contact@vendorxyz.com",
+    "phoneNumber": "+1234567890"
+  },
+  "tags": [
+    "vendor",
+    "regular"
+  ],
+  "createdat": "2025-04-17T10:28:18.512792+00:00",
+  "approvedat": null
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 404 Not Found
+{
+  "error": "Payment not found"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Payment details retrieved successfully |
+| 401 | Unauthorized - Invalid or missing API key |
+| 404 | Not Found - Payment not found |
+| 500 | Internal Server Error |
+
+## Notes
+
+- The payment ID can be in the short format (e.g., `payee_8tJo7vZb1RKo4oeyWuqgK`) or UUID format.
+- The `approvedat` field will be null if the payment has not yet been approved or declined.
+- The `contactdetails` object may be partially or completely empty if no contact information was provided.
+- The `method` field in `paymentdetails` is typically "CRYPTO_ADDRESS" for blockchain payments.
+- The `type` field can be either "EXTERNAL" (to recipients outside the user's agent network) or "INTERNAL" (between the user's own agents).

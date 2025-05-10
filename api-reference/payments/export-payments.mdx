@@ -1,0 +1,203 @@
+---
+title: 'Export Payments'
+api: 'POST /payments/export'
+description: 'Export payments data in various formats (CSV, XLSX, PDF)'
+---
+
+Exports payment data in CSV, XLSX, or PDF format based on the specified date range. This endpoint is useful for accounting, reporting, and data analysis purposes.
+
+## Request Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="format" type="string" required>
+  Export format (csv, xlsx, or pdf)
+</ParamField>
+
+<ParamField body="dateRange" type="object">
+  <Expandable title="properties">
+    <ParamField body="start" type="string" format="date">
+      Start date for the export (YYYY-MM-DD)
+    </ParamField>
+    <ParamField body="end" type="string" format="date">
+      End date for the export (YYYY-MM-DD)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+The response is a file download in the requested format (CSV, XLSX, or PDF).
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST "https://api.magebank.ai/payments/export" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "format": "xlsx",
+    "dateRange": {
+      "start": "2025-05-01",
+      "end": "2025-05-31"
+    }
+  }' \
+  --output payments_export.xlsx
+```
+
+```javascript Node.js
+const axios = require('axios');
+const fs = require('fs');
+
+async function exportPayments(format, startDate, endDate) {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: 'https://api.magebank.ai/payments/export',
+      data: {
+        format: format,
+        dateRange: {
+          start: startDate,
+          end: endDate
+        }
+      },
+      headers: {
+        'x-api-key': 'YOUR_API_KEY',
+        'Content-Type': 'application/json'
+      },
+      responseType: 'stream'
+    });
+    
+    // Create file name based on format and date range
+    const fileName = `payments_${startDate}_to_${endDate}.${format}`;
+    
+    // Save the file
+    const writer = fs.createWriteStream(fileName);
+    response.data.pipe(writer);
+    
+    return new Promise((resolve, reject) => {
+      writer.on('finish', () => {
+        console.log(`Payments exported to ${fileName}`);
+        resolve(fileName);
+      });
+      writer.on('error', reject);
+    });
+  } catch (error) {
+    console.error('Error exporting payments:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+// Export payments for May 2025 in Excel format
+exportPayments('xlsx', '2025-05-01', '2025-05-31');
+```
+
+```python Python
+import requests
+import json
+
+def export_payments(export_format, start_date, end_date):
+    url = "https://api.magebank.ai/payments/export"
+    headers = {
+        "x-api-key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "format": export_format,
+        "dateRange": {
+            "start": start_date,
+            "end": end_date
+        }
+    }
+    
+    # Use stream=True to handle file download
+    response = requests.post(url, headers=headers, data=json.dumps(payload), stream=True)
+    
+    if response.status_code == 200:
+        # Create file name based on format and date range
+        file_name = f"payments_{start_date}_to_{end_date}.{export_format}"
+        
+        # Save the file
+        with open(file_name, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+        
+        print(f"Payments exported to {file_name}")
+        return file_name
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        raise Exception(f"API request failed with status {response.status_code}")
+
+# Export payments for May 2025 in Excel format
+export_payments("xlsx", "2025-05-01", "2025-05-31")
+```
+
+</CodeGroup>
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Invalid Format
+{
+  "error": "Invalid export format. Supported formats are: csv, xlsx, pdf"
+}
+```
+
+```json 400 Invalid Date Range
+{
+  "error": "Invalid date range. End date must be after start date"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
+```
+</ResponseExample>
+
+## Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Export completed successfully |
+| 400 | Bad Request - Invalid parameters |
+| 401 | Unauthorized - Invalid or missing API key |
+| 500 | Internal Server Error |
+
+## Notes
+
+- If no `dateRange` is provided, the export will include all available payment data.
+- Each export format has specific advantages:
+  - **CSV**: Simple text format compatible with most spreadsheet applications
+  - **XLSX**: Excel format with advanced formatting and calculation capabilities
+  - **PDF**: Formatted document suitable for sharing and printing
+- Export files include the following information:
+  - Payment ID
+  - Payment Name
+  - Sender and Receiver Agents
+  - Amount and Currency
+  - Payment Type
+  - Status and Approval Status
+  - Creation and Approval Timestamps
+  - Tags
+- The maximum number of payments that can be exported in a single request is 10,000. For larger datasets, use multiple requests with narrower date ranges.
+- Export processing may take longer for large datasets, especially in PDF format.
