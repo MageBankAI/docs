@@ -130,6 +130,13 @@
     "api": {
         "playground": {
             "display": "interactive"
+        },
+        "mdx": {
+            "server": "https://api.magebank.ai",
+            "auth": {
+                "method": "key",
+                "name": "x-api-key"
+            }
         }
     }
 }
