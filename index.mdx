@@ -42,18 +42,17 @@ MageBank allows you to create and manage AI agents that can handle financial tra
 Integrate MageBank directly into your applications with our comprehensive API.
 
 <CardGroup cols={2}>
-    <Card
-        title="API Introduction"
-        icon="code"
-        href="/api-reference/introduction"
-    >
-        Get started with the MageBank API
+    <Card title="Users API" icon="user" href="/api-reference/users/introduction">
+        Manage user accounts and wallet balances
     </Card>
     <Card title="Agents API" icon="robot" href="/api-reference/agents/introduction">
         Create and manage AI financial agents
     </Card>
     <Card title="Payments API" icon="credit-card" href="/api-reference/payments/introduction">
         Process financial transactions
+    </Card>
+    <Card title="Transactions API" icon="exchange" href="/api-reference/transactions/introduction">
+        Track and analyze transaction history
     </Card>
     <Card title="Savings API" icon="piggy-bank" href="/api-reference/savings/introduction">
         Manage interest-bearing investments
@@ -80,6 +79,38 @@ All API requests should be made to:
 https://api.magebank.ai
 ```
 
+## Response Format
+
+All API responses are returned in JSON format. Successful responses typically include:
+
+```json
+{
+  "success": true,
+  "... additional data fields ..."
+}
+```
+
+## Error Handling
+
+When an error occurs, the API returns an appropriate HTTP status code and a JSON object explaining the error:
+
+```json
+{
+  "error": "Descriptive error message"
+}
+```
+
+Common HTTP status codes:
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Success |
+| 400 | Bad Request - Invalid parameters or request format |
+| 401 | Unauthorized - Invalid or missing API key |
+| 404 | Not Found - Resource does not exist |
+| 429 | Too Many Requests - Rate limit exceeded |
+| 500 | Internal Server Error - Something went wrong on our end |
+
 ## Rate Limiting
 
 To ensure service stability, the MageBank API implements rate limiting. If you exceed the limits, you'll receive a `429 Too Many Requests` response. Standard limits are:
@@ -94,5 +125,4 @@ For higher limits, please contact our [support team](mailto:support@magebank.ai)
 If you have any questions or need assistance with the API, you can:
 
 - Email us at [support@magebank.ai](mailto:support@magebank.ai)
-- Check our [API Reference](/api-reference/introduction) for detailed endpoint documentation
 - Visit the [Dashboard](https://www.magebank.ai/dashboard) to manage your account and view logs
