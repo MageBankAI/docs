@@ -1,10 +1,10 @@
 ---
 title: 'Deposit Savings'
 api: 'POST /savings/deposit'
-description: "Deposit funds into an agent's savings account"
+description: "Deposit an agent's funds into the savings vault"
 ---
 
-Creates a new investment by depositing funds into an agent's savings account. The operation converts the agent ID to UUID format if provided in short format, validates the deposit amount, and creates a new investment record.
+Creates a new investment by moving funds from an agent's wallet into the savings vault.
 
 ## Request Headers
 
@@ -23,7 +23,7 @@ Creates a new investment by depositing funds into an agent's savings account. Th
 </ParamField>
 
 <ParamField body="amount" type="number" format="decimal(16,2)" required>
-  Amount to deposit (must be positive, stored with 2 decimal precision)
+  Amount to deposit (must be positive)
 </ParamField>
 
 ## Response
@@ -226,11 +226,7 @@ deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.50)
 ## Notes
 
 - The agent must have sufficient funds in its wallet to complete the deposit.
-- The amount must be a positive number and is stored with 2 decimal places precision (up to 16 significant digits).
-- The deposit will create a new investment record with status 'active'.
+- The amount must be a positive number.
 - Interest will begin accruing immediately at the current platform rate.
 - The transaction may take a few moments to be confirmed on the blockchain.
 - The returned investment ID can be used to track the investment or to withdraw funds later.
-- The agent ID can be in either short format or UUID format.
-- The interest rate at the time of deposit is recorded in the investment record.
-- The transaction hash is stored to provide a reference to the blockchain transaction.

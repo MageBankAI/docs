@@ -4,12 +4,7 @@ api: 'GET /user/payments'
 description: "Get all payments related to the authenticated user's agents"
 ---
 
-Retrieves a list of payments where either the sender or receiver is one of the authenticated user's agents. Payments are enhanced with additional information:
-1. Agent names for both sender and receiver
-2. Direction (incoming/outgoing) relative to the user's agents
-3. Payment status and creation timestamp
-
-Results can be optionally filtered by approval status.
+Retrieves a list of payments where either the sender or receiver is one of the user's agents, with optional filtering by approval status.
 
 ## Request Headers
 
@@ -227,10 +222,7 @@ get_user_payments("Waiting for Sender Approval")
 
 ## Notes
 
-- The `direction` field indicates whether the payment is incoming or outgoing relative to the user's agents.
+- The `direction` field indicates whether the payment is incoming or outgoing relative to your agents.
 - Payments are sorted by creation date, with the most recent first.
-- The `initiatedBy` and `receivedBy` fields contain the names of the agents, not their IDs.
-- If no payments match the filter criteria, an empty array will be returned.
 - Valid approval status values include "Approved", "Declined", "Pending", "Waiting", and "Waiting for Sender Approval".
-- The `approvalStatus` parameter is case-sensitive.
-- Results are not paginated by default. If the user has many payments, consider implementing client-side pagination for better performance.
+- If no payments match the filter criteria, an empty array will be returned.

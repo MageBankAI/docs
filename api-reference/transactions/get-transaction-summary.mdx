@@ -4,7 +4,7 @@ api: 'GET /transactions/summary'
 description: 'Get a summary of financial activity for a date range'
 ---
 
-Provides a summary of financial activity within the specified date range, including total amounts earned (deposits, interest) and spent (withdrawals, payments).
+Provides a summary of financial activity within the specified date range, including deposits, payments, and interest earned.
 
 ## Request Headers
 
@@ -214,7 +214,6 @@ get_transaction_summary(start_date, end_date)
 ## Notes
 
 - Dates must be provided in ISO 8601 format (e.g., `2025-05-01T00:00:00Z`).
-- The maximum date range is 366 days (1 year). For longer periods, make multiple requests.
+- The maximum date range is 366 days (1 year).
 - All financial amounts are returned in USDC by default.
 - The summary includes all transactions for all agents associated with the user.
-- Interest calculations include interest accrued during the period, even if not yet withdrawn.

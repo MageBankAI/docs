@@ -4,12 +4,7 @@ api: 'POST /agents/create'
 description: 'Create a new agent and fund its wallet'
 ---
 
-Creates a new agent, generates a wallet, and optionally funds the agent's wallet from the user's wallet. The operation includes:
-
-1. Creation of a new agent record
-2. Generation of a secure blockchain wallet
-3. Faucet funding of the wallet (on supported test networks)
-4. Optional transfer of funds from user's wallet
+Creates a new agent, generates a wallet, and optionally funds it from the user's wallet.
 
 ## Request Headers
 
@@ -24,7 +19,7 @@ Creates a new agent, generates a wallet, and optionally funds the agent's wallet
 ## Request Body
 
 <ParamField body="userid" type="string" required>
-  ID of the user creating the agent (UUID format)
+  ID of the user creating the agent
 </ParamField>
 
 <ParamField body="walletaddress" type="string">
@@ -40,7 +35,7 @@ Creates a new agent, generates a wallet, and optionally funds the agent's wallet
 </ParamField>
 
 <ParamField body="balance" type="integer">
-  Initial balance to fund the agent (in smallest units)
+  Initial balance to fund the agent
 </ParamField>
 
 <ParamField body="dailylimit" type="integer">
@@ -52,25 +47,25 @@ Creates a new agent, generates a wallet, and optionally funds the agent's wallet
 </ParamField>
 
 <ParamField body="currency" type="string" default="USDC">
-  Currency type to use (defaults to USDC)
+  Currency type to use
 </ParamField>
 
 <ParamField body="requireapprovalforall" type="boolean" default="false">
   Whether all transactions require approval
 </ParamField>
 
-<ParamField body="requireapprovalaboveamount" type="number" format="decimal(10,2)">
-  Transactions above this amount require approval (stored with 2 decimal precision)
+<ParamField body="requireapprovalaboveamount" type="number">
+  Transactions above this amount require approval
 </ParamField>
 
 <ParamField body="tags" type="array">
-  Categories or labels to assign to the agent (stored as text[])
+  Categories or labels to assign to the agent
 </ParamField>
 
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique agent identifier in short ID format (derived from UUID)
+  Unique agent identifier in short ID format
 </ResponseField>
 
 <ResponseField name="apikey" type="string">
@@ -104,7 +99,7 @@ Creates a new agent, generates a wallet, and optionally funds the agent's wallet
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Initial balance of the agent's wallet (string representation of numeric value)
+  Initial balance of the agent's wallet
 </ResponseField>
 
 <ResponseField name="currency" type="string">
@@ -122,18 +117,18 @@ Creates a new agent, generates a wallet, and optionally funds the agent's wallet
     <ResponseField name="requireApprovalForAll" type="boolean">
       Whether all transactions require approval
     </ResponseField>
-    <ResponseField name="requireApprovalAboveAmount" type="number" format="decimal(10,2)">
+    <ResponseField name="requireApprovalAboveAmount" type="number">
       Transactions above this amount require approval
     </ResponseField>
   </Expandable>
 </ResponseField>
 
 <ResponseField name="tags" type="array">
-  Categories or labels assigned to the agent (text[])
+  Categories or labels assigned to the agent
 </ResponseField>
 
 <ResponseField name="created" type="string">
-  Timestamp when the agent was created (with timezone)
+  Timestamp when the agent was created
 </ResponseField>
 
 <ResponseField name="transferResult" type="object">
@@ -340,6 +335,3 @@ create_agent()
 - The `balance` parameter specifies the amount to transfer from the user's wallet to the agent's wallet.
 - For testnet environments, a faucet transaction may be included to provide gas for transactions.
 - Make note of the returned agent ID, as you'll need it for future API calls with this agent.
-- The `dailylimit` and `transactionlimit` are stored as integers.
-- The `requireapprovalaboveamount` is stored with 2 decimal places precision.
-- The `tags` field is stored as a text array in the database.

@@ -1,9 +1,9 @@
 ---
 title: 'Introduction'
-description: 'Manage user accounts, wallet balances, and related data'
+description: 'Manage user accounts and wallet balances'
 ---
 
-The Users API provides endpoints for managing user accounts, accessing wallet balances, and retrieving user-related information. These endpoints enable you to check your wallet balance, view payment history, and manage other user-specific data.
+The Users API provides endpoints for managing user accounts and accessing wallet balances. These endpoints enable you to check your wallet balance and manage other user-specific data.
 
 ## User and Wallet Model
 
@@ -11,25 +11,19 @@ Each user in the MageBank platform includes:
 
 1. **Identity**:
    - Unique user ID (UUID)
-   - Name (character varying)
-   - Email (character varying, unique)
-   - Role (character varying)
-   - Organization ID (character varying)
+   - Name
+   - Email
+   - Role
+   - Organization ID
 
 2. **Authentication**:
-   - Password (character varying, may be null for OAuth users)
-   - API key (text, unique)
-   - OAuth provider (text)
+   - API key
+   - OAuth provider
 
 3. **Wallet**:
-   - Wallet address (character varying)
+   - Wallet address
    - Associated blockchain network
    - Balance (retrieved in real-time from blockchain)
-
-4. **Status and Timestamps**:
-   - Status (text, constrained to "Pending" or "Done", default "Pending")
-   - Created at (timestamp without timezone)
-   - Updated at (timestamp without timezone)
 
 ## Available Endpoints
 
@@ -58,47 +52,3 @@ Your API key should be included in all requests as an HTTP header:
 ```bash
 x-api-key: YOUR_API_KEY
 ```
-
-## User Status
-
-Users in MageBank have two possible statuses:
-
-| Status | Description |
-|--------|-------------|
-| Pending | Initial status when user account is created but not fully activated |
-| Done | User account is fully activated and ready for use |
-
-## Notifications
-
-Users can receive notifications through the platform (stored in the `notifications` table):
-
-- **Content**: Text message describing the notification
-- **Read Status**: Boolean flag indicating whether the notification has been read
-- **Timestamps**: When the notification was created and updated
-
-## Security Recommendations
-
-- **Never expose your API key** in client-side code or public repositories
-- Store your API key securely in environment variables or a secrets manager
-- Use a separate API key for development and production environments
-- Limit API key permissions to only what is necessary
-- Rotate API keys periodically for enhanced security
-- Monitor API key usage for suspicious activity
-
-## Best Practices
-
-- Regularly check wallet balances to ensure sufficient funds for operations
-- For production use, use the mainnet network ("base")
-- For development and testing, use the testnet ("base-sepolia")
-- Use appropriate error handling when dealing with blockchain operations
-- Consider gas fees and network congestion when performing transactions
-- Review payment history for unauthorized transactions
-- Export payment data periodically for record-keeping and accounting
-
-## Next Steps
-
-Use the endpoints in this section to manage user-related operations. After accessing user data, you can:
-
-- [Create agents](/api-reference/agents/create-agent) to automate financial operations
-- [Process payments](/api-reference/payments/register-payment) between agents
-- [Set up savings](/api-reference/savings/deposit) to earn interest on idle funds

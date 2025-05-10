@@ -4,7 +4,7 @@ api: 'POST /payments/setApprove'
 description: 'Approve a payment that requires authorization'
 ---
 
-Updates the approval status of a payment to "Approved" and sets the approval timestamp. This allows the payment to proceed to the next stage in the payment flow.
+Approves a payment that is waiting for authorization, allowing it to proceed with fund transfer.
 
 ## Request Headers
 
@@ -139,8 +139,6 @@ approve_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
 ## Notes
 
 - Only payments with an approval status of "Waiting for Sender Approval" can be approved.
-- Once approved, the payment will be processed on the blockchain, which may take a few moments.
-- The payment's status will change to "New" after approval, and later to "Confirmed" once processed.
-- The approval timestamp will be set to the time of approval.
-- Only users with appropriate permissions can approve payments (typically the owner of the sending agent).
-- If the payment does not require approval, this endpoint will have no effect.
+- Once approved, the payment will be processed on the blockchain.
+- The payment's status will change to "New" after approval, then to "Confirmed" once processed.
+- Only users with appropriate permissions can approve payments.

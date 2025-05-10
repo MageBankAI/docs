@@ -4,7 +4,7 @@ api: 'POST /payments/export'
 description: 'Export payments data in various formats (CSV, XLSX, PDF)'
 ---
 
-Exports payment data in CSV, XLSX, or PDF format based on the specified date range. This endpoint is useful for accounting, reporting, and data analysis purposes.
+Exports payment data in CSV, XLSX, or PDF format for a specified date range for reporting and record-keeping.
 
 ## Request Headers
 
@@ -186,18 +186,9 @@ export_payments("xlsx", "2025-05-01", "2025-05-31")
 ## Notes
 
 - If no `dateRange` is provided, the export will include all available payment data.
-- Each export format has specific advantages:
-  - **CSV**: Simple text format compatible with most spreadsheet applications
-  - **XLSX**: Excel format with advanced formatting and calculation capabilities
+- Each export format has different advantages:
+  - **CSV**: Simple format compatible with most spreadsheet applications
+  - **XLSX**: Excel format with advanced formatting capabilities
   - **PDF**: Formatted document suitable for sharing and printing
-- Export files include the following information:
-  - Payment ID
-  - Payment Name
-  - Sender and Receiver Agents
-  - Amount and Currency
-  - Payment Type
-  - Status and Approval Status
-  - Creation and Approval Timestamps
-  - Tags
-- The maximum number of payments that can be exported in a single request is 10,000. For larger datasets, use multiple requests with narrower date ranges.
-- Export processing may take longer for large datasets, especially in PDF format.
+- Export files include payment ID, name, sender/receiver, amount, status, and timestamps
+- The maximum export size is 10,000 payments; use multiple requests for larger datasets

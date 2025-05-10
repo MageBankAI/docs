@@ -80,7 +80,7 @@ Retrieve detailed information about a specific agent based on its ID.
 </ResponseField>
 
 <ResponseField name="created" type="string">
-  Timestamp when the agent was created (ISO 8601 format)
+  Timestamp when the agent was created
 </ResponseField>
 
 ## Example Request
@@ -192,6 +192,5 @@ get_agent("agent_k77NTwxp2Ym3JCmVsKtXQA")
 
 ## Notes
 
-- The agent ID can be in the short format (e.g., `agent_k77NTwxp2Ym3JCmVsKtXQA`) or UUID format.
+- The agent ID can be in the short format (e.g., `agent_k77NTwxp2Ym3JCmVsKtXQA`).
 - Balance is returned as a string to preserve precision for financial calculations.
-- Created timestamp is in ISO 8601 format with timezone information.

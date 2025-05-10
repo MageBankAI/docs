@@ -4,7 +4,7 @@ api: 'POST /savings/withdraw'
 description: 'Withdraw funds from a savings investment'
 ---
 
-Closes an active investment and returns funds to the user's account. The operation validates the investment ID, converts it to UUID format if needed, and processes the withdrawal by updating the investment status.
+Closes an active investment and returns funds to the agent's wallet with earned interest.
 
 ## Request Headers
 
@@ -218,11 +218,8 @@ withdraw_savings("inv_k77NTwxp2Ym3JCmVsKtXQA")
 
 ## Notes
 
-- Only active investments can be withdrawn. Completed or cancelled investments will return an error.
-- The withdrawal will return the principal amount plus any interest earned during the investment period.
-- Interest is calculated up to the moment of withdrawal, ensuring maximum returns.
+- Only active investments can be withdrawn.
+- The withdrawal will return the principal amount plus any interest earned.
+- Interest is calculated up to the moment of withdrawal.
 - The transaction may take a few moments to be confirmed on the blockchain.
-- After withdrawal, the investment status will be changed to "completed".
-- The funds will be transferred back to the associated agent's regular wallet.
-- The investment ID can be in either short format or UUID format.
-- The withdrawal cannot be undone. To reinvest funds, create a new deposit.
+- The funds will be transferred back to the associated agent's wallet.

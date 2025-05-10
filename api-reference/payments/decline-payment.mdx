@@ -4,7 +4,7 @@ api: 'POST /payments/setDecline'
 description: 'Decline a payment to prevent processing'
 ---
 
-Updates the approval status of a payment to "Decline" and sets its status to "Confirmed". This effectively rejects the payment and prevents it from being processed. The operation also records the timestamp when the payment was declined.
+Updates a payment's status to declined, preventing it from being processed and transferring funds.
 
 ## Request Headers
 
@@ -149,9 +149,6 @@ decline_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
 ## Notes
 
 - Only payments with an approval status of "Waiting for Sender Approval" can be declined.
-- Once declined, the payment will not be processed on the blockchain, and no funds will be transferred.
-- The payment's status will be set to "Confirmed" with an approval status of "Decline".
-- The approval timestamp will be set to the time of decline.
-- Only users with appropriate permissions can decline payments (typically the owner of the sending agent).
+- Once declined, no funds will be transferred and the transaction won't be processed.
+- The payment's status will be updated to "Confirmed" with an approval status of "Decline".
 - Declined payments cannot be later approved; a new payment must be created if necessary.
-- No transaction hash will be generated for declined payments, so the `txHash` field will be null.

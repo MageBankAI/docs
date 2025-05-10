@@ -4,7 +4,7 @@ api: 'POST /investment/calculator'
 description: 'Calculate potential interest for a given investment amount and period'
 ---
 
-Calculates the potential interest earned for a given investment amount and period. Uses the platform's current interest rate by default, but allows specifying a custom rate for scenario planning. Returns a detailed breakdown of the calculation with step-by-step formula application.
+Calculates the potential interest earned for a given investment amount and period, with optional custom rate for planning scenarios.
 
 ## Request Headers
 
@@ -224,9 +224,5 @@ calculate_interest(1000, 365, 4.5)
 ## Notes
 
 - If `customRate` is not provided, the current platform interest rate will be used.
-- The `amount` and `days` parameters must be positive numbers.
 - Interest is calculated using the formula: `principal × rate × (days ÷ 365)`.
-- For investments longer than one year, compound interest is used for more accurate projections.
-- The `interestEarned` and `totalAmount` values are returned as strings to preserve precision for financial calculations.
-- The `calculation` object provides transparency into the calculation process, showing the formula and step-by-step application.
-- This endpoint is useful for financial planning and comparing different investment scenarios.
+- This endpoint is useful for financial planning and comparing investment scenarios.

@@ -3,14 +3,18 @@ title: 'Introduction'
 description: 'Create and manage AI financial agents'
 ---
 
-Agents are the core entities in the MageBank platform. Each agent is an autonomous entity with its own wallet, balance, and transaction rules. Use the Agents API to create, fund, and manage your AI financial agents.
+Agents are the core entities in the MageBank platform. Each agent has its own wallet, balance, and transaction rules. Use the Agents API to create, fund, and manage your AI financial agents.
+
+<Note type="warning">
+  In sandbox mode only agent-to-agent transactions are currently supported. Agent-to-bank account, agent-to-businesses, and agent-to-checkout pages are coming soon.
+</Note>
 
 ## Agent Model
 
 An agent consists of:
 
 - **Identity**: Unique ID, name, and description
-- **Financial Details**: Associated wallet address and balance (stored as numeric with precision)
+- **Financial Details**: Associated wallet address and balance
 - **Payment Rules**: Transaction limits and approval requirements 
 - **Status**: Current operational status
 - **Metadata**: Tags, creation timestamp, and other attributes
@@ -78,23 +82,11 @@ The typical lifecycle of an agent includes:
 
 Payment rules determine how an agent can spend funds:
 
-- **Daily Limit**: Maximum amount the agent can spend in a 24-hour period (stored as integer)
-- **Transaction Limit**: Maximum amount for a single transaction (stored as integer)
+- **Daily Limit**: Maximum amount the agent can spend in a 24-hour period
+- **Transaction Limit**: Maximum amount for a single transaction
 - **Approval Requirements**:
-  - `requireApprovalForAll`: When true, all transactions require manual approval (boolean with default false)
-  - `requireApprovalAboveAmount`: Transactions above this amount require approval (numeric with 2 decimal places)
-
-## Financial Details
-
-- **Balance**: Current amount of funds available to the agent (stored as numeric with default 0)
-- **Currency**: Type of cryptocurrency held by the agent (text with default "USDC")
-- **Wallet Address**: Blockchain address associated with the agent
-
-## Tags and Metadata
-
-- **Tags**: Stored as an array of text values for categorization
-- **Creation Time**: Timestamp when the agent was created (with timezone)
-- **Update Time**: Timestamp when the agent was last updated (with timezone)
+  - `requireApprovalForAll`: When true, all transactions require manual approval
+  - `requireApprovalAboveAmount`: Transactions above this amount require approval
 
 ## Best Practices
 

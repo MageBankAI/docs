@@ -4,7 +4,7 @@ api: 'GET /savings/myinvestments'
 description: 'Get all active investments for the authenticated user'
 ---
 
-Retrieves a list of all active investments made by the authenticated user. The response includes details about agents associated with investments, the invested amount, current value (with interest), and investment duration. Interest calculations are based on the central wallet's current interest rate.
+Retrieves a list of all active investments across all user agents, including current value and earned interest.
 
 ## Request Headers
 
@@ -162,12 +162,8 @@ get_user_investments()
 
 ## Notes
 
-- The endpoint only returns active investments; completed or cancelled investments are not included.
+- Only active investments are returned; completed or cancelled investments are not included.
 - Interest calculations are performed in real-time based on the current platform interest rate.
-- The `daysInvested` field shows the number of days each investment has been active, used for interest calculations.
-- The `totalBalance` for each agent includes both the current investment value and the agent's regular wallet balance.
+- The `totalBalance` for each agent includes both the investment value and regular wallet balance.
 - If there are no active investments, an empty array will be returned.
 - All monetary values are in USDC by default.
-- Each investment is associated with a specific agent, identified by the agent's name and the investment ID.
-- The `current` field shows the balance in the agent's regular wallet, separate from the investment.
-- This endpoint is useful for getting a quick overview of all active investments across all the user's agents.

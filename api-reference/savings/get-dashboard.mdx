@@ -4,7 +4,7 @@ api: 'GET /savings/dashboard'
 description: "Get a comprehensive overview of the user's savings portfolio"
 ---
 
-Provides a comprehensive overview of the user's savings portfolio. Includes total savings, current interest rate, total invested amount, one-year projection, and detailed information about investments by agent. Calculates real-time investment values based on the current interest rate and the exact duration of each investment.
+Provides a summary of the user's savings portfolio, including total savings, interest rate, and agent-level investment details.
 
 ## Request Headers
 
@@ -176,11 +176,8 @@ get_savings_dashboard()
 
 ## Notes
 
-- The dashboard only includes active investments; completed or cancelled investments are not included.
-- Interest calculations are performed in real-time based on the current platform interest rate.
-- The `yearProjection` value shows the estimated total value after one year if all current investments remain active at the current interest rate.
-- The `daysInvested` field shows the number of days each investment has been active, used for interest calculations.
-- The `totalBalance` for each agent includes both the current investment value and the agent's regular wallet balance.
-- If there are no active investments, the `agents` array will be empty and totals will be zero.
+- Only active investments are included in the dashboard.
+- Interest calculations are performed in real-time based on the current interest rate.
+- The `yearProjection` shows the estimated total value after one year at the current rate.
 - All monetary values are in USDC by default.
 - The interest rate is expressed as an annual percentage yield (APY).

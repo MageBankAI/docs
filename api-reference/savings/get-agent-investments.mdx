@@ -4,7 +4,7 @@ api: 'GET /savings/{agentId}'
 description: 'Get all investments for a specific agent'
 ---
 
-Retrieves all investments (both active and completed) associated with a specific agent. For active investments, calculates the current value and interest earned based on the principal amount, interest rate, and investment duration. Returns detailed information including investment status and creation timestamp.
+Retrieves all investments (both active and completed) associated with a specific agent, including current values and earned interest.
 
 ## Path Parameters
 
@@ -176,10 +176,7 @@ get_agent_investments("agent_k77NTwxp2Ym3JCmVsKtXQA")
 
 ## Notes
 
-- The endpoint returns all investments for the agent, regardless of status (active, completed, cancelled).
-- For active investments, the `current_value` and `interest_earned` fields are calculated in real-time based on the current platform interest rate.
-- For completed investments, the `current_value` and `interest_earned` fields show the final values at the time of withdrawal.
-- If the agent has no investments, an empty array will be returned.
-- The agent ID can be in either short format or UUID format.
+- Returns all investments for the agent, regardless of status (active, completed, cancelled).
+- For active investments, current values are calculated in real-time.
+- For completed investments, values show the final amounts at time of withdrawal.
 - All monetary values are in USDC by default.
-- The `invested_at` timestamp is in ISO 8601 format with timezone information.

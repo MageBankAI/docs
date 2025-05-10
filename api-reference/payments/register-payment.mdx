@@ -4,7 +4,7 @@ api: 'POST /payments/register'
 description: "Create a new payment transaction between agents"
 ---
 
-Creates a new payment transaction between agents. The operation registers a payment in the system, evaluates whether approval is required based on sender agent's rules, and initiates the transaction process if no approval is needed.
+Creates a new payment transaction between agents and processes it based on the sender agent's approval rules.
 
 ## Request Headers
 
@@ -19,11 +19,11 @@ Creates a new payment transaction between agents. The operation registers a paym
 ## Request Body
 
 <ParamField body="senderagentid" type="string" required>
-  ID of the agent sending the payment (UUID format)
+  ID of the agent sending the payment
 </ParamField>
 
 <ParamField body="receiveragentid" type="string" required>
-  ID of the agent receiving the payment (UUID format)
+  ID of the agent receiving the payment
 </ParamField>
 
 <ParamField body="paymentdetails" type="object" required>
@@ -60,13 +60,13 @@ Creates a new payment transaction between agents. The operation registers a paym
 </ParamField>
 
 <ParamField body="tags" type="array">
-  Tags or categories for the payment (text[])
+  Tags or categories for the payment
 </ParamField>
 
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique payment identifier in short ID format (derived from UUID)
+  Unique payment identifier in short ID format
 </ResponseField>
 
 <ResponseField name="name" type="string">
@@ -82,7 +82,7 @@ Creates a new payment transaction between agents. The operation registers a paym
 </ResponseField>
 
 <ResponseField name="createdat" type="string">
-  Timestamp when the payment was created (without timezone)
+  Timestamp when the payment was created
 </ResponseField>
 
 <ResponseField name="approvalRequired" type="boolean">
@@ -272,13 +272,9 @@ register_payment()
 
 ## Notes
 
-- If the payment amount exceeds the sender agent's transaction limit or daily limit, the request will fail.
-- If the payment amount exceeds the `requireApprovalAboveAmount` threshold or if `requireApprovalForAll` is set to true for the sender agent, the payment will require approval before processing.
-- For payments that require approval, the `approvalRequired` field in the response will be set to `true`, and you'll need to use the [Approve Payment](/api-reference/payments/approve-payment) endpoint to process it.
-- For payments that don't require approval, the system will immediately attempt to process the transaction.
-- Both sender and receiver agent IDs can be in either short format or UUID format.
-- The `type` field should be "EXTERNAL" (to recipients outside the user's agent network) or "INTERNAL" (between the user's own agents).
-- The `status` field can only have values of "New", "Pending", or "Confirmed".
-- The `approvalstatus` field can only have values of "Waiting", "Pending", "Approved", or "Decline".
-- Payment details and contact details are stored in JSONB format in the database.
-- The `tags` field is stored as a text array in the database.
+- If the payment amount exceeds the sender agent's limits, the request will fail.
+- Payments requiring approval will have `approvalRequired` set to `true`.
+- You'll need to use the [Approve Payment](/api-reference/payments/approve-payment) endpoint for payments that require approval.
+- Payments that don't require approval will be processed immediately.
+- Agent IDs can be in either short format or UUID format.
+- Use "EXTERNAL" type for payments outside the user's agent network and "INTERNAL" for payments between the user's own agents.

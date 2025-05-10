@@ -4,7 +4,7 @@ api: 'GET /payments/{id}'
 description: 'Fetch details of a specific payment'
 ---
 
-Retrieves detailed information about a specific payment based on its ID. Converts short ID format to UUID format internally before querying the database.
+Retrieves detailed information about a specific payment based on its ID.
 
 ## Path Parameters
 
@@ -208,8 +208,7 @@ get_payment("payee_8tJo7vZb1RKo4oeyWuqgK")
 
 ## Notes
 
-- The payment ID can be in the short format (e.g., `payee_8tJo7vZb1RKo4oeyWuqgK`) or UUID format.
+- The payment ID can be in the short format (e.g., `payee_8tJo7vZb1RKo4oeyWuqgK`).
 - The `approvedat` field will be null if the payment has not yet been approved or declined.
-- The `contactdetails` object may be partially or completely empty if no contact information was provided.
-- The `method` field in `paymentdetails` is typically "CRYPTO_ADDRESS" for blockchain payments.
+- The `contactdetails` object may be empty if no contact information was provided.
 - The `type` field can be either "EXTERNAL" (to recipients outside the user's agent network) or "INTERNAL" (between the user's own agents).
