@@ -78,6 +78,7 @@
                         "group": "Payments",
                         "pages": [
                             "api-reference/payments/introduction",
+                            "api-reference/payments/register-payment",
                             "api-reference/payments/approve-payment",
                             "api-reference/payments/decline-payment",
                             "api-reference/payments/get-payment",
