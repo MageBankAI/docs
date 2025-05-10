@@ -9,15 +9,27 @@ The Users API provides endpoints for managing user accounts, accessing wallet ba
 
 Each user in the MageBank platform includes:
 
-1. **Identity**: Unique user ID and profile information
-2. **Wallet**: Associated blockchain wallet for funding agents and receiving withdrawals
-   - **Address**: The blockchain address that can receive and send funds
-   - **Network**: The blockchain network the wallet operates on (e.g., "base-sepolia")
-   - **Balance**: The current amount of cryptocurrency held in the wallet
-   - **Asset**: The cryptocurrency type (typically USDC)
-3. **Agents**: Collection of AI financial agents created by the user
-4. **Payments**: History of financial transactions involving the user's agents
-5. **Savings**: Interest-bearing investments made by the user
+1. **Identity**:
+   - Unique user ID (UUID)
+   - Name (character varying)
+   - Email (character varying, unique)
+   - Role (character varying)
+   - Organization ID (character varying)
+
+2. **Authentication**:
+   - Password (character varying, may be null for OAuth users)
+   - API key (text, unique)
+   - OAuth provider (text)
+
+3. **Wallet**:
+   - Wallet address (character varying)
+   - Associated blockchain network
+   - Balance (retrieved in real-time from blockchain)
+
+4. **Status and Timestamps**:
+   - Status (text, constrained to "Pending" or "Done", default "Pending")
+   - Created at (timestamp without timezone)
+   - Updated at (timestamp without timezone)
 
 ## Available Endpoints
 
@@ -37,15 +49,6 @@ Wallets in MageBank have several key characteristics:
 4. **Balance Reporting**: All balances are retrieved in real-time from the blockchain
 5. **Fallback Strategy**: Balance retrieval follows a fallback strategy to ensure reliability
 
-## Wallet Networks
-
-MageBank supports the following blockchain networks:
-
-| Network | Type | Description |
-|---------|------|-------------|
-| base | Mainnet | Base L2 mainnet (production) |
-| base-sepolia | Testnet | Base L2 testnet (development/testing) |
-
 ## User Authentication
 
 All API requests require authentication using an API key. The key identifies the user and provides access to their data. 
@@ -55,6 +58,23 @@ Your API key should be included in all requests as an HTTP header:
 ```bash
 x-api-key: YOUR_API_KEY
 ```
+
+## User Status
+
+Users in MageBank have two possible statuses:
+
+| Status | Description |
+|--------|-------------|
+| Pending | Initial status when user account is created but not fully activated |
+| Done | User account is fully activated and ready for use |
+
+## Notifications
+
+Users can receive notifications through the platform (stored in the `notifications` table):
+
+- **Content**: Text message describing the notification
+- **Read Status**: Boolean flag indicating whether the notification has been read
+- **Timestamps**: When the notification was created and updated
 
 ## Security Recommendations
 

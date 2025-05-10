@@ -10,21 +10,24 @@ The Savings API allows you to deposit funds into interest-bearing accounts, with
 Each savings investment in the MageBank system consists of:
 
 - **Identity**: Unique investment ID and associated agent ID
-- **Principal**: Amount initially invested
-- **Status**: Current state of the investment (active, completed, cancelled)
-- **Duration**: Time elapsed since the investment was created
+- **Principal**: Amount initially invested (stored with precision of 2 decimal places)
+- **Status**: Current state of the investment (active is the default)
+- **Timestamps**: When the investment was created and when it was withdrawn (if applicable)
 - **Performance**: Current value and interest earned to date
-- **Interest Rate**: Annual percentage yield applied to the investment
+- **Interest Details**: Interest rate (stored with precision of 2 decimal places) and calculated interest amount
+- **Transaction Details**: Transaction hashes for deposit and withdrawal operations
 
 ```json
 {
   "id": "inv_k77NTwxp2Ym3JCmVsKtXQA",
   "agent_id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
-  "amount": 1000,
+  "amount": 1000.00,
   "invested_at": "2025-04-15T11:00:08.432269+00:00",
   "status": "active",
   "current_value": "1050.00",
-  "interest_earned": "50.00"
+  "interest_earned": "50.00",
+  "interest_rate": 4.50,
+  "days_invested": 30
 }
 ```
 
@@ -60,7 +63,7 @@ The MageBank platform offers competitive interest rates on USDC holdings. The in
 
 1. **Centrally Managed**: The rate is set at the platform level and applies to all savings accounts
 2. **Regularly Updated**: Rates may be adjusted based on market conditions
-3. **Compounding**: Interest is calculated using continuous compounding for maximum returns
+3. **Precision**: Stored with up to 2 decimal places of precision
 4. **Transparent**: Current rates are always accessible through the API
 
 ## Interest Calculation Methodology
@@ -89,21 +92,23 @@ Where:
 
 ## How Interest Works
 
-MageBank uses continuous compounding to calculate interest, which maximizes returns on your investments:
+MageBank's interest calculation system:
 
-1. **Current Rate**: Interest rate is set at the platform level and can be checked via the [Get Interest Rate](/api-reference/savings/get-interest-rate) endpoint
-2. **Daily Calculation**: Interest is calculated daily and added to your investment's current value
-3. **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
-4. **Real-time Tracking**: Current value and interest earned are updated in real-time
+1. **Amount Precision**: All monetary values are stored with 2 decimal places of precision
+2. **Interest Rate Precision**: Interest rates are stored with 2 decimal places (e.g., 4.50%)
+3. **Daily Calculation**: Interest is calculated based on the exact number of days invested
+4. **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
+5. **Real-time Tracking**: Current value and interest earned are updated in real-time
 
 ## Investment Lifecycle
 
 The typical lifecycle of a savings investment includes:
 
 1. **Deposit**: Funds are transferred from an agent's regular wallet to a savings account
-2. **Growth Period**: The investment earns interest over time at the current platform rate
-3. **Withdrawal**: When ready, funds (principal + interest) are returned to the agent's wallet
-4. **Completion**: The investment is marked as "completed" after withdrawal
+2. **Active Status**: The investment is marked as "active" and begins accruing interest
+3. **Growth Period**: The investment earns interest over time at the current platform rate
+4. **Withdrawal**: When ready, funds (principal + interest) are returned to the agent's wallet
+5. **Transaction Recording**: All transactions are recorded with blockchain transaction hashes
 
 ## Best Practices
 

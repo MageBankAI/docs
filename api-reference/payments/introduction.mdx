@@ -25,7 +25,7 @@ Here's an example of the payment data structure:
   "senderagentid": "agent_eC6ZezevNsqxvoKmQrUuoU",
   "receiveragentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
   "status": "New",
-  "approvalstatus": "Waiting for Sender Approval",
+  "approvalstatus": "Waiting",
   "approvalrequired": true,
   "paymentdetails": {
     "method": "CRYPTO_ADDRESS",
@@ -92,9 +92,8 @@ Payments progress through various status states:
 | Status | Description |
 |--------|-------------|
 | New | Payment has been created and is awaiting approval or processing |
-| Waiting | System is checking whether approval is required |
+| Pending | Payment is in process of being executed |
 | Confirmed | Payment has been fully processed |
-| Failed | Payment processing encountered an error |
 
 ## Approval Status
 
@@ -103,10 +102,9 @@ Payments can have the following approval states:
 | Approval Status | Description |
 |-----------------|-------------|
 | Waiting | Initial state before approval check |
-| Waiting for Sender Approval | Approval required from sender |
+| Pending | Payment is awaiting additional confirmation |
 | Approved | Payment has been explicitly approved |
-| Declined | Payment has been explicitly declined |
-| Pending | Payment is awaiting external confirmation |
+| Decline | Payment has been explicitly declined |
 
 ## Best Practices
 

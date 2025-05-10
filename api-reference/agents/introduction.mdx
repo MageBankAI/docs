@@ -10,9 +10,9 @@ Agents are the core entities in the MageBank platform. Each agent is an autonomo
 An agent consists of:
 
 - **Identity**: Unique ID, name, and description
-- **Financial Details**: Associated wallet address and balance
+- **Financial Details**: Associated wallet address and balance (stored as numeric with precision)
 - **Payment Rules**: Transaction limits and approval requirements 
-- **Status**: Current operational status (active, inactive, paused)
+- **Status**: Current operational status
 - **Metadata**: Tags, creation timestamp, and other attributes
 
 Here's an example of the agent data structure:
@@ -34,13 +34,13 @@ Here's an example of the agent data structure:
     "dailyLimit": 1000,
     "transactionLimit": 100,
     "requireApprovalForAll": false,
-    "requireApprovalAboveAmount": 50
+    "requireApprovalAboveAmount": 50.00
   },
   "tags": [
     "customer-support",
     "payments"
   ],
-  "created": "2025-04-15T11:00:08.432269+00:00"
+  "createdat": "2025-04-15T11:00:08.432269+00:00"
 }
 ```
 
@@ -72,17 +72,29 @@ The typical lifecycle of an agent includes:
 2. **Configuration**: Payment rules are set to control transaction limits and approval requirements
 3. **Active Operation**: The agent processes transactions according to its configured rules
 4. **Maintenance**: Funds can be added or withdrawn as needed
-5. **Deactivation**: An agent can be paused or deactivated when no longer needed
+5. **Status Changes**: An agent's status can be modified as needed
 
 ## Payment Rules
 
 Payment rules determine how an agent can spend funds:
 
-- **Daily Limit**: Maximum amount the agent can spend in a 24-hour period
-- **Transaction Limit**: Maximum amount for a single transaction
+- **Daily Limit**: Maximum amount the agent can spend in a 24-hour period (stored as integer)
+- **Transaction Limit**: Maximum amount for a single transaction (stored as integer)
 - **Approval Requirements**:
-  - `requireApprovalForAll`: When true, all transactions require manual approval
-  - `requireApprovalAboveAmount`: Transactions above this amount require approval
+  - `requireApprovalForAll`: When true, all transactions require manual approval (boolean with default false)
+  - `requireApprovalAboveAmount`: Transactions above this amount require approval (numeric with 2 decimal places)
+
+## Financial Details
+
+- **Balance**: Current amount of funds available to the agent (stored as numeric with default 0)
+- **Currency**: Type of cryptocurrency held by the agent (text with default "USDC")
+- **Wallet Address**: Blockchain address associated with the agent
+
+## Tags and Metadata
+
+- **Tags**: Stored as an array of text values for categorization
+- **Creation Time**: Timestamp when the agent was created (with timezone)
+- **Update Time**: Timestamp when the agent was last updated (with timezone)
 
 ## Best Practices
 
