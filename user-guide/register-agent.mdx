@@ -76,7 +76,11 @@ Create an AI agent to execute transactions and manage funds on your behalf. Agen
 
 ### Balance Allocation
 
-When you create an agent, you allocate funds from your main wallet to the agent's wallet. This amount is deducted immediately and becomes available for the agent to use within its configured limits.
+When you create an agent, you allocate funds from your main wallet to the agent's wallet. This amount is deducted immediately from your global balance and becomes available for the agent to use within its configured limits.
+
+<Note>
+  It might take a few moments for the allocated funds to be fully transferred from your global account to the agent. During this time, you'll see the updated balances, but the blockchain transaction may still be processing.
+</Note>
 
 ### Payment Rules
 
