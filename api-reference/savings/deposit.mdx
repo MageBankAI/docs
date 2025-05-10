@@ -22,8 +22,8 @@ Creates a new investment by depositing funds into an agent's savings account. Th
   The short ID or UUID of the agent
 </ParamField>
 
-<ParamField body="amount" type="number" required>
-  Amount to deposit (must be positive)
+<ParamField body="amount" type="number" format="decimal(16,2)" required>
+  Amount to deposit (must be positive, stored with 2 decimal precision)
 </ParamField>
 
 ## Response
@@ -51,6 +51,42 @@ Creates a new investment by depositing funds into an agent's savings account. Th
   </Expandable>
 </ResponseField>
 
+## Investment Record
+
+The operation creates a new record in the investments table with the following fields:
+
+<ResponseField name="id" type="uuid">
+  Unique investment identifier
+</ResponseField>
+
+<ResponseField name="agent_id" type="uuid">
+  ID of the agent associated with the investment
+</ResponseField>
+
+<ResponseField name="amount" type="decimal(16,2)">
+  Principal amount invested
+</ResponseField>
+
+<ResponseField name="invested_at" type="timestamp with time zone">
+  Timestamp when the investment was created (with timezone)
+</ResponseField>
+
+<ResponseField name="status" type="text">
+  Set to 'active' by default
+</ResponseField>
+
+<ResponseField name="tx_hash" type="text">
+  Blockchain transaction hash for the deposit
+</ResponseField>
+
+<ResponseField name="interest_rate" type="decimal(5,2)">
+  Current interest rate at the time of deposit
+</ResponseField>
+
+<ResponseField name="user_id" type="uuid">
+  ID of the user who owns the agent
+</ResponseField>
+
 ## Example Request
 
 <CodeGroup>
@@ -61,7 +97,7 @@ curl -X POST "https://api.magebank.ai/savings/deposit" \
   -H "Content-Type: application/json" \
   -d '{
     "agentId": "agent_k77NTwxp2Ym3JCmVsKtXQA",
-    "amount": 100.5
+    "amount": 100.50
   }'
 ```
 
@@ -88,7 +124,7 @@ async function depositSavings(agentId, amount) {
   }
 }
 
-depositSavings('agent_k77NTwxp2Ym3JCmVsKtXQA', 100.5);
+depositSavings('agent_k77NTwxp2Ym3JCmVsKtXQA', 100.50);
 ```
 
 ```python Python
@@ -118,7 +154,7 @@ def deposit_savings(agent_id, amount):
         print(response.text)
         raise Exception(f"API request failed with status {response.status_code}")
 
-deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.5)
+deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.50)
 ```
 
 </CodeGroup>
@@ -128,7 +164,7 @@ deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.5)
 ```json
 {
   "success": true,
-  "message": "Successfully invested 100.5 USDC.",
+  "message": "Successfully invested 100.50 USDC.",
   "investmentId": "inv_k77NTwxp2Ym3JCmVsKtXQA",
   "transaction": {
     "txHash": "0x123...abc",
@@ -190,9 +226,11 @@ deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.5)
 ## Notes
 
 - The agent must have sufficient funds in its wallet to complete the deposit.
-- The amount must be a positive number.
-- The deposit will create a new savings investment associated with the specified agent.
+- The amount must be a positive number and is stored with 2 decimal places precision (up to 16 significant digits).
+- The deposit will create a new investment record with status 'active'.
 - Interest will begin accruing immediately at the current platform rate.
 - The transaction may take a few moments to be confirmed on the blockchain.
 - The returned investment ID can be used to track the investment or to withdraw funds later.
 - The agent ID can be in either short format or UUID format.
+- The interest rate at the time of deposit is recorded in the investment record.
+- The transaction hash is stored to provide a reference to the blockchain transaction.

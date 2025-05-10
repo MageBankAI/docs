@@ -6,6 +6,14 @@ description: 'Get the current annual interest rate for investments'
 
 Retrieves the current annual interest rate for investments and the timestamp when it was last updated. This rate is used for all savings calculations in the platform.
 
+## Database Fields
+
+This endpoint relates to the `interest_rate` field in the investments table:
+
+<ResponseField name="interest_rate" type="decimal(5,2)">
+  The annual interest rate stored with 2 decimal places precision
+</ResponseField>
+
 ## Request Headers
 
 <ParamField header="x-api-key" type="string" required>
@@ -14,8 +22,8 @@ Retrieves the current annual interest rate for investments and the timestamp whe
 
 ## Response
 
-<ResponseField name="interestRate" type="number">
-  Current annual interest rate for investments (percentage)
+<ResponseField name="interestRate" type="number" format="decimal(5,2)">
+  Current annual interest rate for investments (percentage with 2 decimal places)
 </ResponseField>
 
 <ResponseField name="lastUpdated" type="string">
@@ -83,7 +91,7 @@ get_interest_rate()
 
 ```json
 {
-  "interestRate": 4.5,
+  "interestRate": 4.50,
   "lastUpdated": "2025-05-04T12:00:00.000Z"
 }
 ```
@@ -114,8 +122,9 @@ get_interest_rate()
 
 ## Notes
 
-- The interest rate is expressed as an annual percentage yield (APY).
+- The interest rate is expressed as an annual percentage yield (APY) with 2 decimal places precision.
 - Interest rates may change over time based on market conditions.
 - The `lastUpdated` timestamp indicates when the interest rate was last modified.
-- Interest is calculated using continuous compounding for maximum returns.
-- The current annual percentage yield can be up to 12.5% but is subject to change. 
+- When new investments are created, the current interest rate at that time is recorded in the `interest_rate` field of the investments table.
+- The interest rate value is stored with precision of 2 decimal places (up to 5 significant digits).
+- The current annual percentage yield can be up to 12.50% but is subject to change.

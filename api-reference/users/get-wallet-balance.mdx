@@ -6,6 +6,14 @@ description: "Retrieve the balance of a user's wallet"
 
 Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance.
 
+## Database Fields
+
+This endpoint reads from these fields in the users table:
+
+<ResponseField name="walletaddress" type="character varying(255)">
+  The blockchain address associated with the user
+</ResponseField>
+
 ## Request Headers
 
 <ParamField header="x-api-key" type="string" required>
@@ -19,7 +27,7 @@ Retrieves the user's wallet balance from the blockchain using their wallet addre
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current wallet balance
+  Current wallet balance (string representation of numeric value)
 </ResponseField>
 
 <ResponseField name="asset" type="string">
@@ -156,8 +164,10 @@ get_wallet_balance()
 
 ## Notes
 
-- The API automatically determines the user's wallet address from their account.
+- The API automatically determines the user's wallet address from their account using the `walletaddress` field in the users table.
+- The wallet address is stored as a character varying(255) in the database.
 - The endpoint follows a fallback strategy, checking for USDC first, then ETH, and finally any other tokens.
 - Balance is returned as a string to preserve precision for financial calculations.
 - If no wallet is found or all balance fetching methods fail, the API will return a successful response with a zero balance.
 - The `source` field indicates where the balance information was retrieved from (typically "blockchain").
+- This endpoint does not modify any database fields; it only reads the wallet address and checks the blockchain for the current balance.
