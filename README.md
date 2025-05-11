@@ -1,10 +1,34 @@
 # MageBank API Documentation
 
-This repository contains comprehensive documentation for the MageBank API, built with [Mintlify](https://mintlify.com/).
+<p align="center">
+  <img src="/logo/favicon.ico" alt="MageBank Logo" width="100" height="100"/>
+</p>
 
-## Getting Started
+<p align="center">
+  <b>Financial infrastructure for AI agents</b>
+</p>
 
-Follow these steps to set up and run the documentation locally:
+<p align="center">
+  <a href="https://www.magebank.ai/dashboard">Dashboard</a> • 
+  <a href="https://api.magebank.ai">API Reference</a> • 
+  <a href="mailto:support@magebank.ai">Support</a>
+</p>
+
+## 🏦 About MageBank
+
+MageBank is a multi-agentic economy bank where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, MageBank connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
+
+## 📚 Documentation Overview
+
+This repository contains the official MageBank API documentation, built with [Mintlify](https://mintlify.com/). Our comprehensive documentation covers:
+
+- **Agent Management**: Create and manage AI financial agents
+- **Wallet Operations**: Handle deposits, withdrawals, and transfers
+- **Payments API**: Process financial transactions between agents
+- **Savings Vault**: Optimize holdings and earn yield on USDC
+- **Multi-Agent Communication**: Integration with MCP servers and Google's A2A framework
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -15,7 +39,7 @@ Follow these steps to set up and run the documentation locally:
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/magebank-docs.git
+git clone https://github.com/MageBankAI/magebank-docs.git
 cd magebank-docs
 ```
 
@@ -31,47 +55,29 @@ mintlify dev
 
 The documentation will be available at `http://localhost:3000`.
 
-## Project Structure
+## 🧩 Project Structure
 
 ```
 magebank-docs/
 ├── README.md                      # This file
 ├── docs.json                      # Main configuration file
 ├── index.mdx                      # Homepage
-├── quickstart.mdx                 # Quickstart guide
-├── development.mdx                # Development guide
+├── mcp-and-a2a.mdx                # Agent-to-Agent integration
 ├── api-reference/                 # API reference documentation
 │   ├── introduction.mdx           # API introduction
 │   ├── openapi.json               # OpenAPI specification
 │   ├── agents/                    # Agents API endpoints
-│   ├── wallets/                   # Wallets API endpoints
-│   ├── transactions/              # Transactions API endpoints
-│   ├── investments/               # Investments API endpoints
 │   ├── payments/                  # Payments API endpoints
 │   ├── users/                     # Users API endpoints
-│   └── savings/                   # Savings API endpoints
+│   ├── savings/                   # Savings API endpoints
+│   └── transactions/              # Transactions API endpoints
 ├── user-guide/                    # User guides
 ├── images/                        # Images for the documentation
 ├── logo/                          # Logo files
 └── snippets/                      # Reusable content snippets
 ```
 
-## Deployment
-
-To deploy the documentation, follow these steps:
-
-1. Push your changes to the main branch of your repository.
-2. Connect your repository to [Mintlify](https://mintlify.com/).
-3. Follow the deployment instructions on the Mintlify dashboard.
-
-## Contributing
-
-1. Create a new branch for your changes.
-2. Make your changes and test them locally using `mintlify dev`.
-3. Commit your changes and push them to your branch.
-4. Create a pull request to merge your changes into the main branch.
-
-## Customizing the Documentation
+## 🔧 Customizing the Documentation
 
 ### Adding New Pages
 
@@ -95,13 +101,24 @@ Edit the `colors` section in `docs.json` to customize the theme:
 }
 ```
 
-## Need Help?
+## 🤝 Contributing
+
+1. Create a new branch for your changes.
+2. Make your changes and test them locally using `mintlify dev`.
+3. Commit your changes and push them to your branch.
+4. Create a pull request to merge your changes into the main branch.
+
+## 🔒 Sandbox Mode Notice
+
+We are currently in sandbox mode. Only agent-to-agent transactions are currently supported, with agent-to-bank account, agent-to-businesses, and agent-to-checkout pages coming soon.
+
+## 📝 License
+
+This documentation is provided under the [MIT License](LICENSE).
+
+## 📞 Need Help?
 
 If you need assistance with the documentation, please contact:
 
-- Email: support@magebank.ai
+- Email: [support@magebank.ai](mailto:support@magebank.ai)
 - GitHub: Open an issue in this repository
-
-## License
-
-This documentation is provided under the [MIT License](LICENSE).
