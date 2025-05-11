@@ -17,25 +17,49 @@ description: 'Export payments data in various formats (CSV, XLSX, PDF)'
 ## Request Body
 
 <ParamField body="format" type="string" required>
-  Export format: "csv", "xlsx", or "pdf"
+  Export format
+  <Expandable title="Allowed values">
+    "csv", "xlsx", "pdf"
+  </Expandable>
 </ParamField>
 
 <ParamField body="dateRange" type="object">
-  Optional date range filter with start and end dates (YYYY-MM-DD)
+  <Expandable title="properties">
+    <ParamField body="start" type="string" format="date">
+      Start date for filtering payments
+    </ParamField>
+    <ParamField body="end" type="string" format="date">
+      End date for filtering payments
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 ## Response
 
-The response is a file download in the requested format.
+The response is a file download in the requested format containing payment data.
 
 <ResponseExample>
-```json 400 Invalid Format
+```json 400
 {
   "error": "Invalid export format. Supported formats are: csv, xlsx, pdf"
+}
+```
 
-  // OR
-  
-  "error": "Invalid date range. End date must be after start date"
+```json 400
+{
+  "error": "Invalid date range format"
+}
+```
+
+```json 401
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -44,8 +68,9 @@ The response is a file download in the requested format.
 
 | Status Code | Description |
 |-------------|-------------|
-| 200 | Export completed successfully |
+| 200 | Export completed successfully, file is returned |
 | 400 | Bad Request - Invalid parameters |
+| 401 | Unauthorized - Authentication failed |
 | 500 | Internal Server Error |
 
 <Info>

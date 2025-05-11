@@ -25,29 +25,59 @@ description: "Create a new payment transaction between agents"
 </ParamField>
 
 <ParamField body="paymentdetails" type="object" required>
-  Object containing amount, currency, and payment method
+  <Expandable title="properties">
+    <ParamField body="amount" type="number" required>
+      Payment amount
+    </ParamField>
+    <ParamField body="currency" type="string" required>
+      Payment currency (typically "USDC")
+    </ParamField>
+    <ParamField body="method" type="string" required>
+      Payment method (typically "CRYPTO_ADDRESS")
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="name" type="string" required>
   Name or description of the payment
 </ParamField>
 
-<ParamField body="type" type="string" required>
-  Type of payment: "EXTERNAL" or "INTERNAL"
+<ParamField body="contactdetails" type="object">
+  <Expandable title="properties">
+    <ParamField body="email" type="string">
+      Contact email for the payment recipient
+    </ParamField>
+    <ParamField body="phoneNumber" type="string">
+      Contact phone number for the payment recipient
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="tags" type="array">
-  Optional tags or categories for the payment
+  Tags or categories for the payment
 </ParamField>
+
 
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique payment identifier
+  Unique payment identifier in short ID format
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name or description of the payment
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of payment (EXTERNAL or INTERNAL)
 </ResponseField>
 
 <ResponseField name="status" type="string">
-  Current status of the payment
+  Current status of the payment (New, Pending, or Confirmed)
+</ResponseField>
+
+<ResponseField name="createdat" type="string">
+  Timestamp when the payment was created
 </ResponseField>
 
 <ResponseField name="approvalRequired" type="boolean">
@@ -55,23 +85,23 @@ description: "Create a new payment transaction between agents"
 </ResponseField>
 
 <ResponseField name="approvalstatus" type="string">
-  Current approval status
+  Current approval status (Waiting, Pending, Approved, or Decline)
 </ResponseField>
 
 <ResponseField name="txHash" type="string">
-  Transaction hash (if processed immediately)
+  Transaction hash on the blockchain (if processed immediately)
 </ResponseField>
 
 <ResponseExample>
 ```json 200 Requires Approval
 {
   "id": "payee_wDG5cavUCoK53uvFzTvkey",
-  "name": "Invoice payment for services",
+  "name": "Vendor XYZ Payment",
   "type": "EXTERNAL",
   "status": "New",
   "approvalstatus": "Waiting",
   "approvalRequired": true,
-  "createdat": "2025-04-17T10:28:18Z",
+  "createdat": "2025-04-17T10:28:18.512792",
   "txHash": null
 }
 ```
@@ -92,6 +122,32 @@ description: "Create a new payment transaction between agents"
 ```json 400 
 {
   "error": "Insufficient balance in sender agent's wallet"
+
+  // OR
+
+  "error": "Required fields missing: senderagentid, receiveragentid, paymentdetails, name, type"
+
+  // OR
+
+  "error": "Invalid payment details. Amount must be positive."
+}
+```
+
+```json 401 
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 
+{
+  "error": "Internal Server Error"
+}
+```
+
+```json 404 
+{
+  "error": "Sender agent not found"
 }
 ```
 </ResponseExample>
@@ -102,6 +158,7 @@ description: "Create a new payment transaction between agents"
 |-------------|-------------|
 | 200 | Payment registered successfully |
 | 400 | Bad Request - Invalid parameters or insufficient balance |
+| 401 | Unauthorized - Invalid or missing API key |
 | 404 | Not Found - Agent not found |
 | 500 | Internal Server Error |
 

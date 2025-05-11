@@ -1,3 +1,5 @@
+I apologize for the confusion. Let me correct my approach and provide the documentation in the proper Canvas MDX format for the Create Agent endpoint:
+
 ---
 title: 'Create Agent'
 api: 'POST /agents/create'
@@ -5,7 +7,7 @@ description: 'Create a new agent and fund its wallet'
 ---
 
 <Note>
-**Multi-step Process**: This endpoint creates a new agent, generates a blockchain wallet, and can fund the wallet from your user account or via a testnet faucet.
+**Agent Creation Process**: Creates a new agent, generates a wallet, and optionally funds the agent's wallet from the user's wallet. The operation includes: 1. Creation of a new agent record 2. Generation of a secure blockchain wallet 3. Faucet funding of the wallet (on supported test networks) 4. Optional transfer of funds from user's wallet
 </Note>
 
 ## Request Headers
@@ -20,6 +22,10 @@ description: 'Create a new agent and fund its wallet'
   ID of the user creating the agent
 </ParamField>
 
+<ParamField body="walletaddress" type="string">
+  User's wallet address for funding (optional)
+</ParamField>
+
 <ParamField body="name" type="string" required>
   Name of the agent
 </ParamField>
@@ -29,7 +35,7 @@ description: 'Create a new agent and fund its wallet'
 </ParamField>
 
 <ParamField body="balance" type="integer">
-  Initial balance to fund the agent
+  Initial balance to fund the agent (in smallest units)
 </ParamField>
 
 <ParamField body="dailylimit" type="integer">
@@ -40,11 +46,15 @@ description: 'Create a new agent and fund its wallet'
   Maximum amount for a single transaction
 </ParamField>
 
+<ParamField body="currency" type="string" default="USDC">
+  Currency type to use (defaults to USDC)
+</ParamField>
+
 <ParamField body="requireapprovalforall" type="boolean" default="false">
   Whether all transactions require approval
 </ParamField>
 
-<ParamField body="requireapprovalaboveamount" type="number">
+<ParamField body="requireapprovalaboveamount" type="integer">
   Transactions above this amount require approval
 </ParamField>
 
@@ -55,11 +65,19 @@ description: 'Create a new agent and fund its wallet'
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique agent identifier in short ID format
+  Unique agent identifier
 </ResponseField>
 
 <ResponseField name="apikey" type="string">
-  The API key for authentication
+  The API key for the agent
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the agent
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Purpose and functionality of the agent
 </ResponseField>
 
 <ResponseField name="status" type="string">
@@ -67,36 +85,92 @@ description: 'Create a new agent and fund its wallet'
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  The blockchain wallet information
+  <Expandable title="properties">
+    <ResponseField name="addressId" type="string">
+      ID of the wallet address
+    </ResponseField>
+    <ResponseField name="networkId" type="string">
+      Blockchain network ID
+    </ResponseField>
+    <ResponseField name="walletId" type="string">
+      ID of the wallet
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Initial balance of the agent's wallet
+  Current balance of the agent
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency type used
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  Configuration for transaction limits and approval requirements
+  <Expandable title="properties">
+    <ResponseField name="dailyLimit" type="integer">
+      Maximum amount that can be spent per day
+    </ResponseField>
+    <ResponseField name="transactionLimit" type="integer">
+      Maximum amount for a single transaction
+    </ResponseField>
+    <ResponseField name="requireApprovalAboveAmount" type="integer">
+      Transactions above this amount require approval
+    </ResponseField>
+    <ResponseField name="requireApprovalForAll" type="boolean">
+      Whether all transactions require approval
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Categories or labels assigned to the agent
+</ResponseField>
+
+<ResponseField name="created" type="string">
+  Timestamp when the agent was created
 </ResponseField>
 
 <ResponseField name="transferResult" type="object">
-  Result of the fund transfer from user to agent
+  <Expandable title="properties">
+    <ResponseField name="success" type="boolean">
+      Whether the transfer was successful
+    </ResponseField>
+    <ResponseField name="txHash" type="string">
+      Transaction hash of the transfer
+    </ResponseField>
+    <ResponseField name="message" type="string">
+      Description of the transfer result
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="faucetTransaction" type="object">
-  Result of any testnet faucet funding transaction
+  <Expandable title="properties">
+    <ResponseField name="success" type="boolean">
+      Whether the faucet transaction was successful
+    </ResponseField>
+    <ResponseField name="txHash" type="string">
+      Transaction hash of the faucet transaction
+    </ResponseField>
+    <ResponseField name="message" type="string">
+      Description of the faucet transaction result
+    </ResponseField>
+  </Expandable>
 </ResponseField>
-
 
 <ResponseExample>
 ```json 200
 {
   "id": "agent_bRSEFnMRD1fvkMM39hzPdM",
-  "apikey": "mag_eJwVyN0OgiAYANA3...",
+  "apikey": "mag_eJwVyN0OgiAYANA3cprT1qV_tY8E0jCVuyILSMtNG-LTt87l6SySt4NQVCGoVvCIggneZSASCOE1NpcE7ZzOopH_Q1c-12A4K4e8zgxnMJM0sjjxFE3xJmc4wDUsre4lGUpJzzDB0Mt7AiFmwiUaAppin1ijeCMN6M9C1mKD12ihTPiPwjkNZXQPme6DbGlNBc9aPfcCbb_dMRb2MbE-vqIKzdgtfgVGPxc",
   "name": "Payment Assistant",
   "description": "Handles payment processing for customer support",
   "status": "active",
   "walletAddress": {
-    "networkId": "base-sepolia"
+    "addressId": "",
+    "networkId": "base-sepolia",
+    "walletId": ""
   },
   "balance": "6",
   "currency": "USDC",
@@ -106,10 +180,20 @@ description: 'Create a new agent and fund its wallet'
     "requireApprovalAboveAmount": 50,
     "requireApprovalForAll": false
   },
+  "tags": [
+    "customer-support",
+    "payments"
+  ],
+  "created": "2025-05-03T18:52:39.911685+00:00",
   "transferResult": {
     "success": true,
     "txHash": "0x123...abc",
     "message": "Successfully transferred 6 USDC from user to agent wallet"
+  },
+  "faucetTransaction": {
+    "success": true,
+    "txHash": "0xabc...123",
+    "message": "ETH testnet funds received via faucet"
   }
 }
 ```
@@ -121,7 +205,7 @@ description: 'Create a new agent and fund its wallet'
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "Agent name is required"
 }
@@ -135,7 +219,7 @@ description: 'Create a new agent and fund its wallet'
 
 ```json 500
 {
-  "error": "Internal server error occurred while creating agent"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -151,5 +235,5 @@ description: 'Create a new agent and fund its wallet'
 | 500 | Internal Server Error |
 
 <Warning>
-**Important**: Save the returned agent ID and API key securely, as they'll be needed for future operations with this agent.
+**Important**: Store the returned API key securely as it will be needed for all future operations with this agent.
 </Warning>

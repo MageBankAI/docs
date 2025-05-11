@@ -5,7 +5,7 @@ description: 'Get all investments for a specific agent'
 ---
 
 <Note>
-**Investment History**: Retrieve a complete history of all investments (both active and completed) for a specific agent with real-time valuation of active investments.
+**Investment History**: Retrieves all investments (both active and completed) associated with a specific agent. For active investments, calculates the current value and interest earned based on the principal amount, interest rate, and investment duration. Returns detailed information including investment status and creation timestamp.
 </Note>
 
 ## Path Parameters
@@ -49,7 +49,7 @@ description: 'Get all investments for a specific agent'
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "investments": [
     {
@@ -74,21 +74,25 @@ description: 'Get all investments for a specific agent'
 }
 ```
 
-```json 404 
+```json 400
 {
-  "error": "Agent not found"
-}
-```
-
-```json 400 
-{
-  "error": "Invalid agent ID format"
+  "error": "Bad request"
 }
 ```
 
 ```json 401 
 {
   "error": "Invalid or missing API key"
+}
+```json 404
+{
+  "error": "Agent not found"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>

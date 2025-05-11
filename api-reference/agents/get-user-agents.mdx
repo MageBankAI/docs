@@ -5,7 +5,7 @@ description: 'Fetch all agents for a user'
 ---
 
 <Note>
-**User Agents**: Retrieve all agents associated with a specific user ID, including their wallet details and payment rules.
+**User Agents**: Returns an array of agents assigned to the user based on the provided user ID.
 </Note>
 
 ## Path Parameters
@@ -32,28 +32,56 @@ Returns an array of agent objects, each containing:
   Name of the agent
 </ResponseField>
 
+<ResponseField name="description" type="string">
+  Purpose and functionality of the agent
+</ResponseField>
+
 <ResponseField name="status" type="string">
-  Current status (active, inactive, paused)
+  Current status of the agent (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  Blockchain wallet information
+  <Expandable title="properties">
+    <ResponseField name="addressId" type="string">
+      Blockchain wallet address
+    </ResponseField>
+    <ResponseField name="networkId" type="string">
+      Blockchain network ID
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current balance of the wallet
+  Current balance of the agent
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency type used
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  Transaction limits and approval requirements
+  <Expandable title="properties">
+    <ResponseField name="dailyLimit" type="integer">
+      Maximum amount that can be spent per day
+    </ResponseField>
+    <ResponseField name="transactionLimit" type="integer">
+      Maximum amount for a single transaction
+    </ResponseField>
+    <ResponseField name="requireApprovalAboveAmount" type="integer">
+      Transactions above this amount require approval
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="tags" type="array">
   Categories or labels assigned to the agent
 </ResponseField>
 
-<ResponseExample>
+<ResponseField name="created" type="string">
+  Timestamp when the agent was created
+</ResponseField>
 
+<ResponseExample>
 ```json 200
 [
   {
@@ -97,7 +125,7 @@ Returns an array of agent objects, each containing:
 
 ```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>

@@ -11,7 +11,7 @@ description: 'Fetch details of a specific agent'
 ## Path Parameters
 
 <ParamField path="id" type="string" required>
-  Agent ID in the format `agent_xxx`
+  Agent ID (can be a short ID like agent_xxx)
 </ParamField>
 
 ## Request Headers
@@ -30,24 +30,53 @@ description: 'Fetch details of a specific agent'
   Name of the agent
 </ResponseField>
 
+<ResponseField name="description" type="string">
+  Purpose and functionality of the agent
+</ResponseField>
+
 <ResponseField name="status" type="string">
-  Current status (active, inactive, paused)
+  Current status of the agent (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  Blockchain wallet information
+  <Expandable title="properties">
+    <ResponseField name="addressId" type="string">
+      Blockchain wallet address
+    </ResponseField>
+    <ResponseField name="networkId" type="string">
+      Blockchain network ID
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current balance of the agent's wallet
+  Current balance of the agent
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency type used
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  Transaction limits and approval requirements
+  <Expandable title="properties">
+    <ResponseField name="dailyLimit" type="integer">
+      Maximum amount that can be spent per day
+    </ResponseField>
+    <ResponseField name="transactionLimit" type="integer">
+      Maximum amount for a single transaction
+    </ResponseField>
+    <ResponseField name="requireApprovalAboveAmount" type="integer">
+      Transactions above this amount require approval
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="tags" type="array">
   Categories or labels assigned to the agent
+</ResponseField>
+
+<ResponseField name="created" type="string">
+  Timestamp when the agent was created
 </ResponseField>
 
 <ResponseExample>
@@ -81,7 +110,7 @@ description: 'Fetch details of a specific agent'
 
 ```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>

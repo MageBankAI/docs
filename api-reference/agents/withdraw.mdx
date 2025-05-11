@@ -5,7 +5,7 @@ description: "Withdraw funds from an agent's wallet"
 ---
 
 <Note>
-**Reverse Transfer**: This endpoint moves funds from an agent's wallet back to the user's wallet through an on-chain transaction.
+**Withdrawal Process**: Transfers funds from the agent's wallet to the user's wallet. The operation includes: 1. Verification of user and agent existence 2. Validation of withdrawal amount against available balance 3. Transfer of funds on blockchain 4. Update of agent balance in database 5. Creation of transaction record
 </Note>
 
 ## Request Headers
@@ -29,7 +29,7 @@ description: "Withdraw funds from an agent's wallet"
 </ParamField>
 
 <ParamField body="currency" type="string" default="USDC">
-  Currency type to withdraw
+  Currency type to withdraw (defaults to USDC)
 </ParamField>
 
 ## Response
@@ -51,7 +51,7 @@ description: "Withdraw funds from an agent's wallet"
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "success": true,
   "txHash": "0x123...abc",
@@ -60,23 +60,31 @@ description: "Withdraw funds from an agent's wallet"
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "userid, agentid, and amount are required."
 }
-// OR
+```
+
+```json 400
+{
+  "error": "Invalid withdraw amount"
+}
+```
+
+```json 400
 {
   "error": "Insufficient balance"
 }
 ```
 
-```json 404 
+```json 404
 {
   "error": "Agent not found"
 }
 ```
 
-```json 500 
+```json 500
 {
   "success": false,
   "error": "Transfer failed on-chain"
@@ -89,14 +97,14 @@ description: "Withdraw funds from an agent's wallet"
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Funds withdrawn successfully |
-| 400 | Bad Request - Invalid or missing parameters |
-| 404 | Not Found - Agent or user not found |
-| 500 | Internal Server Error - Transaction failed |
+| 400 | Invalid request parameters |
+| 404 | Not Found |
+| 500 | Transaction failed |
 
 <Warning>
-**Balance Check**: The agent must have sufficient funds in its wallet to complete the withdrawal.
+**Balance Requirement**: The agent must have sufficient balance to complete the withdrawal. The transaction will fail if the requested amount exceeds the available balance.
 </Warning>
 
 <Info>
-**Rule Bypass**: Withdrawals bypass the agent's payment rules (daily limit, transaction limit, approval requirements) as they are initiated by the user, not the agent.
+**Blockchain Transaction**: This operation creates an on-chain transaction which may take a few moments to be confirmed depending on network conditions.
 </Info>

@@ -1,11 +1,11 @@
 ---
 title: 'Deposit Savings'
 api: 'POST /savings/deposit'
-description: "Deposit an agent's funds into the savings vault"
+description: "Deposit savings into an agent's account"
 ---
 
 <Note>
-**Interest Earning**: Creates a new investment by moving funds from an agent's wallet into the savings vault to start earning interest.
+**Investment Creation**: Creates a new investment by depositing funds into an agent's savings account. The operation converts the agent ID to UUID format if provided in short format, validates the deposit amount, and creates a new investment record.
 </Note>
 
 ## Request Headers
@@ -14,17 +14,13 @@ description: "Deposit an agent's funds into the savings vault"
   Your API key for authentication
 </ParamField>
 
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
-</ParamField>
-
 ## Request Body
 
 <ParamField body="agentId" type="string" required>
   The short ID or UUID of the agent
 </ParamField>
 
-<ParamField body="amount" type="number" format="decimal(16,2)" required>
+<ParamField body="amount" type="number" required>
   Amount to deposit (must be positive)
 </ParamField>
 
@@ -66,7 +62,7 @@ description: "Deposit an agent's funds into the savings vault"
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "agentId and amount are required"
 
@@ -80,7 +76,7 @@ description: "Deposit an agent's funds into the savings vault"
 }
 ```
 
-```json 404 
+```json 404
 {
   "error": "Agent not found"
 }
@@ -92,9 +88,9 @@ description: "Deposit an agent's funds into the savings vault"
 }
 ```
 
-```json 500 
+```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -110,13 +106,13 @@ description: "Deposit an agent's funds into the savings vault"
 | 500 | Internal Server Error |
 
 <Info>
-**Interest Accrual**: Interest begins accruing immediately at the current platform rate once the deposit is confirmed.
+**Agent ID Format**: The API accepts both short ID format (agent_xxx) and UUID format for the agent ID parameter.
 </Info>
 
 <Warning>
-**Balance Requirement**: The agent must have sufficient funds in its wallet to complete the deposit.
+**Amount Validation**: The deposit amount must be a positive number. The system will validate this before processing the transaction.
 </Warning>
 
 <Info>
-**Investment Tracking**: The returned investment ID can be used to track the investment or to withdraw funds later.
+**Investment Record**: A new investment record is created when the deposit is processed successfully. This can be used to track the investment's growth over time.
 </Info>

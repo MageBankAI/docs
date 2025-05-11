@@ -39,17 +39,22 @@ An agent consists of:
   "status": "active",
   "walletAddress": {
     "addressId": "0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB",
-    "networkId": "base-sepolia"
+    "networkId": "base-sepolia",
+    "walletId": "07f490dc-34e3-447f-9972-df2778fcb3c3"
   },
   "balance": "100",
   "currency": "USDC",
   "paymentRules": {
     "dailyLimit": 1000,
     "transactionLimit": 100,
-    "requireApprovalAboveAmount": 50
+    "requireApprovalForAll": false,
+    "requireApprovalAboveAmount": 50.00
   },
-  "tags": ["customer-support", "payments"],
-  "created": "2025-04-15T11:00:08Z"
+  "tags": [
+    "customer-support",
+    "payments"
+  ],
+  "createdat": "2025-04-15T11:00:08.432269+00:00"
 }
 ```
 
@@ -73,6 +78,17 @@ An agent consists of:
   </Card>
 </CardGroup>
 
+
+## Agent Lifecycle
+
+The typical lifecycle of an agent includes:
+
+1. **Creation**: An agent is created with a name, description, and initial funding
+2. **Configuration**: Payment rules are set to control transaction limits and approval requirements
+3. **Active Operation**: The agent processes transactions according to its configured rules
+4. **Maintenance**: Funds can be added or withdrawn as needed
+5. **Status Changes**: An agent's status can be modified as needed
+
 ## Payment Rules
 
 <Check>
@@ -83,15 +99,17 @@ Payment rules determine how an agent can spend funds:
 
 - **Daily Limit**: Maximum amount the agent can spend in a 24-hour period
 - **Transaction Limit**: Maximum amount for a single transaction
-- **Approval Requirements**: Set thresholds for transactions that require manual review
+- **Approval Requirements**:
+  - `requireApprovalForAll`: When true, all transactions require manual approval
+  - `requireApprovalAboveAmount`: Transactions above this amount require approval
 
 ## Best Practices
 
 - Create separate agents for different purposes or departments
 - Use descriptive names and tags to easily identify agents
 - Set appropriate transaction limits based on expected usage patterns
-- Regularly monitor agent activity through transaction history
-- Start with small balances when testing new agents
+- Consider requiring approval for large transactions to prevent unauthorized spending
+- Regularly monitor agent activity to ensure proper operation
 
 <Info>
 **Blockchain Integration**: All agent wallets are real blockchain wallets, with transactions recorded on-chain for maximum transparency and security.

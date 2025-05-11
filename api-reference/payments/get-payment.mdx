@@ -5,13 +5,13 @@ description: 'Fetch details of a specific payment'
 ---
 
 <Note>
-**Payment Details**: Retrieve comprehensive information about a payment including its status, approval state, and transaction details.
+**Payment Details**: Retrieves detailed information about a specific payment based on its ID. Converts short ID format to UUID format internally before querying the database.
 </Note>
 
 ## Path Parameters
 
 <ParamField path="id" type="string" required>
-  Payment ID in the format `payee_xxx`
+  Payment ID (can be a short ID like payee_xxx)
 </ParamField>
 
 ## Request Headers
@@ -50,12 +50,45 @@ description: 'Fetch details of a specific payment'
   Approval status of the payment
 </ResponseField>
 
+<ResponseField name="approvalrequired" type="boolean">
+  Whether this payment requires approval
+</ResponseField>
+
 <ResponseField name="paymentdetails" type="object">
-  Method, amount, and currency information
+  <Expandable title="properties">
+    <ResponseField name="method" type="string">
+      Payment method used
+    </ResponseField>
+    <ResponseField name="amount" type="number">
+      Payment amount
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Payment currency
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="contactdetails" type="object">
+  <Expandable title="properties">
+    <ResponseField name="email" type="string">
+      Contact email for the payment recipient
+    </ResponseField>
+    <ResponseField name="phoneNumber" type="string">
+      Contact phone number for the payment recipient
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Tags or categories for the payment
 </ResponseField>
 
 <ResponseField name="createdat" type="string">
   Timestamp when the payment was created
+</ResponseField>
+
+<ResponseField name="approvedat" type="string">
+  Timestamp when the payment was approved
 </ResponseField>
 
 <ResponseExample>
@@ -69,6 +102,10 @@ description: 'Fetch details of a specific payment'
   "status": "New",
   "approvalstatus": "Waiting for Sender Approval",
   "approvalrequired": true,
+  "contactdetails": {
+    "email": "contact@vendorxyz.com",
+    "phoneNumber": "+1234567890"
+  },
   "paymentdetails": {
     "method": "CRYPTO_ADDRESS",
     "amount": 6,
@@ -83,6 +120,12 @@ description: 'Fetch details of a specific payment'
 ```json 404 
 {
   "error": "Payment not found"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>

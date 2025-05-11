@@ -121,6 +121,16 @@ description: 'Withdraw funds from a savings investment'
 {
   "error": "Investment has already been completed or cancelled"
 }
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
 ```
 </ResponseExample>
 
@@ -130,6 +140,7 @@ description: 'Withdraw funds from a savings investment'
 |-------------|-------------|
 | 200 | Withdrawal completed successfully |
 | 400 | Bad Request - Invalid or missing parameters |
+| 401 | Unauthorized - Invalid or missing API key |
 | 404 | Not Found - Investment not found |
 | 500 | Internal Server Error |
 

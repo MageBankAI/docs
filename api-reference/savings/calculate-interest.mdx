@@ -1,7 +1,7 @@
 ---
 title: 'Calculate Interest'
 api: 'POST /investment/calculator'
-description: 'Calculate potential interest for a given investment amount and period'
+description: 'Calculate potential interest'
 ---
 
 <Note>
@@ -34,6 +34,10 @@ description: 'Calculate potential interest for a given investment amount and per
   Principal amount for the calculation
 </ResponseField>
 
+<ResponseField name="days" type="number">
+  Duration of the investment in days
+</ResponseField>
+
 <ResponseField name="interestRate" type="number">
   Annual interest rate applied to the calculation
 </ResponseField>
@@ -46,12 +50,23 @@ description: 'Calculate potential interest for a given investment amount and per
   Total amount including principal and interest
 </ResponseField>
 
+<ResponseField name="annualYield" type="string">
+  Annual percentage yield
+</ResponseField>
+
 <ResponseField name="calculation" type="object">
-  Formula and step-by-step calculation process
+  <Expandable title="properties">
+    <ResponseField name="formula" type="string">
+      Formula used for the calculation
+    </ResponseField>
+    <ResponseField name="steps" type="array">
+      Step-by-step breakdown of the calculation
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "principal": 1000,
   "days": 365,
@@ -71,17 +86,30 @@ description: 'Calculate potential interest for a given investment amount and per
 }
 ```
 
-```json 400 
+```json 400
 {
   "success": false,
   "error": "Amount and days are required"
 }
 ```
 
-```json 400 
+```json 400
 {
   "success": false,
   "error": "Amount must be a positive number"
+}
+```
+
+```json 400
+{
+  "success": false,
+  "error": "Days must be a positive number"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -91,17 +119,13 @@ description: 'Calculate potential interest for a given investment amount and per
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Interest calculation completed successfully |
-| 400 | Bad Request - Invalid or missing parameters |
-| 500 | Internal Server Error - Error fetching interest rate or calculating interest |
+| 400 | Invalid request parameters |
+| 500 | Internal Error |
 
 <Info>
-**Current Rate**: If no custom rate is provided, the calculation will use the platform's current interest rate fetched from the database.
+**Default Rate**: If no custom rate is provided, the calculation uses the platform's current base interest rate.
 </Info>
 
 <Info>
-**Formula Used**: Interest is calculated using the simple interest formula: `principal × rate × (days ÷ 365)`.
+**Simple Interest**: The calculator uses a simple interest formula that divides the annual rate by 365 days for daily accrual.
 </Info>
-
-<Check>
-**Financial Planning**: You can compare different investment scenarios by adjusting the amount, duration, and custom rate parameters.
-</Check>

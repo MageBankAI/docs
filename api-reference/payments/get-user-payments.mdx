@@ -28,8 +28,12 @@ Returns an array of payment objects, each containing:
   Unique payment identifier
 </ResponseField>
 
-<ResponseField name="direction" type="string">
-  Direction of the payment (incoming, outgoing)
+<ResponseField name="senderagentid" type="string">
+  ID of the agent sending the payment
+</ResponseField>
+
+<ResponseField name="receiveragentid" type="string">
+  ID of the agent receiving the payment
 </ResponseField>
 
 <ResponseField name="initiatedBy" type="string">
@@ -40,6 +44,10 @@ Returns an array of payment objects, each containing:
   Name of the agent that received the payment
 </ResponseField>
 
+<ResponseField name="direction" type="string">
+  Direction of the payment relative to the user's agents (incoming, outgoing)
+</ResponseField>
+
 <ResponseField name="name" type="string">
   Name or description of the payment
 </ResponseField>
@@ -48,12 +56,30 @@ Returns an array of payment objects, each containing:
   Approval status of the payment
 </ResponseField>
 
+<ResponseField name="createdat" type="string">
+  Timestamp when the payment was created
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of payment (EXTERNAL or INTERNAL)
+</ResponseField>
+
 <ResponseField name="paymentdetails" type="object">
-  Method, amount, and currency information
+  <Expandable title="properties">
+    <ResponseField name="method" type="string">
+      Payment method used
+    </ResponseField>
+    <ResponseField name="amount" type="number">
+      Payment amount
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Payment currency
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 [
   {
     "id": "payee_8tJo7vZb1RKo4oeyWuqgK",
@@ -74,21 +100,34 @@ Returns an array of payment objects, each containing:
   },
   {
     "id": "payee_9tJo7vZb1RKo4oeyWuqgK",
-    "direction": "incoming",
+    "senderagentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
+    "receiveragentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
     "initiatedBy": "Bob",
     "receivedBy": "Alice",
+    "direction": "incoming",
     "name": "Payment from Bob to Alice",
     "approvalstatus": "Waiting",
+    "createdat": "2025-04-08T10:00:00Z",
+    "type": "EXTERNAL",
     "paymentdetails": {
+      "method": "CRYPTO_ADDRESS",
       "amount": 50,
       "currency": "USDC"
     }
   }
-
-  // or
-
-  []
 ]
+```
+
+```json 401
+{
+  "error": "Unauthorized"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
+}
 ```
 </ResponseExample>
 
@@ -97,12 +136,13 @@ Returns an array of payment objects, each containing:
 | Status Code | Description |
 |-------------|-------------|
 | 200 | List of payments retrieved successfully |
-| 500 | Internal Server Error |
+| 401 | Unauthorized |
+| 500 | Internal Error |
 
 <Info>
-**Direction**: The `direction` field indicates whether a payment is incoming (to your agent) or outgoing (from your agent).
+**Approval Status Values**: Possible values for approvalStatus filter include: "Approved", "Declined", "Pending", "Waiting", "Waiting for Sender Approval"
 </Info>
 
 <Info>
-**Empty Result**: If no payments match the filter criteria, an empty array will be returned with a 200 status code.
+**Direction**: The "direction" field makes it easy to identify whether a payment is incoming to your agent (received) or outgoing from your agent (sent).
 </Info>

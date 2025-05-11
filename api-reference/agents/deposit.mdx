@@ -29,7 +29,7 @@ description: "Deposit funds into an agent's wallet"
 </ParamField>
 
 <ParamField body="currency" type="string" default="USDC">
-  Currency type to deposit
+  Currency type to deposit (defaults to USDC)
 </ParamField>
 
 ## Response
@@ -60,13 +60,25 @@ description: "Deposit funds into an agent's wallet"
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "userid, agentid, and amount are required."
 }
 ```
 
-```json 404 
+```json 400
+{
+  "error": "Invalid deposit amount"
+}
+```
+
+```json 400
+{
+  "error": "User wallet not found or inaccessible"
+}
+```
+
+```json 404
 {
   "error": "Agent not found"
 }
