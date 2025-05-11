@@ -3,26 +3,34 @@ title: 'Introduction'
 description: 'Manage interest-bearing savings accounts and investments'
 ---
 
-The Savings API enables your AI agents to autonomously invest idle funds into interest-bearing accounts. Use these endpoints to automatically deposit USDC, track earned interest, manage withdrawals, and optimize your capital efficiency - all through simple API calls that your agents can execute independently.
+# Savings API
+
+<Note>
+**Capital Optimization**: Enable your AI agents to autonomously invest idle funds into interest-bearing accounts, earning returns on otherwise unused capital.
+</Note>
+
+The Savings API allows your agents to deposit USDC into interest-bearing accounts, track earned interest, and withdraw funds when needed - all through simple API calls that agents can execute independently.
 
 ## Savings and Investment Model
 
-Each savings investment in the MageBank system consists of:
+<Info>
+**Real-time Tracking**: All investment values and earned interest are calculated in real-time based on the current interest rate and exact investment duration.
+</Info>
+
+Each savings investment includes:
 
 - **Identity**: Unique investment ID and associated agent ID
-- **Principal**: Amount initially invested (stored with precision of 2 decimal places)
-- **Status**: Current state of the investment (active is the default)
-- **Timestamps**: When the investment was created and when it was withdrawn (if applicable)
-- **Performance**: Current value and interest earned to date
-- **Interest Details**: Interest rate (stored with precision of 2 decimal places) and calculated interest amount
-- **Transaction Details**: Transaction hashes for deposit and withdrawal operations
+- **Principal**: Amount initially invested
+- **Status**: Current state of the investment (active, completed, cancelled)
+- **Interest Details**: Current value, interest earned, and rate applied
+- **Transaction Details**: Blockchain transaction hashes for deposits and withdrawals
 
 ```json
 {
   "id": "inv_k77NTwxp2Ym3JCmVsKtXQA",
   "agent_id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
   "amount": 1000.00,
-  "invested_at": "2025-04-15T11:00:08.432269+00:00",
+  "invested_at": "2025-04-15T11:00:08Z",
   "status": "active",
   "current_value": "1050.00",
   "interest_earned": "50.00",
@@ -59,71 +67,52 @@ Each savings investment in the MageBank system consists of:
 
 ## Interest Rate Model
 
-The MageBank platform offers competitive interest rates on USDC holdings. The interest rate:
+<Check>
+**Transparent Rates**: MageBank offers competitive interest rates on USDC holdings, with current rates always accessible through the API.
+</Check>
 
-1. **Centrally Managed**: The rate is set at the platform level and applies to all savings accounts
-2. **Regularly Updated**: Rates may be adjusted based on market conditions
-3. **Precision**: Stored with up to 2 decimal places of precision
-4. **Transparent**: Current rates are always accessible through the API
+Key features of the interest rate system:
 
-## Interest Calculation Methodology
+- **Centrally Managed**: The rate is set at the platform level and applies to all savings accounts
+- **Regularly Updated**: Rates may be adjusted based on market conditions
+- **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
+- **Annual Percentage Yield**: Rates are expressed as APY
 
-MageBank uses standard compound interest formulas to calculate earnings:
+## Interest Calculation
 
-```
-A = P(1 + r/n)^(nt)
-```
-
-Where:
-- A = Final amount
-- P = Principal (initial deposit)
-- r = Annual interest rate (APY)
-- n = Number of times interest is compounded per year
-- t = Time (in years)
-
-For continuous compounding (as used in MageBank), the formula simplifies to:
+<Info>
+**Compound Interest**: MageBank uses standard compound interest formulas to calculate earnings, with real-time calculation of accrued interest.
+</Info>
 
 ```
 A = P * e^(rt)
 ```
 
 Where:
+- A = Final amount
+- P = Principal (initial deposit)
+- r = Annual interest rate (APY)
+- t = Time in years (days/365)
 - e = Euler's number (approximately 2.71828)
-
-## How Interest Works
-
-MageBank's interest calculation system:
-
-1. **Amount Precision**: All monetary values are stored with 2 decimal places of precision
-2. **Interest Rate Precision**: Interest rates are stored with 2 decimal places (e.g., 4.50%)
-3. **Daily Calculation**: Interest is calculated based on the exact number of days invested
-4. **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
-5. **Real-time Tracking**: Current value and interest earned are updated in real-time
 
 ## Investment Lifecycle
 
-The typical lifecycle of a savings investment includes:
+<Warning>
+**Status Changes**: Only active investments can earn interest and be withdrawn. Once completed or cancelled, investments cannot be reactivated.
+</Warning>
 
-1. **Deposit**: Funds are transferred from an agent's regular wallet to a savings account
-2. **Active Status**: The investment is marked as "active" and begins accruing interest
-3. **Growth Period**: The investment earns interest over time at the current platform rate
-4. **Withdrawal**: When ready, funds (principal + interest) are returned to the agent's wallet
-5. **Transaction Recording**: All transactions are recorded with blockchain transaction hashes
+The lifecycle of a savings investment includes:
+
+1. **Deposit**: Funds move from an agent's wallet to savings, creating an active investment
+2. **Growth Period**: The investment earns interest at the current platform rate
+3. **Withdrawal**: Funds (principal + interest) return to the agent's wallet upon withdrawal
+4. **Status Update**: Investment status changes to "completed" after withdrawal
 
 ## Best Practices
 
-- Monitor interest rates regularly to optimize investment timing
-- Use the dashboard to track overall investment performance
-- Consider distributing funds across multiple agents for different purposes
-- Calculate potential returns before investing using the [Calculate Interest](/api-reference/savings/calculate-interest) endpoint
-- Regularly review the accumulated interest to inform withdrawal decisions
-- Use the interest calculation tools to compare different investment scenarios
-- Implement a consistent savings strategy to maximize compound interest benefits
-
-## Next Steps
-
-Use the endpoints in this section to manage savings investments. After setting up savings accounts, you can:
-
-- [Approve payments](/api-reference/payments/approve-payment) using earned interest
-- [Monitor transactions](/api-reference/transactions/get-transaction-summary) to track financial flow
-- [Create new agents](/api-reference/agents/create-agent) with different investment strategies
+- Check current interest rates before investing to optimize timing
+- Use the dashboard to monitor overall investment performance across agents
+- Calculate potential returns before investing to compare different scenarios
+- Distribute funds across multiple agents for different purposes or time horizons
+- Consider regular deposits to maximize compound interest benefits
+- Monitor earned interest to inform withdrawal decisions

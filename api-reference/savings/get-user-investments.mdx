@@ -4,7 +4,9 @@ api: 'GET /savings/myinvestments'
 description: 'Get all active investments for the authenticated user'
 ---
 
-Retrieves a list of all active investments across all user agents, including current value and earned interest.
+<Note>
+**Active Investments**: Retrieve a comprehensive list of all active investments across all your agents with real-time value calculations.
+</Note>
 
 ## Request Headers
 
@@ -43,73 +45,8 @@ Retrieves a list of all active investments across all user agents, including cur
   </Expandable>
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/savings/myinvestments" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getUserInvestments() {
-  try {
-    const response = await axios.get('https://api.magebank.ai/savings/myinvestments', {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log(`Found ${response.data.agents.length} agents with active investments`);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving user investments:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-getUserInvestments();
-```
-
-```python Python
-import requests
-
-def get_user_investments():
-    url = "https://api.magebank.ai/savings/myinvestments"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        data = response.json()
-        agents = data.get('agents', [])
-        print(f"Found {len(agents)} agents with active investments")
-        for i, agent in enumerate(agents):
-            name = agent.get('agent')
-            invested = agent.get('investedAmount')
-            current = agent.get('currentValue')
-            interest = agent.get('interest')
-            days = agent.get('daysInvested')
-            print(f"Agent {i+1}: {name}, {invested} USDC invested for {days} days, {current} USDC current value, {interest} USDC interest")
-        return data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_user_investments()
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "agents": [
     {
@@ -136,16 +73,19 @@ get_user_investments()
 }
 ```
 
-## Error Responses
+```json 200 
+{
+  "agents": []
+}
+```
 
-<ResponseExample>
-```json 401 Unauthorized
+```json 401 
 {
   "error": "Invalid or missing API key"
 }
 ```
 
-```json 500 Internal Server Error
+```json 500 
 {
   "error": "Internal Server Error"
 }
@@ -160,10 +100,14 @@ get_user_investments()
 | 401 | Unauthorized - Invalid or missing API key |
 | 500 | Internal Server Error |
 
-## Notes
+<Info>
+**Active Only**: This endpoint returns only active investments; completed or cancelled investments are not included.
+</Info>
 
-- Only active investments are returned; completed or cancelled investments are not included.
-- Interest calculations are performed in real-time based on the current platform interest rate.
-- The `totalBalance` for each agent includes both the investment value and regular wallet balance.
-- If there are no active investments, an empty array will be returned.
-- All monetary values are in USDC by default.
+<Info>
+**Real-time Calculations**: Interest values are calculated in real-time based on the current platform interest rate and exact investment duration.
+</Info>
+
+<Info>
+**Total Balance**: The `totalBalance` for each agent includes both the investment value and the regular wallet balance.
+</Info>

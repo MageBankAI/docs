@@ -4,7 +4,9 @@ api: 'GET /savings/{agentId}'
 description: 'Get all investments for a specific agent'
 ---
 
-Retrieves all investments (both active and completed) associated with a specific agent, including current values and earned interest.
+<Note>
+**Investment History**: Retrieve a complete history of all investments (both active and completed) for a specific agent with real-time valuation of active investments.
+</Note>
 
 ## Path Parameters
 
@@ -46,72 +48,8 @@ Retrieves all investments (both active and completed) associated with a specific
   </Expandable>
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/savings/agent_k77NTwxp2Ym3JCmVsKtXQA" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getAgentInvestments(agentId) {
-  try {
-    const response = await axios.get(`https://api.magebank.ai/savings/${agentId}`, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log(`Found ${response.data.investments.length} investments for agent`);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving agent investments:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-getAgentInvestments('agent_k77NTwxp2Ym3JCmVsKtXQA');
-```
-
-```python Python
-import requests
-
-def get_agent_investments(agent_id):
-    url = f"https://api.magebank.ai/savings/{agent_id}"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        data = response.json()
-        investments = data.get('investments', [])
-        print(f"Found {len(investments)} investments for agent")
-        for i, inv in enumerate(investments):
-            status = inv.get('status')
-            amount = inv.get('amount')
-            current = inv.get('current_value')
-            interest = inv.get('interest_earned')
-            print(f"Investment {i+1}: {status}, {amount} USDC invested, {current} USDC current value, {interest} USDC interest")
-        return data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_agent_investments("agent_k77NTwxp2Ym3JCmVsKtXQA")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "investments": [
     {
@@ -136,30 +74,21 @@ get_agent_investments("agent_k77NTwxp2Ym3JCmVsKtXQA")
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Bad Request
-{
-  "error": "Invalid agent ID format"
-}
-```
-
-```json 404 Not Found
+```json 404 
 {
   "error": "Agent not found"
 }
 ```
 
-```json 401 Unauthorized
+```json 400 
 {
-  "error": "Invalid or missing API key"
+  "error": "Invalid agent ID format"
 }
 ```
 
-```json 500 Internal Server Error
+```json 401 
 {
-  "error": "Internal Server Error"
+  "error": "Invalid or missing API key"
 }
 ```
 </ResponseExample>
@@ -174,9 +103,14 @@ get_agent_investments("agent_k77NTwxp2Ym3JCmVsKtXQA")
 | 404 | Not Found - Agent not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Info>
+**All Investment Statuses**: This endpoint returns all investments for the agent regardless of status (active, completed, cancelled).
+</Info>
 
-- Returns all investments for the agent, regardless of status (active, completed, cancelled).
-- For active investments, current values are calculated in real-time.
-- For completed investments, values show the final amounts at time of withdrawal.
-- All monetary values are in USDC by default.
+<Info>
+**Real-time Calculations**: For active investments, current values and interest earned are calculated in real-time based on the current interest rate and investment duration.
+</Info>
+
+<Info>
+**Completed Investments**: For completed investments, the values shown represent the final amounts at the time of withdrawal.
+</Info>

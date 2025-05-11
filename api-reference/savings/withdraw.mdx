@@ -4,7 +4,9 @@ api: 'POST /savings/withdraw'
 description: 'Withdraw funds from a savings investment'
 ---
 
-Closes an active investment and returns funds to the agent's wallet with earned interest.
+<Note>
+**Complete Withdrawal**: Closes an active investment and returns the principal plus earned interest to the agent's wallet.
+</Note>
 
 ## Request Headers
 
@@ -78,78 +80,9 @@ Closes an active investment and returns funds to the agent's wallet with earned 
   New balance of the agent after the withdrawal
 </ResponseField>
 
-## Example Request
 
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/savings/withdraw" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "investmentId": "inv_k77NTwxp2Ym3JCmVsKtXQA"
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function withdrawSavings(investmentId) {
-  try {
-    const response = await axios.post('https://api.magebank.ai/savings/withdraw', {
-      investmentId: investmentId
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Withdrawal result:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error withdrawing savings:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-withdrawSavings('inv_k77NTwxp2Ym3JCmVsKtXQA');
-```
-
-```python Python
-import requests
-import json
-
-def withdraw_savings(investment_id):
-    url = "https://api.magebank.ai/savings/withdraw"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "investmentId": investment_id
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        result = response.json()
-        print("Withdrawal result:", result)
-        return result
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-withdraw_savings("inv_k77NTwxp2Ym3JCmVsKtXQA")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200
 {
   "success": true,
   "message": "Withdrawal completed successfully.",
@@ -172,36 +105,21 @@ withdraw_savings("inv_k77NTwxp2Ym3JCmVsKtXQA")
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Missing Investment ID
+```json 400 
 {
   "error": "Investment ID is required"
 }
 ```
 
-```json 404 Investment Not Found
+```json 404 
 {
   "error": "Investment not found"
 }
 ```
 
-```json 400 Already Completed
+```json 400 
 {
   "error": "Investment has already been completed or cancelled"
-}
-```
-
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
@@ -212,14 +130,17 @@ withdraw_savings("inv_k77NTwxp2Ym3JCmVsKtXQA")
 |-------------|-------------|
 | 200 | Withdrawal completed successfully |
 | 400 | Bad Request - Invalid or missing parameters |
-| 401 | Unauthorized - Invalid or missing API key |
 | 404 | Not Found - Investment not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Warning>
+**Active Investments Only**: Only investments with an "active" status can be withdrawn. Attempting to withdraw completed or cancelled investments will result in an error.
+</Warning>
 
-- Only active investments can be withdrawn.
-- The withdrawal will return the principal amount plus any interest earned.
-- Interest is calculated up to the moment of withdrawal.
-- The transaction may take a few moments to be confirmed on the blockchain.
-- The funds will be transferred back to the associated agent's wallet.
+<Info>
+**Interest Calculation**: Interest is calculated up to the exact moment of withdrawal, including partial days.
+</Info>
+
+<Info>
+**Blockchain Confirmation**: The transaction may take a few moments to be confirmed on the blockchain before the funds appear in the agent's wallet.
+</Info>

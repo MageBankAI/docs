@@ -4,7 +4,9 @@ api: 'POST /savings/deposit'
 description: "Deposit an agent's funds into the savings vault"
 ---
 
-Creates a new investment by moving funds from an agent's wallet into the savings vault.
+<Note>
+**Interest Earning**: Creates a new investment by moving funds from an agent's wallet into the savings vault to start earning interest.
+</Note>
 
 ## Request Headers
 
@@ -51,117 +53,8 @@ Creates a new investment by moving funds from an agent's wallet into the savings
   </Expandable>
 </ResponseField>
 
-## Investment Record
-
-The operation creates a new record in the investments table with the following fields:
-
-<ResponseField name="id" type="uuid">
-  Unique investment identifier
-</ResponseField>
-
-<ResponseField name="agent_id" type="uuid">
-  ID of the agent associated with the investment
-</ResponseField>
-
-<ResponseField name="amount" type="decimal(16,2)">
-  Principal amount invested
-</ResponseField>
-
-<ResponseField name="invested_at" type="timestamp with time zone">
-  Timestamp when the investment was created (with timezone)
-</ResponseField>
-
-<ResponseField name="status" type="text">
-  Set to 'active' by default
-</ResponseField>
-
-<ResponseField name="tx_hash" type="text">
-  Blockchain transaction hash for the deposit
-</ResponseField>
-
-<ResponseField name="interest_rate" type="decimal(5,2)">
-  Current interest rate at the time of deposit
-</ResponseField>
-
-<ResponseField name="user_id" type="uuid">
-  ID of the user who owns the agent
-</ResponseField>
-
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/savings/deposit" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "agentId": "agent_k77NTwxp2Ym3JCmVsKtXQA",
-    "amount": 100.50
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function depositSavings(agentId, amount) {
-  try {
-    const response = await axios.post('https://api.magebank.ai/savings/deposit', {
-      agentId: agentId,
-      amount: amount
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Deposit result:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error depositing savings:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-depositSavings('agent_k77NTwxp2Ym3JCmVsKtXQA', 100.50);
-```
-
-```python Python
-import requests
-import json
-
-def deposit_savings(agent_id, amount):
-    url = "https://api.magebank.ai/savings/deposit"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "agentId": agent_id,
-        "amount": amount
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        result = response.json()
-        print("Deposit result:", result)
-        return result
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.50)
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200
 {
   "success": true,
   "message": "Successfully invested 100.50 USDC.",
@@ -173,40 +66,33 @@ deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.50)
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Missing Parameters
+```json 400 
 {
   "error": "agentId and amount are required"
-}
-```
 
-```json 400 Invalid Amount
-{
+  // OR
+
   "error": "Amount must be a positive number"
-}
-```
 
-```json 400 Insufficient Balance
-{
+  // OR
+
   "error": "Agent has insufficient balance"
 }
 ```
 
-```json 404 Agent Not Found
+```json 404 
 {
   "error": "Agent not found"
 }
 ```
 
-```json 401 Unauthorized
+```json 401 
 {
   "error": "Invalid or missing API key"
 }
 ```
 
-```json 500 Internal Server Error
+```json 500 
 {
   "error": "Internal Server Error"
 }
@@ -223,10 +109,14 @@ deposit_savings("agent_k77NTwxp2Ym3JCmVsKtXQA", 100.50)
 | 404 | Not Found - Agent not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Info>
+**Interest Accrual**: Interest begins accruing immediately at the current platform rate once the deposit is confirmed.
+</Info>
 
-- The agent must have sufficient funds in its wallet to complete the deposit.
-- The amount must be a positive number.
-- Interest will begin accruing immediately at the current platform rate.
-- The transaction may take a few moments to be confirmed on the blockchain.
-- The returned investment ID can be used to track the investment or to withdraw funds later.
+<Warning>
+**Balance Requirement**: The agent must have sufficient funds in its wallet to complete the deposit.
+</Warning>
+
+<Info>
+**Investment Tracking**: The returned investment ID can be used to track the investment or to withdraw funds later.
+</Info>
