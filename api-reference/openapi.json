@@ -1,2339 +1,2377 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "title": "Mage Bank - API for AI-Driven Financial Agents",
-      "version": "1.0.0",
-      "description": "API for managing crypto wallet and agent banking operations",
-      "contact": {
-        "email": "support@magebank.com"
-      }
+        "title": "Mage Bank - API for AI-Driven Financial Agents",
+        "version": "1.0.0",
+        "description": "API for managing crypto wallet and agent banking operations",
+        "contact": {
+            "email": "support@magebank.com"
+        }
     },
-	"externalDocs": {
-		"description": "Mage Bank AI Documentation",
-		"url": "https://api.magebank.ai"
-	},
+    "externalDocs": {
+        "description": "Mage Bank AI Documentation",
+        "url": "https://api.magebank.ai"
+    },
     "tags": [
-      {
-        "name": "Agents",
-        "description": "Operations related to agent management"
-      },
-      {
-        "name": "Wallets",
-        "description": "Operations related to wallet management"
-      },
-      {
-        "name": "Transactions",
-        "description": "Operations related to transaction handling"
-      },
-      {
-        "name": "Investment",
-        "description": "Operations related to Investment handling"
-      },
-      {
-        "name": "Payments",
-        "description": "Operations related to Payment handling"
-      },
-      {
-        "name": "Users",
-        "description": "Operations related to User management"
-      },
-      {
-        "name": "Savings",
-        "description": "Operations related to Savings management"
-      }
+        {
+            "name": "Agents",
+            "description": "Operations related to agent management"
+        },
+        {
+            "name": "Wallets",
+            "description": "Operations related to wallet management"
+        },
+        {
+            "name": "Transactions",
+            "description": "Operations related to transaction handling"
+        },
+        {
+            "name": "Investment",
+            "description": "Operations related to Investment handling"
+        },
+        {
+            "name": "Payments",
+            "description": "Operations related to Payment handling"
+        },
+        {
+            "name": "Users",
+            "description": "Operations related to User management"
+        },
+        {
+            "name": "Savings",
+            "description": "Operations related to Savings management"
+        }
     ],
     "components": {
-      "schemas": {
-        "Agent": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "description": "Unique agent identifier in short ID format",
-              "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-            },
-            "name": {
-              "type": "string",
-              "description": "Name of the agent",
-              "example": "Payment Assistant"
-            },
-            "description": {
-              "type": "string",
-              "description": "Purpose and functionality of the agent",
-              "example": "Handles payment processing for customer support"
-            },
-            "status": {
-              "type": "string",
-              "description": "Current status of the agent",
-              "enum": [
-                "active",
-                "inactive",
-                "paused"
-              ],
-              "example": "active"
-            },
-            "walletAddress": {
-              "type": "string",
-              "description": "Serialized wallet address in string format",
-              "example": "WalletAddress{ addressId: '0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB', networkId: 'base-sepolia', walletId: '07f490dc-34e3-447f-9972-df2778fcb3c3' }"
-            },
-            "balance": {
-              "type": "string",
-              "description": "Current balance of the agent's wallet",
-              "example": "100"
-            },
-            "currency": {
-              "type": "string",
-              "description": "Currency type used by the agent",
-              "default": "USDC",
-              "example": "USDC"
-            },
-            "paymentRules": {
-              "type": "object",
-              "properties": {
-                "dailyLimit": {
-                  "type": "number",
-                  "description": "Maximum amount that can be spent per day",
-                  "example": 1000
-                },
-                "transactionLimit": {
-                  "type": "number",
-                  "description": "Maximum amount for a single transaction",
-                  "example": 100
-                },
-                "requireApprovalForAll": {
-                  "type": "boolean",
-                  "description": "Whether all transactions require approval",
-                  "example": false
-                },
-                "requireApprovalAboveAmount": {
-                  "type": "number",
-                  "description": "Transactions above this amount require approval",
-                  "example": 50
-                }
-              }
-            },
-            "tags": {
-              "type": "array",
-              "description": "Categories or labels assigned to the agent",
-              "items": {
-                "type": "string"
-              },
-              "example": [
-                "customer-support",
-                "payments"
-              ]
-            },
-            "created": {
-              "type": "string",
-              "format": "date-time",
-              "description": "Timestamp when the agent was created",
-              "example": "2025-04-15T11:00:08.432269+00:00"
-            }
-          }
-        },
-        "Transaction": {
-          "type": "object",
-          "properties": {
-            "txHash": {
-              "type": "string",
-              "description": "Transaction hash on the blockchain",
-              "example": "0x123...abc"
-            },
-            "status": {
-              "type": "string",
-              "description": "Current status of the transaction",
-              "enum": [
-                "pending",
-                "completed",
-                "failed"
-              ],
-              "example": "completed"
-            },
-            "amount": {
-              "type": "string",
-              "description": "Amount transferred in the transaction",
-              "example": "50"
-            },
-            "currency": {
-              "type": "string",
-              "description": "Currency used in the transaction",
-              "example": "USDC"
-            },
-            "from_wallet": {
-              "type": "string",
-              "description": "Sender wallet address",
-              "example": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6"
-            },
-            "to_wallet": {
-              "type": "string",
-              "description": "Recipient wallet address",
-              "example": "0xb66C42bA7B639bB9CEc2dB2520aC8Cff588895f6"
-            },
-            "timestamp": {
-              "type": "string",
-              "format": "date-time",
-              "description": "When the transaction occurred",
-              "example": "2025-05-03T18:52:39.911685+00:00"
-            }
-          }
-        },
-        "Savings": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "description": "Unique investment identifier in short ID format",
-              "example": "inv_k77NTwxp2Ym3JCmVsKtXQA"
-            },
-            "agent_id": {
-              "type": "string",
-              "description": "ID of the agent associated with this investment",
-              "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-            },
-            "amount": {
-              "type": "number",
-              "description": "Principal amount invested",
-              "example": 1000
-            },
-            "invested_at": {
-              "type": "string",
-              "format": "date-time",
-              "description": "Timestamp when the investment was created",
-              "example": "2025-04-15T11:00:08.432269+00:00"
-            },
-            "status": {
-              "type": "string",
-              "description": "Current status of the investment",
-              "enum": [
-                "active",
-                "completed",
-                "cancelled"
-              ],
-              "example": "active"
-            },
-            "current_value": {
-              "type": "string",
-              "description": "Current value of the investment including earned interest",
-              "example": "1050.00"
-            },
-            "interest_earned": {
-              "type": "string",
-              "description": "Interest earned on the investment to date",
-              "example": "50.00"
-            }
-          }
-        },
-        "SavingsDashboard": {
-          "type": "object",
-          "properties": {
-            "totalSavings": {
-              "type": "number",
-              "description": "Total current value of all investments including interest",
-              "example": 1500.75
-            },
-            "interestRate": {
-              "type": "number",
-              "description": "Current interest rate applied to investments",
-              "example": 5
-            },
-            "totalInvested": {
-              "type": "number",
-              "description": "Total principal amount invested by the user",
-              "example": 1000
-            },
-            "yearProjection": {
-              "type": "number",
-              "description": "Projected value of investments after one year at current rate",
-              "example": 1050
-            },
-            "agents": {
-              "type": "array",
-              "description": "Detailed information about investments by agent",
-              "items": {
+        "schemas": {
+            "Agent": {
                 "type": "object",
                 "properties": {
-                  "agent": {
-                    "type": "string",
-                    "description": "Name of the agent",
-                    "example": "Payment Assistant"
-                  },
-                  "investment_id": {
-                    "type": "string",
-                    "description": "Investment ID in short format",
-                    "example": "inv_k77NTwxp2Ym3JCmVsKtXQA"
-                  },
-                  "totalBalance": {
-                    "type": "number",
-                    "description": "Total balance including investment value",
-                    "example": 1200.5
-                  },
-                  "investedAmount": {
-                    "type": "number",
-                    "description": "Principal amount invested",
-                    "example": 1000
-                  },
-                  "currentValue": {
-                    "type": "number",
-                    "description": "Current value with interest",
-                    "example": 1200.5
-                  },
-                  "interest": {
-                    "type": "number",
-                    "description": "Interest earned to date",
-                    "example": 200.5
-                  },
-                  "current": {
-                    "type": "number",
-                    "description": "Current balance in agent's account",
-                    "example": 1000
-                  },
-                  "daysInvested": {
-                    "type": "number",
-                    "description": "Days the investment has been active",
-                    "example": 365
-                  }
-                }
-              }
-            }
-          }
-        },
-        "InterestRate": {
-          "type": "object",
-          "properties": {
-            "interestRate": {
-              "type": "number",
-              "description": "Current annual interest rate for investments",
-              "example": 4.5
-            },
-            "lastUpdated": {
-              "type": "string",
-              "format": "date-time",
-              "description": "Timestamp when the interest rate was last updated",
-              "example": "2025-05-04T12:00:00.000Z"
-            }
-          }
-        },
-        "InterestCalculation": {
-          "type": "object",
-          "properties": {
-            "principal": {
-              "type": "number",
-              "description": "Principal amount for the calculation",
-              "example": 1000
-            },
-            "days": {
-              "type": "number",
-              "description": "Investment duration in days",
-              "example": 365
-            },
-            "interestRate": {
-              "type": "number",
-              "description": "Annual interest rate applied to the calculation",
-              "example": 4.5
-            },
-            "interestEarned": {
-              "type": "string",
-              "description": "Interest amount earned over the period",
-              "example": "45.00"
-            },
-            "totalAmount": {
-              "type": "string",
-              "description": "Total amount including principal and interest",
-              "example": "1045.00"
-            },
-            "annualYield": {
-              "type": "string",
-              "description": "Effective annual yield as a percentage",
-              "example": "4.50%"
-            },
-            "calculation": {
-              "type": "object",
-              "description": "Details of the calculation steps",
-              "properties": {
-                "formula": {
-                  "type": "string",
-                  "description": "Formula used for calculation",
-                  "example": "principal × rate × (days ÷ 365)"
-                },
-                "steps": {
-                  "type": "array",
-                  "description": "Step-by-step calculation process",
-                  "items": {
-                    "type": "string"
-                  },
-                  "example": [
-                    "1000 × 0.045 × 365/365",
-                    "1000 × 0.045 × 1.000000",
-                    "1000 × 0.045000",
-                    "45.000000"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "WalletBalance": {
-          "type": "object",
-          "properties": {
-            "success": {
-              "type": "boolean",
-              "description": "Whether the operation was successful",
-              "example": true
-            },
-            "balance": {
-              "type": "string",
-              "description": "Current wallet balance",
-              "example": "100.50"
-            },
-            "asset": {
-              "type": "string",
-              "description": "Asset type (cryptocurrency)",
-              "example": "USDC"
-            },
-            "message": {
-              "type": "string",
-              "description": "Additional information about the balance retrieval",
-              "example": "Balance retrieved successfully"
-            },
-            "source": {
-              "type": "string",
-              "description": "Source of the balance information",
-              "example": "blockchain"
-            }
-          }
-        },
-        "Payment": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "description": "Unique payment identifier in short ID format",
-              "example": "payee_wDG5cavUCoK53uvFzTvkey"
-            },
-            "name": {
-              "type": "string",
-              "description": "Name or description of the payment",
-              "example": "Vendor XYZ Payment"
-            },
-            "type": {
-              "type": "string",
-              "description": "Type of payment (External or Internal)",
-              "enum": [
-                "EXTERNAL",
-                "INTERNAL"
-              ],
-              "example": "EXTERNAL"
-            },
-            "senderagentid": {
-              "type": "string",
-              "description": "ID of the agent sending the payment",
-              "example": "agent_eC6ZezevNsqxvoKmQrUuoU"
-            },
-            "receiveragentid": {
-              "type": "string",
-              "description": "ID of the agent receiving the payment",
-              "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-            },
-            "status": {
-              "type": "string",
-              "description": "Current status of the payment",
-              "enum": [
-                "New",
-                "Confirmed",
-                "Completed",
-                "Failed"
-              ],
-              "example": "New"
-            },
-            "approvalstatus": {
-              "type": "string",
-              "description": "Approval status of the payment",
-              "example": "Approved, Declined, Pending, Waiting, Waiting for Sender Approval"
-            },
-            "approvalrequired": {
-              "type": "boolean",
-              "description": "Whether this payment requires approval",
-              "example": true
-            },
-            "paymentdetails": {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "type": "string",
-                  "description": "Payment method used",
-                  "example": "CRYPTO_ADDRESS"
-                },
-                "amount": {
-                  "type": "number",
-                  "description": "Payment amount",
-                  "example": 6
-                },
-                "currency": {
-                  "type": "string",
-                  "description": "Payment currency",
-                  "example": "USDC"
-                }
-              }
-            },
-            "contactdetails": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string",
-                  "description": "Contact email for the payment recipient",
-                  "example": "contact@vendorxyz.com"
-                },
-                "phoneNumber": {
-                  "type": "string",
-                  "description": "Contact phone number for the payment recipient",
-                  "example": "+1234567890"
-                }
-              }
-            },
-            "tags": {
-              "type": "array",
-              "description": "Tags or categories for the payment",
-              "items": {
-                "type": "string"
-              },
-              "example": [
-                "vendor",
-                "regular"
-              ]
-            },
-            "createdat": {
-              "type": "string",
-              "format": "date-time",
-              "description": "Timestamp when the payment was created",
-              "example": "2025-04-17T10:28:18.512792+00:00"
-            },
-            "approvedat": {
-              "type": "string",
-              "format": "date-time",
-              "description": "Timestamp when the payment was approved/declined",
-              "example": "2025-04-17T11:30:00.000000+00:00"
-            }
-          }
-        },
-        "PaymentResponse": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "description": "Unique payment identifier in short ID format",
-              "example": "payee_wDG5cavUCoK53uvFzTvkey"
-            },
-            "name": {
-              "type": "string",
-              "description": "Name or description of the payment",
-              "example": "Vendor XYZ2"
-            },
-            "type": {
-              "type": "string",
-              "description": "Type of payment (External or Internal)",
-              "example": "External"
-            },
-            "status": {
-              "type": "string",
-              "description": "Current status of the payment",
-              "example": "New"
-            },
-            "createdat": {
-              "type": "string",
-              "format": "date-time",
-              "description": "Timestamp when the payment was created",
-              "example": "2025-04-17T10:28:18.512792"
-            },
-            "approvalRequired": {
-              "type": "boolean",
-              "description": "Whether this payment requires approval",
-              "example": true
-            }
-          }
-        },
-        "PaymentWithDirection": {
-          "type": "object",
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/Payment"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "initiatedBy": {
-                  "type": "string",
-                  "description": "Name of the agent that initiated the payment",
-                  "example": "Alice"
-                },
-                "receivedBy": {
-                  "type": "string",
-                  "description": "Name of the agent that received the payment",
-                  "example": "Bob"
-                },
-                "direction": {
-                  "type": "string",
-                  "description": "Direction of the payment relative to the user's agents",
-                  "enum": [
-                    "incoming",
-                    "outgoing"
-                  ],
-                  "example": "outgoing"
-                }
-              }
-            }
-          ]
-        },
-        "Error": {
-          "type": "object",
-          "properties": {
-            "error": {
-              "type": "string",
-              "description": "Error message",
-              "example": "Internal Server Error"
-            }
-          }
-        }
-      },
-      "responses": {
-        "NotFound": {
-          "description": "The specified resource was not found",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Error"
-              },
-              "example": {
-                "error": "Resource not found"
-              }
-            }
-          }
-        },
-        "BadRequest": {
-          "description": "Invalid request parameters",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Error"
-              },
-              "example": {
-                "error": "Invalid request parameters"
-              }
-            }
-          }
-        },
-        "InternalError": {
-          "description": "Internal Server Error",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Error"
-              },
-              "example": {
-                "error": "Internal Server Error"
-              }
-            }
-          }
-        },
-        "Unauthorized": {
-          "description": "Authentication required",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Error"
-              },
-              "example": {
-                "error": "Invalid or missing API key"
-              }
-            }
-          }
-        },
-        "default": {
-          "description": "Unexpected error",
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/Error" }
-            }
-          }
-        }
-      },
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        },
-        "ApiKeyAuth": {
-          "type": "apiKey",
-          "in": "header",
-          "name": "x-api-key"
-        }
-      }
-    },
-    "security": [
-      {
-        "ApiKeyAuth": []
-      }
-    ],
-    "paths": {
-      "/agentsWith/{id}": {
-        "get": {
-          "tags": [
-            "Agents"
-          ],
-          "summary": "Fetch details of a specific agent",
-          "description": "Returns detailed information about a specific agent based on the provided agent ID.",
-          "operationId": "getAgentById",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              },
-              "description": "Agent ID (can be a short ID like agent_xxx)",
-              "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Agent details successfully retrieved",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Agent"
-                  }
-                }
-              }
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/agents/create": {
-        "post": {
-          "tags": [
-            "Agents"
-          ],
-          "summary": "Create a new agent and fund its wallet",
-          "description": "Creates a new agent, generates a wallet, and optionally funds the agent's wallet from the user's wallet. The operation includes: 1. Creation of a new agent record 2. Generation of a secure blockchain wallet 3. Faucet funding of the wallet (on supported test networks) 4. Optional transfer of funds from user's wallet\n",
-          "operationId": "createAgent",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "userid",
-                    "name"
-                  ],
-                  "properties": {
-                    "userid": {
-                      "type": "string",
-                      "description": "ID of the user creating the agent",
-                      "example": "user_piXARPaD2jefNBGxzb84Qd"
-                    },
-                    "walletaddress": {
-                      "type": "string",
-                      "description": "User's wallet address for funding (optional)",
-                      "example": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6"
+                    "id": {
+                        "type": "string",
+                        "description": "Unique agent identifier in short ID format",
+                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
                     },
                     "name": {
-                      "type": "string",
-                      "description": "Name of the agent",
-                      "example": "Payment Assistant"
+                        "type": "string",
+                        "description": "Name of the agent",
+                        "example": "Payment Assistant"
                     },
                     "description": {
-                      "type": "string",
-                      "description": "Purpose and functionality of the agent",
-                      "example": "Handles payment processing for customer support"
-                    },
-                    "balance": {
-                      "type": "integer",
-                      "description": "Initial balance to fund the agent (in smallest units)",
-                      "example": 6
-                    },
-                    "dailylimit": {
-                      "type": "integer",
-                      "description": "Maximum amount that can be spent per day",
-                      "example": 1000
-                    },
-                    "transactionlimit": {
-                      "type": "integer",
-                      "description": "Maximum amount for a single transaction",
-                      "example": 100
-                    },
-                    "currency": {
-                      "type": "string",
-                      "description": "Currency type to use (defaults to USDC)",
-                      "default": "USDC",
-                      "example": "USDC"
-                    },
-                    "requireapprovalforall": {
-                      "type": "boolean",
-                      "description": "Whether all transactions require approval",
-                      "default": false,
-                      "example": false
-                    },
-                    "requireapprovalaboveamount": {
-                      "type": "integer",
-                      "description": "Transactions above this amount require approval",
-                      "example": 50
-                    },
-                    "tags": {
-                      "type": "array",
-                      "description": "Categories or labels to assign to the agent",
-                      "items": {
-                        "type": "string"
-                      },
-                      "example": [
-                        "customer-support",
-                        "payments"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Agent created and funded successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
                         "type": "string",
-                        "example": "agent_bRSEFnMRD1fvkMM39hzPdM"
-                      },
-                      "apikey": {
-                        "type": "string",
-                        "example": "mag_eJwVyN0OgiAYANA3cprT1qV_tY8E0jCVuyILSMtNG-LTt87l6SySt4NQVCGoVvCIggneZSASCOE1NpcE7ZzOopH_Q1c-12A4K4e8zgxnMJM0sjjxFE3xJmc4wDUsre4lGUpJzzDB0Mt7AiFmwiUaAppin1ijeCMN6M9C1mKD12ihTPiPwjkNZXQPme6DbGlNBc9aPfcCbb_dMRb2MbE-vqIKzdgtfgVGPxc"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "Payment Assistant"
-                      },
-                      "description": {
-                        "type": "string",
+                        "description": "Purpose and functionality of the agent",
                         "example": "Handles payment processing for customer support"
-                      },
-                      "status": {
+                    },
+                    "status": {
                         "type": "string",
+                        "description": "Current status of the agent",
                         "enum": [
-                          "active",
-                          "inactive",
-                          "paused"
+                            "active",
+                            "inactive",
+                            "paused"
                         ],
                         "example": "active"
-                      },
-                      "walletAddress": {
-                        "type": "object",
-                        "properties": {
-                          "addressId": {
-                            "type": "string",
-                            "example": ""
-                          },
-                          "networkId": {
-                            "type": "string",
-                            "example": "base-sepolia"
-                          },
-                          "walletId": {
-                            "type": "string",
-                            "example": ""
-                          }
-                        }
-                      },
-                      "balance": {
+                    },
+                    "walletAddress": {
                         "type": "string",
-                        "example": "6"
-                      },
-                      "currency": {
+                        "description": "Serialized wallet address in string format",
+                        "example": "WalletAddress{ addressId: '0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB', networkId: 'base-sepolia', walletId: '07f490dc-34e3-447f-9972-df2778fcb3c3' }"
+                    },
+                    "balance": {
                         "type": "string",
+                        "description": "Current balance of the agent's wallet",
+                        "example": "100"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "Currency type used by the agent",
+                        "default": "USDC",
                         "example": "USDC"
-                      },
-                      "paymentRules": {
+                    },
+                    "paymentRules": {
                         "type": "object",
                         "properties": {
-                          "dailyLimit": {
-                            "type": "integer",
-                            "example": 1000
-                          },
-                          "transactionLimit": {
-                            "type": "integer",
-                            "example": 100
-                          },
-                          "requireApprovalAboveAmount": {
-                            "type": "integer",
-                            "example": 50
-                          },
-                          "requireApprovalForAll": {
-                            "type": "boolean",
-                            "example": false
-                          }
+                            "dailyLimit": {
+                                "type": "number",
+                                "description": "Maximum amount that can be spent per day",
+                                "example": 1000
+                            },
+                            "transactionLimit": {
+                                "type": "number",
+                                "description": "Maximum amount for a single transaction",
+                                "example": 100
+                            },
+                            "requireApprovalForAll": {
+                                "type": "boolean",
+                                "description": "Whether all transactions require approval",
+                                "example": false
+                            },
+                            "requireApprovalAboveAmount": {
+                                "type": "number",
+                                "description": "Transactions above this amount require approval",
+                                "example": 50
+                            }
                         }
-                      },
-                      "tags": {
+                    },
+                    "tags": {
                         "type": "array",
+                        "description": "Categories or labels assigned to the agent",
                         "items": {
-                          "type": "string"
+                            "type": "string"
                         },
                         "example": [
-                          "customer-support",
-                          "payments"
+                            "customer-support",
+                            "payments"
                         ]
-                      },
-                      "created": {
+                    },
+                    "created": {
                         "type": "string",
                         "format": "date-time",
-                        "example": "2025-05-03T18:52:39.911685+00:00"
-                      },
-                      "transferResult": {
-                        "type": "object",
-                        "properties": {
-                          "success": {
-                            "type": "boolean",
-                            "example": true
-                          },
-                          "txHash": {
-                            "type": "string",
-                            "example": "0x123...abc"
-                          },
-                          "message": {
-                            "type": "string",
-                            "example": "Successfully transferred 6 USDC from user to agent wallet"
-                          }
-                        }
-                      },
-                      "faucetTransaction": {
-                        "type": "object",
-                        "properties": {
-                          "success": {
-                            "type": "boolean",
-                            "example": true
-                          },
-                          "txHash": {
-                            "type": "string",
-                            "example": "0xabc...123"
-                          },
-                          "message": {
-                            "type": "string",
-                            "example": "ETH testnet funds received via faucet"
-                          }
-                        }
-                      }
+                        "description": "Timestamp when the agent was created",
+                        "example": "2025-04-15T11:00:08.432269+00:00"
                     }
-                  }
                 }
-              }
             },
-            "201": {
-              "description": "Agent created, but funding transfer failed",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
+            "Transaction": {
+                "type": "object",
+                "properties": {
+                    "txHash": {
                         "type": "string",
-                        "example": "agent_bRSEFnMRD1fvkMM39hzPdM"
-                      },
-                      "warning": {
+                        "description": "Transaction hash on the blockchain",
+                        "example": "0x123...abc"
+                    },
+                    "status": {
                         "type": "string",
-                        "example": "Agent created successfully, but funding transfer failed. Please try funding the agent manually."
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid request parameters",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  },
-                  "examples": {
-                    "missingName": {
-                      "value": {
-                        "error": "Agent name is required"
-                      }
-                    },
-                    "invalidBalance": {
-                      "value": {
-                        "error": "Invalid balance amount"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/agents/{id}": {
-        "get": {
-          "tags": [
-            "Agents"
-          ],
-          "summary": "Fetch all agents for a user",
-          "description": "Returns an array of agents assigned to the user based on the provided user ID.",
-          "operationId": "getUserAgents",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              },
-              "description": "User ID (can be a short ID like user_xxx)",
-              "example": "user_piXARPaD2jefNBGxzb84Qd"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of agents successfully retrieved",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Agent"
-                    }
-                  }
-                }
-              }
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/agents/deposit": {
-        "post": {
-          "tags": [
-            "Agents",
-            "Transactions"
-          ],
-          "summary": "Deposit funds into an agent's wallet",
-          "description": "Transfers funds from the user's wallet to the specified agent's wallet. The operation includes: 1. Verification of user and agent existence 2. Validation of deposit amount 3. Transfer of funds on blockchain 4. Update of agent balance in database 5. Creation of transaction record\n",
-          "operationId": "depositToAgent",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "userid",
-                    "agentid",
-                    "amount"
-                  ],
-                  "properties": {
-                    "userid": {
-                      "type": "string",
-                      "description": "ID of the user initiating the deposit",
-                      "example": "user_piXARPaD2jefNBGxzb84Qd"
-                    },
-                    "agentid": {
-                      "type": "string",
-                      "description": "ID of the agent receiving the deposit",
-                      "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                        "description": "Current status of the transaction",
+                        "enum": [
+                            "pending",
+                            "completed",
+                            "failed"
+                        ],
+                        "example": "completed"
                     },
                     "amount": {
-                      "type": "number",
-                      "description": "Amount to deposit",
-                      "example": 50
-                    },
-                    "currency": {
-                      "type": "string",
-                      "description": "Currency type to deposit (defaults to USDC)",
-                      "default": "USDC",
-                      "example": "USDC"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Funds deposited successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "txHash": {
                         "type": "string",
-                        "example": "0x123...abc"
-                      },
-                      "message": {
-                        "type": "string",
-                        "example": "Successfully deposited 50 USDC to agent"
-                      },
-                      "updatedBalance": {
-                        "type": "string",
-                        "example": "150"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid request parameters",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  },
-                  "examples": {
-                    "missingParams": {
-                      "value": {
-                        "error": "userid, agentid, and amount are required."
-                      }
-                    },
-                    "invalidAmount": {
-                      "value": {
-                        "error": "Invalid deposit amount"
-                      }
-                    },
-                    "walletNotFound": {
-                      "value": {
-                        "error": "User wallet not found or inaccessible"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "description": "Transaction failed",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": false
-                      },
-                      "error": {
-                        "type": "string",
-                        "example": "Transfer failed on-chain: insufficient funds"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/agents/withdraw": {
-        "post": {
-          "tags": [
-            "Agents",
-            "Transactions"
-          ],
-          "summary": "Withdraw funds from an agent's wallet",
-          "description": "Transfers funds from the agent's wallet to the user's wallet. The operation includes: 1. Verification of user and agent existence 2. Validation of withdrawal amount against available balance 3. Transfer of funds on blockchain 4. Update of agent balance in database 5. Creation of transaction record\n",
-          "operationId": "withdrawFromAgent",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "userid",
-                    "agentid",
-                    "amount"
-                  ],
-                  "properties": {
-                    "userid": {
-                      "type": "string",
-                      "description": "ID of the user receiving the withdrawal",
-                      "example": "user_piXARPaD2jefNBGxzb84Qd"
-                    },
-                    "agentid": {
-                      "type": "string",
-                      "description": "ID of the agent sending the funds",
-                      "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-                    },
-                    "amount": {
-                      "type": "number",
-                      "description": "Amount to withdraw",
-                      "example": 50
-                    },
-                    "currency": {
-                      "type": "string",
-                      "description": "Currency type to withdraw (defaults to USDC)",
-                      "default": "USDC",
-                      "example": "USDC"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Funds withdrawn successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "txHash": {
-                        "type": "string",
-                        "example": "0x123...abc"
-                      },
-                      "message": {
-                        "type": "string",
-                        "example": "Successfully withdrew 50 USDC from agent to user"
-                      },
-                      "updatedBalance": {
-                        "type": "string",
+                        "description": "Amount transferred in the transaction",
                         "example": "50"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid request parameters",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  },
-                  "examples": {
-                    "missingParams": {
-                      "value": {
-                        "error": "userid, agentid, and amount are required."
-                      }
                     },
-                    "invalidAmount": {
-                      "value": {
-                        "error": "Invalid withdraw amount"
-                      }
-                    },
-                    "insufficientBalance": {
-                      "value": {
-                        "error": "Insufficient balance"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "description": "Transaction failed",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": false
-                      },
-                      "error": {
+                    "currency": {
                         "type": "string",
-                        "example": "Transfer failed on-chain"
-                      }
+                        "description": "Currency used in the transaction",
+                        "example": "USDC"
+                    },
+                    "from_wallet": {
+                        "type": "string",
+                        "description": "Sender wallet address",
+                        "example": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6"
+                    },
+                    "to_wallet": {
+                        "type": "string",
+                        "description": "Recipient wallet address",
+                        "example": "0xb66C42bA7B639bB9CEc2dB2520aC8Cff588895f6"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the transaction occurred",
+                        "example": "2025-05-03T18:52:39.911685+00:00"
                     }
-                  }
                 }
-              }
             },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/investment/interest-rate": {
-        "get": {
-          "tags": [
-            "Investment"
-          ],
-          "summary": "Get the current interest rate",
-          "description": "Retrieves the current annual interest rate for investments and the timestamp when it was last updated. This rate is used for all savings calculations in the platform.\n",
-          "operationId": "getCurrentInterestRate",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Interest rate retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/InterestRate"
-                  }
-                }
-              }
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/investment/calculator": {
-        "post": {
-          "tags": [
-            "Investment"
-          ],
-          "summary": "Calculate potential interest",
-          "description": "Calculates the potential interest earned for a given investment amount and period. Uses the platform's current interest rate by default, but allows specifying a custom rate for scenario planning. Returns detailed breakdown of the calculation with step-by-step formula application.\n",
-          "operationId": "calculateInterest",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "amount",
-                    "days"
-                  ],
-                  "properties": {
+            "Savings": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique investment identifier in short ID format",
+                        "example": "inv_k77NTwxp2Ym3JCmVsKtXQA"
+                    },
+                    "agent_id": {
+                        "type": "string",
+                        "description": "ID of the agent associated with this investment",
+                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                    },
                     "amount": {
-                      "type": "number",
-                      "description": "Principal amount to invest",
-                      "example": 1000
+                        "type": "number",
+                        "description": "Principal amount invested",
+                        "example": 1000
+                    },
+                    "invested_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the investment was created",
+                        "example": "2025-04-15T11:00:08.432269+00:00"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the investment",
+                        "enum": [
+                            "active",
+                            "completed",
+                            "cancelled"
+                        ],
+                        "example": "active"
+                    },
+                    "current_value": {
+                        "type": "string",
+                        "description": "Current value of the investment including earned interest",
+                        "example": "1050.00"
+                    },
+                    "interest_earned": {
+                        "type": "string",
+                        "description": "Interest earned on the investment to date",
+                        "example": "50.00"
+                    }
+                }
+            },
+            "SavingsDashboard": {
+                "type": "object",
+                "properties": {
+                    "totalSavings": {
+                        "type": "number",
+                        "description": "Total current value of all investments including interest",
+                        "example": 1500.75
+                    },
+                    "interestRate": {
+                        "type": "number",
+                        "description": "Current interest rate applied to investments",
+                        "example": 5
+                    },
+                    "totalInvested": {
+                        "type": "number",
+                        "description": "Total principal amount invested by the user",
+                        "example": 1000
+                    },
+                    "yearProjection": {
+                        "type": "number",
+                        "description": "Projected value of investments after one year at current rate",
+                        "example": 1050
+                    },
+                    "agents": {
+                        "type": "array",
+                        "description": "Detailed information about investments by agent",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "agent": {
+                                    "type": "string",
+                                    "description": "Name of the agent",
+                                    "example": "Payment Assistant"
+                                },
+                                "investment_id": {
+                                    "type": "string",
+                                    "description": "Investment ID in short format",
+                                    "example": "inv_k77NTwxp2Ym3JCmVsKtXQA"
+                                },
+                                "totalBalance": {
+                                    "type": "number",
+                                    "description": "Total balance including investment value",
+                                    "example": 1200.5
+                                },
+                                "investedAmount": {
+                                    "type": "number",
+                                    "description": "Principal amount invested",
+                                    "example": 1000
+                                },
+                                "currentValue": {
+                                    "type": "number",
+                                    "description": "Current value with interest",
+                                    "example": 1200.5
+                                },
+                                "interest": {
+                                    "type": "number",
+                                    "description": "Interest earned to date",
+                                    "example": 200.5
+                                },
+                                "current": {
+                                    "type": "number",
+                                    "description": "Current balance in agent's account",
+                                    "example": 1000
+                                },
+                                "daysInvested": {
+                                    "type": "number",
+                                    "description": "Days the investment has been active",
+                                    "example": 365
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "InterestRate": {
+                "type": "object",
+                "properties": {
+                    "interestRate": {
+                        "type": "number",
+                        "description": "Current annual interest rate for investments",
+                        "example": 4.5
+                    },
+                    "lastUpdated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the interest rate was last updated",
+                        "example": "2025-05-04T12:00:00.000Z"
+                    }
+                }
+            },
+            "InterestCalculation": {
+                "type": "object",
+                "properties": {
+                    "principal": {
+                        "type": "number",
+                        "description": "Principal amount for the calculation",
+                        "example": 1000
                     },
                     "days": {
-                      "type": "number",
-                      "description": "Investment duration in days",
-                      "example": 365
+                        "type": "number",
+                        "description": "Investment duration in days",
+                        "example": 365
                     },
-                    "customRate": {
-                      "type": "number",
-                      "description": "Optional custom interest rate (annual percentage)",
-                      "example": 4.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Interest calculation completed successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/InterestCalculation"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid request parameters",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  },
-                  "examples": {
-                    "missingParams": {
-                      "value": {
-                        "success": false,
-                        "error": "Amount and days are required"
-                      }
+                    "interestRate": {
+                        "type": "number",
+                        "description": "Annual interest rate applied to the calculation",
+                        "example": 4.5
                     },
-                    "invalidAmount": {
-                      "value": {
-                        "success": false,
-                        "error": "Amount must be a positive number"
-                      }
+                    "interestEarned": {
+                        "type": "string",
+                        "description": "Interest amount earned over the period",
+                        "example": "45.00"
                     },
-                    "invalidDays": {
-                      "value": {
-                        "success": false,
-                        "error": "Days must be a positive number"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/payments/setApprove": {
-        "post": {
-          "tags": [
-            "Payments"
-          ],
-          "summary": "Approve a payment",
-          "description": "Updates the approval status of a payment to \"Approved\" and sets the approval timestamp. This allows the payment to proceed to the next stage in the payment flow.\n",
-          "operationId": "approvePayment",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "paymentId"
-                  ],
-                  "properties": {
-                    "paymentId": {
-                      "type": "string",
-                      "description": "The short ID of the payment to approve",
-                      "example": "payee_c7m5fdJAfaV3R7VVpWk2MT"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Payment approved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
+                    "totalAmount": {
                         "type": "string",
-                        "example": "Approval Status Done."
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "$ref": "#/components/responses/BadRequest"
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/user/payments": {
-        "get": {
-          "tags": [
-            "Payments",
-            "Users"
-          ],
-          "summary": "Get all payments related to the authenticated user's agents",
-          "description": "Retrieves a list of payments where either the sender or receiver is one of the authenticated user's agents. Payments are enhanced with additional information: 1. Agent names for both sender and receiver 2. Direction (incoming/outgoing) relative to the user's agents 3. Payment status and creation timestamp\nResults can be optionally filtered by approval status.\n",
-          "operationId": "getUserPayments",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "parameters": [
-            {
-              "in": "query",
-              "name": "approvalStatus",
-              "schema": {
-                "type": "string"
-              },
-              "required": false,
-              "description": "Filter payments by approval status",
-              "example": "Approved, Declined, Pending, Waiting, Waiting for Sender Approva"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of payments retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/PaymentWithDirection"
-                    }
-                  },
-                  "examples": {
-                    "outgoing": {
-                      "summary": "Outgoing payment example",
-                      "value": [
-                        {
-                          "id": "payee_8tJo7vZb1RKo4oeyWuqgK",
-                          "senderagentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
-                          "receiveragentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
-                          "initiatedBy": "Alice",
-                          "receivedBy": "Bob",
-                          "direction": "outgoing",
-                          "name": "Payment from Alice to Bob",
-                          "approvalstatus": "Approved",
-                          "createdat": "2025-04-07T12:00:00Z",
-                          "type": "EXTERNAL",
-                          "paymentdetails": {
-                            "method": "CRYPTO_ADDRESS",
-                            "amount": 100,
-                            "currency": "USDC"
-                          }
-                        }
-                      ]
+                        "description": "Total amount including principal and interest",
+                        "example": "1045.00"
                     },
-                    "incoming": {
-                      "summary": "Incoming payment example",
-                      "value": [
-                        {
-                          "id": "payee_9tJo7vZb1RKo4oeyWuqgK",
-                          "senderagentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
-                          "receiveragentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
-                          "initiatedBy": "Bob",
-                          "receivedBy": "Alice",
-                          "direction": "incoming",
-                          "name": "Payment from Bob to Alice",
-                          "approvalstatus": "Waiting",
-                          "createdat": "2025-04-08T10:00:00Z",
-                          "type": "EXTERNAL",
-                          "paymentdetails": {
-                            "method": "CRYPTO_ADDRESS",
-                            "amount": 50,
-                            "currency": "USDC"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            },
-            "401": {
-              "$ref": "#/components/responses/Unauthorized"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/payments/{id}": {
-        "get": {
-          "tags": [
-            "Payments"
-          ],
-          "summary": "Fetch details of a specific payment",
-          "description": "Retrieves detailed information about a specific payment based on its ID. Converts short ID format to UUID format internally before querying the database.\n",
-          "operationId": "getPaymentById",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              },
-              "description": "Payment ID (can be a short ID like payee_xxx)",
-              "example": "payee_8tJo7vZb1RKo4oeyWuqgK"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Payment details retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Payment"
-                  }
-                }
-              }
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/payments/setDecline": {
-        "post": {
-          "tags": [
-            "Payments"
-          ],
-          "summary": "Decline a payment",
-          "description": "Updates the approval status of a payment to \"Decline\" and sets its status to \"Confirmed\". This effectively rejects the payment and prevents it from being processed. The operation also records the timestamp when the payment was declined.\n",
-          "operationId": "declinePayment",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "paymentId"
-                  ],
-                  "properties": {
-                    "paymentId": {
-                      "type": "string",
-                      "description": "The short ID of the payment to decline",
-                      "example": "payee_c7m5fdJAfaV3R7VVpWk2MT"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Payment declined successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
+                    "annualYield": {
                         "type": "string",
-                        "example": "Payment declined successfully"
-                      },
-                      "status": {
-                        "type": "string",
-                        "example": "Decline"
-                      },
-                      "txHash": {
-                        "type": "string",
-                        "nullable": true,
-                        "example": null
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid request parameters",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  },
-                  "examples": {
-                    "missingId": {
-                      "value": {
-                        "error": "Payment ID is required"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/payments/export": {
-        "post": {
-          "tags": [
-            "Payments"
-          ],
-          "summary": "Export payments data in various formats",
-          "description": "Exports payment data in CSV, XLSX, or PDF format based on the specified date range",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "format"
-                  ],
-                  "properties": {
-                    "format": {
-                      "type": "string",
-                      "enum": [
-                        "csv",
-                        "xlsx",
-                        "pdf"
-                      ],
-                      "description": "Export format"
+                        "description": "Effective annual yield as a percentage",
+                        "example": "4.50%"
                     },
-                    "dateRange": {
-                      "type": "object",
-                      "properties": {
-                        "start": {
-                          "type": "string",
-                          "format": "date"
-                        },
-                        "end": {
-                          "type": "string",
-                          "format": "date"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/savings/deposit": {
-        "post": {
-          "tags": [
-            "Savings"
-          ],
-          "summary": "Deposit savings into an agent's account",
-          "description": "Creates a new investment by depositing funds into an agent's savings account. The operation converts the agent ID to UUID format if provided in short format, validates the deposit amount, and creates a new investment record.\n",
-          "operationId": "depositSavings",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "agentId",
-                    "amount"
-                  ],
-                  "properties": {
-                    "agentId": {
-                      "type": "string",
-                      "description": "The short ID or UUID of the agent",
-                      "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-                    },
-                    "amount": {
-                      "type": "number",
-                      "description": "Amount to deposit (must be positive)",
-                      "example": 100.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Deposit completed successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "message": {
-                        "type": "string",
-                        "example": "Successfully invested 0.5 USDC."
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "$ref": "#/components/responses/BadRequest"
-            },
-            "401": {
-              "$ref": "#/components/responses/Unauthorized"
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/savings/withdraw": {
-        "post": {
-          "tags": [
-            "Savings"
-          ],
-          "summary": "Withdraw savings from an investment",
-          "description": "Closes an active investment and returns funds to the user's account. The operation validates the investment ID, converts it to UUID format if needed, and processes the withdrawal by updating the investment status.\n",
-          "operationId": "withdrawSavings",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "investmentId"
-                  ],
-                  "properties": {
-                    "investmentId": {
-                      "type": "string",
-                      "description": "The short ID or UUID of the investment",
-                      "example": "inv_k77NTwxp2Ym3JCmVsKtXQA"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Withdrawal completed successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "message": {
-                        "type": "string",
-                        "example": "Withdrawal completed successfully."
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "$ref": "#/components/responses/BadRequest"
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/savings/myinvestments": {
-        "get": {
-          "tags": [
-            "Savings"
-          ],
-          "summary": "Get all active investments for the authenticated user",
-          "description": "Retrieves a list of all active investments made by the authenticated user. The response includes details about agents associated with investments, the invested amount, current value (with interest), and investment duration. Interest calculations are based on the central wallet's current interest rate.\n",
-          "operationId": "getUserInvestments",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of active investments retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "agents": {
-                        "type": "array",
-                        "description": "List of agents with active investments",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "agent": {
-                              "type": "string",
-                              "description": "Name of the agent",
-                              "example": "Payment Assistant"
+                    "calculation": {
+                        "type": "object",
+                        "description": "Details of the calculation steps",
+                        "properties": {
+                            "formula": {
+                                "type": "string",
+                                "description": "Formula used for calculation",
+                                "example": "principal × rate × (days ÷ 365)"
                             },
-                            "totalBalance": {
-                              "type": "number",
-                              "description": "Total balance including investment value",
-                              "example": 1200.5
-                            },
-                            "investedAmount": {
-                              "type": "number",
-                              "description": "Principal amount invested",
-                              "example": 1000
-                            },
-                            "currentValue": {
-                              "type": "number",
-                              "description": "Current value with interest",
-                              "example": 1200.5
-                            },
-                            "interest": {
-                              "type": "number",
-                              "description": "Interest earned to date",
-                              "example": 200.5
-                            },
-                            "current": {
-                              "type": "number",
-                              "description": "Current balance in agent's account",
-                              "example": 1000
-                            },
-                            "daysInvested": {
-                              "type": "number",
-                              "description": "Days the investment has been active",
-                              "example": 365
+                            "steps": {
+                                "type": "array",
+                                "description": "Step-by-step calculation process",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "example": [
+                                    "1000 × 0.045 × 365/365",
+                                    "1000 × 0.045 × 1.000000",
+                                    "1000 × 0.045000",
+                                    "45.000000"
+                                ]
                             }
-                          }
                         }
-                      }
                     }
-                  }
                 }
-              }
             },
-            "401": {
-              "$ref": "#/components/responses/Unauthorized"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
+            "WalletBalance": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "description": "Whether the operation was successful",
+                        "example": true
+                    },
+                    "balance": {
+                        "type": "string",
+                        "description": "Current wallet balance",
+                        "example": "100.50"
+                    },
+                    "asset": {
+                        "type": "string",
+                        "description": "Asset type (cryptocurrency)",
+                        "example": "USDC"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Additional information about the balance retrieval",
+                        "example": "Balance retrieved successfully"
+                    },
+                    "source": {
+                        "type": "string",
+                        "description": "Source of the balance information",
+                        "example": "blockchain"
+                    }
                 }
-              }
-            }
-          }
-        }
-      },
-      "/savings/dashboard": {
-        "get": {
-          "tags": [
-            "Savings"
-          ],
-          "summary": "Get savings dashboard data",
-          "description": "Provides a comprehensive overview of the user's savings portfolio. Includes total savings, current interest rate, total invested amount, one-year projection, and detailed information about investments by agent. Calculates real-time investment values based on the current interest rate and the exact duration of each investment.\n",
-          "operationId": "getSavingsDashboard",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Savings dashboard data retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/SavingsDashboard"
-                  }
-                }
-              }
             },
-            "401": {
-              "$ref": "#/components/responses/Unauthorized"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/savings/{agentId}": {
-        "get": {
-          "tags": [
-            "Savings"
-          ],
-          "summary": "Get all investments for a specific agent",
-          "description": "Retrieves all investments (both active and completed) associated with a specific agent. For active investments, calculates the current value and interest earned based on the principal amount, interest rate, and investment duration. Returns detailed information including investment status and creation timestamp.\n",
-          "operationId": "getAgentInvestments",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "agentId",
-              "required": true,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The short ID or UUID of the agent",
-              "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of investments retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "investments": {
+            "Payment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique payment identifier in short ID format",
+                        "example": "payee_wDG5cavUCoK53uvFzTvkey"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name or description of the payment",
+                        "example": "Vendor XYZ Payment"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of payment (External or Internal)",
+                        "enum": [
+                            "EXTERNAL",
+                            "INTERNAL"
+                        ],
+                        "example": "EXTERNAL"
+                    },
+                    "senderagentid": {
+                        "type": "string",
+                        "description": "ID of the agent sending the payment",
+                        "example": "agent_eC6ZezevNsqxvoKmQrUuoU"
+                    },
+                    "receiveragentid": {
+                        "type": "string",
+                        "description": "ID of the agent receiving the payment",
+                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the payment",
+                        "enum": [
+                            "New",
+                            "Confirmed",
+                            "Completed",
+                            "Failed"
+                        ],
+                        "example": "New"
+                    },
+                    "approvalstatus": {
+                        "type": "string",
+                        "description": "Approval status of the payment",
+                        "example": "Approved, Declined, Pending, Waiting, Waiting for Sender Approval"
+                    },
+                    "approvalrequired": {
+                        "type": "boolean",
+                        "description": "Whether this payment requires approval",
+                        "example": true
+                    },
+                    "paymentdetails": {
+                        "type": "object",
+                        "properties": {
+                            "method": {
+                                "type": "string",
+                                "description": "Payment method used",
+                                "example": "CRYPTO_ADDRESS"
+                            },
+                            "amount": {
+                                "type": "number",
+                                "description": "Payment amount",
+                                "example": 6
+                            },
+                            "currency": {
+                                "type": "string",
+                                "description": "Payment currency",
+                                "example": "USDC"
+                            }
+                        }
+                    },
+                    "contactdetails": {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "description": "Contact email for the payment recipient",
+                                "example": "contact@vendorxyz.com"
+                            },
+                            "phoneNumber": {
+                                "type": "string",
+                                "description": "Contact phone number for the payment recipient",
+                                "example": "+1234567890"
+                            }
+                        }
+                    },
+                    "tags": {
                         "type": "array",
-                        "description": "List of investments for the specified agent",
+                        "description": "Tags or categories for the payment",
                         "items": {
-                          "$ref": "#/components/schemas/Savings"
+                            "type": "string"
+                        },
+                        "example": [
+                            "vendor",
+                            "regular"
+                        ]
+                    },
+                    "createdat": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the payment was created",
+                        "example": "2025-04-17T10:28:18.512792+00:00"
+                    },
+                    "approvedat": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the payment was approved/declined",
+                        "example": "2025-04-17T11:30:00.000000+00:00"
+                    }
+                }
+            },
+            "PaymentResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique payment identifier in short ID format",
+                        "example": "payee_wDG5cavUCoK53uvFzTvkey"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name or description of the payment",
+                        "example": "Vendor XYZ2"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of payment (External or Internal)",
+                        "example": "External"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the payment",
+                        "example": "New"
+                    },
+                    "createdat": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the payment was created",
+                        "example": "2025-04-17T10:28:18.512792"
+                    },
+                    "approvalRequired": {
+                        "type": "boolean",
+                        "description": "Whether this payment requires approval",
+                        "example": true
+                    }
+                }
+            },
+            "PaymentWithDirection": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Payment"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "initiatedBy": {
+                                "type": "string",
+                                "description": "Name of the agent that initiated the payment",
+                                "example": "Alice"
+                            },
+                            "receivedBy": {
+                                "type": "string",
+                                "description": "Name of the agent that received the payment",
+                                "example": "Bob"
+                            },
+                            "direction": {
+                                "type": "string",
+                                "description": "Direction of the payment relative to the user's agents",
+                                "enum": [
+                                    "incoming",
+                                    "outgoing"
+                                ],
+                                "example": "outgoing"
+                            }
                         }
-                      }
                     }
-                  }
-                }
-              }
+                ]
             },
-            "400": {
-              "$ref": "#/components/responses/BadRequest"
-            },
-            "404": {
-              "$ref": "#/components/responses/NotFound"
-            },
-            "500": {
-              "$ref": "#/components/responses/InternalError"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/transactions/summary": {
-        "get": {
-          "tags": [
-            "Transactions"
-          ],
-          "summary": "Get wallet summary for a date range",
-          "description": "Provides a summary of financial activity within the specified date range, including total amounts earned (deposits, interest) and spent (withdrawals, payments).\n",
-          "operationId": "getTransactionSummary",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "parameters": [
-            {
-              "in": "query",
-              "name": "start_date",
-              "schema": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "required": true,
-              "description": "Start date for summary calculation (ISO format)",
-              "example": "2023-05-01T00:00:00Z"
-            },
-            {
-              "in": "query",
-              "name": "end_date",
-              "schema": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "required": true,
-              "description": "End date for summary calculation (ISO format)",
-              "example": "2023-05-31T23:59:59Z"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Summary data retrieved successfully"
-            },
-            "400": {
-              "description": "Invalid request parameters"
-            },
-            "401": {
-              "description": "User not authenticated"
-            },
-            "500": {
-              "description": "Internal server error"
-            },
-            "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/user/wallet-balance": {
-        "get": {
-          "tags": [
-            "Users",
-            "Wallets"
-          ],
-          "summary": "Get the authenticated user's wallet balance",
-          "description": "Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance. Requires authentication with a valid API key.\n",
-          "operationId": "getUserWalletBalance",
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Wallet balance retrieved successfully",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/WalletBalance"
-                  },
-                  "examples": {
-                    "usdcBalance": {
-                      "value": {
-                        "success": true,
-                        "balance": "100.50",
-                        "asset": "USDC"
-                      }
-                    },
-                    "ethBalance": {
-                      "value": {
-                        "success": true,
-                        "balance": "0.05",
-                        "asset": "ETH"
-                      }
-                    },
-                    "zeroBalance": {
-                      "value": {
-                        "success": true,
-                        "balance": "0.00",
-                        "message": "All balance fetching methods failed"
-                      }
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string",
+                        "description": "Error message",
+                        "example": "Internal Server Error"
                     }
-                  }
                 }
-              }
-            },
-            "400": {
-              "description": "Invalid wallet address format",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  },
-                  "example": {
-                    "error": "Invalid wallet address format"
-                  }
+            }
+        },
+        "responses": {
+            "NotFound": {
+                "description": "The specified resource was not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        },
+                        "example": {
+                            "error": "Resource not found"
+                        }
+                    }
                 }
-              }
             },
-            "401": {
-              "$ref": "#/components/responses/Unauthorized"
+            "BadRequest": {
+                "description": "Invalid request parameters",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        },
+                        "example": {
+                            "error": "Invalid request parameters"
+                        }
+                    }
+                }
+            },
+            "InternalError": {
+                "description": "Internal Server Error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        },
+                        "example": {
+                            "error": "Internal Server Error"
+                        }
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Authentication required",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        },
+                        "example": {
+                            "error": "Invalid or missing API key"
+                        }
+                    }
+                }
             },
             "default": {
-              "description": "Unexpected error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/Error" }
+                "description": "Unexpected error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
                 }
-              }
             }
-          }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "x-api-key"
+            }
         }
-      }
+    },
+    "security": [
+        {
+            "ApiKeyAuth": []
+        }
+    ],
+    "paths": {
+        "/agentsWith/{id}": {
+            "get": {
+                "tags": [
+                    "Agents"
+                ],
+                "summary": "Fetch details of a specific agent",
+                "description": "Returns detailed information about a specific agent based on the provided agent ID.",
+                "operationId": "getAgentById",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Agent ID (can be a short ID like agent_xxx)",
+                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agent details successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Agent"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/agents/create": {
+            "post": {
+                "tags": [
+                    "Agents"
+                ],
+                "summary": "Create a new agent and fund its wallet",
+                "description": "Creates a new agent, generates a wallet, and optionally funds the agent's wallet from the user's wallet. The operation includes: 1. Creation of a new agent record 2. Generation of a secure blockchain wallet 3. Faucet funding of the wallet (on supported test networks) 4. Optional transfer of funds from user's wallet\n",
+                "operationId": "createAgent",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "userid",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "userid": {
+                                        "type": "string",
+                                        "description": "ID of the user creating the agent",
+                                        "example": "user_piXARPaD2jefNBGxzb84Qd"
+                                    },
+                                    "walletaddress": {
+                                        "type": "string",
+                                        "description": "User's wallet address for funding (optional)",
+                                        "example": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Name of the agent",
+                                        "example": "Payment Assistant"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Purpose and functionality of the agent",
+                                        "example": "Handles payment processing for customer support"
+                                    },
+                                    "balance": {
+                                        "type": "integer",
+                                        "description": "Initial balance to fund the agent (in smallest units)",
+                                        "example": 6
+                                    },
+                                    "dailylimit": {
+                                        "type": "integer",
+                                        "description": "Maximum amount that can be spent per day",
+                                        "example": 1000
+                                    },
+                                    "transactionlimit": {
+                                        "type": "integer",
+                                        "description": "Maximum amount for a single transaction",
+                                        "example": 100
+                                    },
+                                    "currency": {
+                                        "type": "string",
+                                        "description": "Currency type to use (defaults to USDC)",
+                                        "default": "USDC",
+                                        "example": "USDC"
+                                    },
+                                    "requireapprovalforall": {
+                                        "type": "boolean",
+                                        "description": "Whether all transactions require approval",
+                                        "default": false,
+                                        "example": false
+                                    },
+                                    "requireapprovalaboveamount": {
+                                        "type": "integer",
+                                        "description": "Transactions above this amount require approval",
+                                        "example": 50
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "description": "Categories or labels to assign to the agent",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "customer-support",
+                                            "payments"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Agent created and funded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "agent_bRSEFnMRD1fvkMM39hzPdM"
+                                        },
+                                        "apikey": {
+                                            "type": "string",
+                                            "example": "mag_eJwVyN0OgiAYANA3cprT1qV_tY8E0jCVuyILSMtNG-LTt87l6SySt4NQVCGoVvCIggneZSASCOE1NpcE7ZzOopH_Q1c-12A4K4e8zgxnMJM0sjjxFE3xJmc4wDUsre4lGUpJzzDB0Mt7AiFmwiUaAppin1ijeCMN6M9C1mKD12ihTPiPwjkNZXQPme6DbGlNBc9aPfcCbb_dMRb2MbE-vqIKzdgtfgVGPxc"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Payment Assistant"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Handles payment processing for customer support"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "active",
+                                                "inactive",
+                                                "paused"
+                                            ],
+                                            "example": "active"
+                                        },
+                                        "walletAddress": {
+                                            "type": "object",
+                                            "properties": {
+                                                "addressId": {
+                                                    "type": "string",
+                                                    "example": ""
+                                                },
+                                                "networkId": {
+                                                    "type": "string",
+                                                    "example": "base-sepolia"
+                                                },
+                                                "walletId": {
+                                                    "type": "string",
+                                                    "example": ""
+                                                }
+                                            }
+                                        },
+                                        "balance": {
+                                            "type": "string",
+                                            "example": "6"
+                                        },
+                                        "currency": {
+                                            "type": "string",
+                                            "example": "USDC"
+                                        },
+                                        "paymentRules": {
+                                            "type": "object",
+                                            "properties": {
+                                                "dailyLimit": {
+                                                    "type": "integer",
+                                                    "example": 1000
+                                                },
+                                                "transactionLimit": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                },
+                                                "requireApprovalAboveAmount": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "requireApprovalForAll": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            }
+                                        },
+                                        "tags": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "customer-support",
+                                                "payments"
+                                            ]
+                                        },
+                                        "created": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-05-03T18:52:39.911685+00:00"
+                                        },
+                                        "transferResult": {
+                                            "type": "object",
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "txHash": {
+                                                    "type": "string",
+                                                    "example": "0x123...abc"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Successfully transferred 6 USDC from user to agent wallet"
+                                                }
+                                            }
+                                        },
+                                        "faucetTransaction": {
+                                            "type": "object",
+                                            "properties": {
+                                                "success": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "txHash": {
+                                                    "type": "string",
+                                                    "example": "0xabc...123"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "ETH testnet funds received via faucet"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Agent created, but funding transfer failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "agent_bRSEFnMRD1fvkMM39hzPdM"
+                                        },
+                                        "warning": {
+                                            "type": "string",
+                                            "example": "Agent created successfully, but funding transfer failed. Please try funding the agent manually."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "missingName": {
+                                        "value": {
+                                            "error": "Agent name is required"
+                                        }
+                                    },
+                                    "invalidBalance": {
+                                        "value": {
+                                            "error": "Invalid balance amount"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/agents/{id}": {
+            "get": {
+                "tags": [
+                    "Agents"
+                ],
+                "summary": "Fetch all agents for a user",
+                "description": "Returns an array of agents assigned to the user based on the provided user ID.",
+                "operationId": "getUserAgents",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "User ID (can be a short ID like user_xxx)",
+                        "example": "user_piXARPaD2jefNBGxzb84Qd"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of agents successfully retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Agent"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/agents/deposit": {
+            "post": {
+                "tags": [
+                    "Agents",
+                    "Transactions"
+                ],
+                "summary": "Deposit funds into an agent's wallet",
+                "description": "Transfers funds from the user's wallet to the specified agent's wallet. The operation includes: 1. Verification of user and agent existence 2. Validation of deposit amount 3. Transfer of funds on blockchain 4. Update of agent balance in database 5. Creation of transaction record\n",
+                "operationId": "depositToAgent",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "userid",
+                                    "agentid",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "userid": {
+                                        "type": "string",
+                                        "description": "ID of the user initiating the deposit",
+                                        "example": "user_piXARPaD2jefNBGxzb84Qd"
+                                    },
+                                    "agentid": {
+                                        "type": "string",
+                                        "description": "ID of the agent receiving the deposit",
+                                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Amount to deposit",
+                                        "example": 50
+                                    },
+                                    "currency": {
+                                        "type": "string",
+                                        "description": "Currency type to deposit (defaults to USDC)",
+                                        "default": "USDC",
+                                        "example": "USDC"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Funds deposited successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "txHash": {
+                                            "type": "string",
+                                            "example": "0x123...abc"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully deposited 50 USDC to agent"
+                                        },
+                                        "updatedBalance": {
+                                            "type": "string",
+                                            "example": "150"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "missingParams": {
+                                        "value": {
+                                            "error": "userid, agentid, and amount are required."
+                                        }
+                                    },
+                                    "invalidAmount": {
+                                        "value": {
+                                            "error": "Invalid deposit amount"
+                                        }
+                                    },
+                                    "walletNotFound": {
+                                        "value": {
+                                            "error": "User wallet not found or inaccessible"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "description": "Transaction failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Transfer failed on-chain: insufficient funds"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/agents/withdraw": {
+            "post": {
+                "tags": [
+                    "Agents",
+                    "Transactions"
+                ],
+                "summary": "Withdraw funds from an agent's wallet",
+                "description": "Transfers funds from the agent's wallet to the user's wallet. The operation includes: 1. Verification of user and agent existence 2. Validation of withdrawal amount against available balance 3. Transfer of funds on blockchain 4. Update of agent balance in database 5. Creation of transaction record\n",
+                "operationId": "withdrawFromAgent",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "userid",
+                                    "agentid",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "userid": {
+                                        "type": "string",
+                                        "description": "ID of the user receiving the withdrawal",
+                                        "example": "user_piXARPaD2jefNBGxzb84Qd"
+                                    },
+                                    "agentid": {
+                                        "type": "string",
+                                        "description": "ID of the agent sending the funds",
+                                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Amount to withdraw",
+                                        "example": 50
+                                    },
+                                    "currency": {
+                                        "type": "string",
+                                        "description": "Currency type to withdraw (defaults to USDC)",
+                                        "default": "USDC",
+                                        "example": "USDC"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Funds withdrawn successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "txHash": {
+                                            "type": "string",
+                                            "example": "0x123...abc"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully withdrew 50 USDC from agent to user"
+                                        },
+                                        "updatedBalance": {
+                                            "type": "string",
+                                            "example": "50"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "missingParams": {
+                                        "value": {
+                                            "error": "userid, agentid, and amount are required."
+                                        }
+                                    },
+                                    "invalidAmount": {
+                                        "value": {
+                                            "error": "Invalid withdraw amount"
+                                        }
+                                    },
+                                    "insufficientBalance": {
+                                        "value": {
+                                            "error": "Insufficient balance"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "description": "Transaction failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Transfer failed on-chain"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/investment/interest-rate": {
+            "get": {
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "Get the current interest rate",
+                "description": "Retrieves the current annual interest rate for investments and the timestamp when it was last updated. This rate is used for all savings calculations in the platform.\n",
+                "operationId": "getCurrentInterestRate",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Interest rate retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InterestRate"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/investment/calculator": {
+            "post": {
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "Calculate potential interest",
+                "description": "Calculates the potential interest earned for a given investment amount and period. Uses the platform's current interest rate by default, but allows specifying a custom rate for scenario planning. Returns detailed breakdown of the calculation with step-by-step formula application.\n",
+                "operationId": "calculateInterest",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "amount",
+                                    "days"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Principal amount to invest",
+                                        "example": 1000
+                                    },
+                                    "days": {
+                                        "type": "number",
+                                        "description": "Investment duration in days",
+                                        "example": 365
+                                    },
+                                    "customRate": {
+                                        "type": "number",
+                                        "description": "Optional custom interest rate (annual percentage)",
+                                        "example": 4.5
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Interest calculation completed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InterestCalculation"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "missingParams": {
+                                        "value": {
+                                            "success": false,
+                                            "error": "Amount and days are required"
+                                        }
+                                    },
+                                    "invalidAmount": {
+                                        "value": {
+                                            "success": false,
+                                            "error": "Amount must be a positive number"
+                                        }
+                                    },
+                                    "invalidDays": {
+                                        "value": {
+                                            "success": false,
+                                            "error": "Days must be a positive number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/setApprove": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Approve a payment",
+                "description": "Updates the approval status of a payment to \"Approved\" and sets the approval timestamp. This allows the payment to proceed to the next stage in the payment flow.\n",
+                "operationId": "approvePayment",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "paymentId"
+                                ],
+                                "properties": {
+                                    "paymentId": {
+                                        "type": "string",
+                                        "description": "The short ID of the payment to approve",
+                                        "example": "payee_c7m5fdJAfaV3R7VVpWk2MT"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payment approved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Approval Status Done."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/payments": {
+            "get": {
+                "tags": [
+                    "Payments",
+                    "Users"
+                ],
+                "summary": "Get all payments related to the authenticated user's agents",
+                "description": "Retrieves a list of payments where either the sender or receiver is one of the authenticated user's agents. Payments are enhanced with additional information: 1. Agent names for both sender and receiver 2. Direction (incoming/outgoing) relative to the user's agents 3. Payment status and creation timestamp\nResults can be optionally filtered by approval status.\n",
+                "operationId": "getUserPayments",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "approvalStatus",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false,
+                        "description": "Filter payments by approval status",
+                        "example": "Approved, Declined, Pending, Waiting, Waiting for Sender Approva"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of payments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PaymentWithDirection"
+                                    }
+                                },
+                                "examples": {
+                                    "outgoing": {
+                                        "summary": "Outgoing payment example",
+                                        "value": [
+                                            {
+                                                "id": "payee_8tJo7vZb1RKo4oeyWuqgK",
+                                                "senderagentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
+                                                "receiveragentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
+                                                "initiatedBy": "Alice",
+                                                "receivedBy": "Bob",
+                                                "direction": "outgoing",
+                                                "name": "Payment from Alice to Bob",
+                                                "approvalstatus": "Approved",
+                                                "createdat": "2025-04-07T12:00:00Z",
+                                                "type": "EXTERNAL",
+                                                "paymentdetails": {
+                                                    "method": "CRYPTO_ADDRESS",
+                                                    "amount": 100,
+                                                    "currency": "USDC"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "incoming": {
+                                        "summary": "Incoming payment example",
+                                        "value": [
+                                            {
+                                                "id": "payee_9tJo7vZb1RKo4oeyWuqgK",
+                                                "senderagentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
+                                                "receiveragentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
+                                                "initiatedBy": "Bob",
+                                                "receivedBy": "Alice",
+                                                "direction": "incoming",
+                                                "name": "Payment from Bob to Alice",
+                                                "approvalstatus": "Waiting",
+                                                "createdat": "2025-04-08T10:00:00Z",
+                                                "type": "EXTERNAL",
+                                                "paymentdetails": {
+                                                    "method": "CRYPTO_ADDRESS",
+                                                    "amount": 50,
+                                                    "currency": "USDC"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/{id}": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Fetch details of a specific payment",
+                "description": "Retrieves detailed information about a specific payment based on its ID. Converts short ID format to UUID format internally before querying the database.\n",
+                "operationId": "getPaymentById",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Payment ID (can be a short ID like payee_xxx)",
+                        "example": "payee_8tJo7vZb1RKo4oeyWuqgK"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Payment"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/setDecline": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Decline a payment",
+                "description": "Updates the approval status of a payment to \"Decline\" and sets its status to \"Confirmed\". This effectively rejects the payment and prevents it from being processed. The operation also records the timestamp when the payment was declined.\n",
+                "operationId": "declinePayment",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "paymentId"
+                                ],
+                                "properties": {
+                                    "paymentId": {
+                                        "type": "string",
+                                        "description": "The short ID of the payment to decline",
+                                        "example": "payee_c7m5fdJAfaV3R7VVpWk2MT"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payment declined successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment declined successfully"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Decline"
+                                        },
+                                        "txHash": {
+                                            "type": "string",
+                                            "nullable": true,
+                                            "example": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "missingId": {
+                                        "value": {
+                                            "error": "Payment ID is required"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/export": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Export payments data in various formats",
+                "description": "Exports payment data in CSV, XLSX, or PDF format based on the specified date range",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "format"
+                                ],
+                                "properties": {
+                                    "format": {
+                                        "type": "string",
+                                        "enum": [
+                                            "csv",
+                                            "xlsx",
+                                            "pdf"
+                                        ],
+                                        "description": "Export format"
+                                    },
+                                    "dateRange": {
+                                        "type": "object",
+                                        "properties": {
+                                            "start": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "end": {
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/savings/deposit": {
+            "post": {
+                "tags": [
+                    "Savings"
+                ],
+                "summary": "Deposit savings into an agent's account",
+                "description": "Creates a new investment by depositing funds into an agent's savings account. The operation converts the agent ID to UUID format if provided in short format, validates the deposit amount, and creates a new investment record.\n",
+                "operationId": "depositSavings",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "agentId",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "agentId": {
+                                        "type": "string",
+                                        "description": "The short ID or UUID of the agent",
+                                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "description": "Amount to deposit (must be positive)",
+                                        "example": 100.5
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Deposit completed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully invested 0.5 USDC."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/savings/withdraw": {
+            "post": {
+                "tags": [
+                    "Savings"
+                ],
+                "summary": "Withdraw savings from an investment",
+                "description": "Closes an active investment and returns funds to the user's account. The operation validates the investment ID, converts it to UUID format if needed, and processes the withdrawal by updating the investment status.\n",
+                "operationId": "withdrawSavings",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "investmentId"
+                                ],
+                                "properties": {
+                                    "investmentId": {
+                                        "type": "string",
+                                        "description": "The short ID or UUID of the investment",
+                                        "example": "inv_k77NTwxp2Ym3JCmVsKtXQA"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Withdrawal completed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Withdrawal completed successfully."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/savings/myinvestments": {
+            "get": {
+                "tags": [
+                    "Savings"
+                ],
+                "summary": "Get all active investments for the authenticated user",
+                "description": "Retrieves a list of all active investments made by the authenticated user. The response includes details about agents associated with investments, the invested amount, current value (with interest), and investment duration. Interest calculations are based on the central wallet's current interest rate.\n",
+                "operationId": "getUserInvestments",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of active investments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "agents": {
+                                            "type": "array",
+                                            "description": "List of agents with active investments",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "agent": {
+                                                        "type": "string",
+                                                        "description": "Name of the agent",
+                                                        "example": "Payment Assistant"
+                                                    },
+                                                    "totalBalance": {
+                                                        "type": "number",
+                                                        "description": "Total balance including investment value",
+                                                        "example": 1200.5
+                                                    },
+                                                    "investedAmount": {
+                                                        "type": "number",
+                                                        "description": "Principal amount invested",
+                                                        "example": 1000
+                                                    },
+                                                    "currentValue": {
+                                                        "type": "number",
+                                                        "description": "Current value with interest",
+                                                        "example": 1200.5
+                                                    },
+                                                    "interest": {
+                                                        "type": "number",
+                                                        "description": "Interest earned to date",
+                                                        "example": 200.5
+                                                    },
+                                                    "current": {
+                                                        "type": "number",
+                                                        "description": "Current balance in agent's account",
+                                                        "example": 1000
+                                                    },
+                                                    "daysInvested": {
+                                                        "type": "number",
+                                                        "description": "Days the investment has been active",
+                                                        "example": 365
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/savings/dashboard": {
+            "get": {
+                "tags": [
+                    "Savings"
+                ],
+                "summary": "Get savings dashboard data",
+                "description": "Provides a comprehensive overview of the user's savings portfolio. Includes total savings, current interest rate, total invested amount, one-year projection, and detailed information about investments by agent. Calculates real-time investment values based on the current interest rate and the exact duration of each investment.\n",
+                "operationId": "getSavingsDashboard",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Savings dashboard data retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SavingsDashboard"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/savings/{agentId}": {
+            "get": {
+                "tags": [
+                    "Savings"
+                ],
+                "summary": "Get all investments for a specific agent",
+                "description": "Retrieves all investments (both active and completed) associated with a specific agent. For active investments, calculates the current value and interest earned based on the principal amount, interest rate, and investment duration. Returns detailed information including investment status and creation timestamp.\n",
+                "operationId": "getAgentInvestments",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "agentId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The short ID or UUID of the agent",
+                        "example": "agent_k77NTwxp2Ym3JCmVsKtXQA"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of investments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "investments": {
+                                            "type": "array",
+                                            "description": "List of investments for the specified agent",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Savings"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transactions/summary": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get wallet summary for a date range",
+                "description": "Provides a summary of financial activity within the specified date range, including total amounts earned (deposits, interest) and spent (withdrawals, payments).\n",
+                "operationId": "getTransactionSummary",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "start_date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "required": true,
+                        "description": "Start date for summary calculation (ISO format)",
+                        "example": "2023-05-01T00:00:00Z"
+                    },
+                    {
+                        "in": "query",
+                        "name": "end_date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "required": true,
+                        "description": "End date for summary calculation (ISO format)",
+                        "example": "2023-05-31T23:59:59Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Summary data retrieved successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request parameters"
+                    },
+                    "401": {
+                        "description": "User not authenticated"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/wallet-balance": {
+            "get": {
+                "tags": [
+                    "Users",
+                    "Wallets"
+                ],
+                "summary": "Get the authenticated user's wallet balance",
+                "description": "Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance. Requires authentication with a valid API key.\n",
+                "operationId": "getUserWalletBalance",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Wallet balance retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WalletBalance"
+                                },
+                                "examples": {
+                                    "usdcBalance": {
+                                        "value": {
+                                            "success": true,
+                                            "balance": "100.50",
+                                            "asset": "USDC"
+                                        }
+                                    },
+                                    "ethBalance": {
+                                        "value": {
+                                            "success": true,
+                                            "balance": "0.05",
+                                            "asset": "ETH"
+                                        }
+                                    },
+                                    "zeroBalance": {
+                                        "value": {
+                                            "success": true,
+                                            "balance": "0.00",
+                                            "message": "All balance fetching methods failed"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid wallet address format",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "error": "Invalid wallet address format"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
+}
