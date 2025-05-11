@@ -78,7 +78,7 @@ FILE: README.md
 <p align="center">
   <a href="https://www.magebank.ai/dashboard">Dashboard</a> • 
   <a href="https://api.magebank.ai">API Reference</a> • 
-  <a href="mailto:support@magebank.ai">Support</a>
+  <a href="mailto:contact@magebank.ai">Support</a>
 </p>
 
 ## 🏦 About MageBank
@@ -187,7 +187,7 @@ This documentation is provided under the [MIT License](LICENSE).
 
 If you need assistance with the documentation, please contact:
 
-- Email: [support@magebank.ai](mailto:support@magebank.ai)
+- Email: [contact@magebank.ai](mailto:contact@magebank.ai)
 - GitHub: Open an issue in this repository
 
 
@@ -328,7 +328,7 @@ FILE: docs.json
         "links": [
             {
                 "label": "Support",
-                "href": "mailto:support@magebank.ai"
+                "href": "mailto:contact@magebank.ai"
             }
         ],
         "primary": {
@@ -524,13 +524,13 @@ To ensure service stability, the MageBank API implements rate limiting. If you e
 - **100** requests per minute per API key
 - **5,000** requests per day per API key
 
-For higher limits, please contact our [support team](mailto:support@magebank.ai).
+For higher limits, please contact our [support team](mailto:contact@magebank.ai).
 
 ## Support
 
 If you have any questions or need assistance with the API, you can:
 
-- Email us at [support@magebank.ai](mailto:support@magebank.ai)
+- Email us at [contact@magebank.ai](mailto:contact@magebank.ai)
 - Visit the [Dashboard](https://www.magebank.ai/dashboard) to manage your account
 
 
@@ -956,7 +956,7 @@ To begin integrating MageBank with your MCP or A2A implementation:
 </Steps>
 
 <Note>
-  <span className="font-bold">DEVELOPER SUPPORT:</span> Our developer team is available to assist with integration questions specific to your MCP or A2A implementation. Contact us at <a href="mailto:developers@magebank.ai" className="text-primary font-medium">developers@magebank.ai</a>.
+  <span className="font-bold">DEVELOPER SUPPORT:</span> Our developer team is available to assist with integration questions specific to your MCP or A2A implementation. Contact us at <a href="mailto:contact@magebank.ai" className="text-primary font-medium">contact@magebank.ai</a>.
 </Note>
 
 
@@ -1092,7 +1092,7 @@ The current version (v1) is used by default if no version is specified.
 
 ## Support
 
-If you encounter any issues or have questions about the API, reach out to our support team at [support@magebank.ai](mailto:support@magebank.ai).
+If you encounter any issues or have questions about the API, reach out to our support team at [contact@magebank.ai](mailto:contact@magebank.ai).
 
 
 ================================================

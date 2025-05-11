@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://www.magebank.ai/dashboard">Dashboard</a> • 
   <a href="https://api.magebank.ai">API Reference</a> • 
-  <a href="mailto:support@magebank.ai">Support</a>
+  <a href="mailto:contact@magebank.ai">Support</a>
 </p>
 
 ## 🏦 About MageBank
@@ -120,5 +120,5 @@ This documentation is provided under the [MIT License](LICENSE).
 
 If you need assistance with the documentation, please contact:
 
-- Email: [support@magebank.ai](mailto:support@magebank.ai)
+- Email: [contact@magebank.ai](mailto:contact@magebank.ai)
 - GitHub: Open an issue in this repository
