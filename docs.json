@@ -104,8 +104,8 @@
         }
     },
     "logo": {
-        "light": "/logo/logo.svg",
-        "dark": "/logo/logo.svg"
+        "light": "/logo/favicon.ico",
+        "dark": "/logo/favicon.ico"
     },
     "navbar": {
         "links": [
