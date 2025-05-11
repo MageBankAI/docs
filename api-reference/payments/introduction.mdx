@@ -3,23 +3,38 @@ title: 'Introduction'
 description: 'Process and manage payments between agents and external accounts'
 ---
 
-The Payments API allows you to process financial transactions between agents and manage payment approvals. These endpoints provide comprehensive functionality for initiating, tracking, approving, and analyzing payments within the MageBank ecosystem.
+# Payments API
 
-<Note type="warning">
-  In sandbox mode only agent-to-agent transactions are currently supported. Agent to bank account, agent to businesses, and agent to checkout pages are coming soon.
+<Note>
+**Financial Transactions**: The Payments API provides a complete system for creating, approving, and tracking payments between agents on the blockchain.
 </Note>
+
+Process and manage financial transactions between agents with automatic approval workflows and detailed tracking. Use these endpoints to initiate, approve/decline, and analyze payments within the MageBank ecosystem.
+
+<Warning>
+In sandbox mode only agent-to-agent transactions are currently supported. Agent-to-bank account, agent-to-businesses, and agent-to-checkout pages are coming soon.
+</Warning>
 
 ## Payment Model
 
-Each payment in the MageBank system consists of:
+<Info>
+**Approval Flow**: Payments respect each agent's configured rules, with transactions above certain thresholds requiring explicit approval before execution.
+</Info>
+
+Each payment in the MageBank system includes:
 
 - **Identifiers**: Unique ID, name, and type
 - **Participants**: Sender and receiver agent IDs
-- **Status Tracking**: Current status and approval status flags
+- **Status**: Current processing and approval status
 - **Financial Details**: Amount, currency, and payment method
-- **Metadata**: Creation timestamp, approval timestamp, and other attributes
+- **Metadata**: Timestamps, tags, and contact information
 
-Here's an example of the payment data structure:
+Different approval statuses determine how payments are processed:
+- Payments requiring approval remain in "Waiting for Sender Approval" until authorized
+- Upon approval, payments move to blockchain processing
+- Declined payments are marked as "Confirmed" with a "Decline" approval status
+
+## Payment Structure
 
 ```json
 {
@@ -29,7 +44,7 @@ Here's an example of the payment data structure:
   "senderagentid": "agent_eC6ZezevNsqxvoKmQrUuoU",
   "receiveragentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
   "status": "New",
-  "approvalstatus": "Waiting",
+  "approvalstatus": "Waiting for Sender Approval",
   "approvalrequired": true,
   "paymentdetails": {
     "method": "CRYPTO_ADDRESS",
@@ -37,15 +52,11 @@ Here's an example of the payment data structure:
     "currency": "USDC"
   },
   "contactdetails": {
-    "email": "contact@vendorxyz.com",
-    "phoneNumber": "+1234567890"
+    "email": "contact@vendorxyz.com"
   },
-  "tags": [
-    "vendor",
-    "regular"
-  ],
-  "createdat": "2025-04-17T10:28:18.512792+00:00",
-  "approvedat": "2025-04-17T11:30:00.000000+00:00"
+  "tags": ["vendor", "regular"],
+  "createdat": "2025-04-17T10:28:18Z",
+  "approvedat": null
 }
 ```
 
@@ -72,36 +83,26 @@ Here's an example of the payment data structure:
   </Card>
 </CardGroup>
 
-## Payment Lifecycle
-
-The typical lifecycle of a payment includes:
-
-1. **Creation**: A payment is registered with sender, receiver, and amount details
-2. **Approval Check**: The system determines if approval is required based on agent rules
-3. **Approval/Decline**: If required, the payment is approved or declined by an authorized user
-4. **Processing**: For approved payments, funds are transferred on the blockchain
-5. **Completion**: The payment status is updated to "Confirmed" when complete
-
 ## Payment Types
 
-MageBank supports two main types of payments:
+<Check>
+**Payment Classifications**: MageBank provides distinct payment types to clearly identify the relationship between transacting parties.
+</Check>
 
-- **EXTERNAL**: Payments to recipients outside the user's agent network
-- **INTERNAL**: Transfers between the user's own agents
+- **EXTERNAL**: Payments to recipients outside your agent network
+- **INTERNAL**: Transfers between your own agents
 
-## Payment Status
+## Payment Status Flow
 
-Payments progress through various status states:
+<Info>
+**Status Progression**: Payments move through several states from creation to completion, with different approval paths based on agent rules.
+</Info>
 
 | Status | Description |
 |--------|-------------|
-| New | Payment has been created and is awaiting approval or processing |
-| Pending | Payment is in process of being executed |
-| Confirmed | Payment has been fully processed |
-
-## Approval Status
-
-Payments can have the following approval states:
+| New | Created and awaiting approval or processing |
+| Pending | In process of being executed on blockchain |
+| Confirmed | Fully processed and completed |
 
 | Approval Status | Description |
 |-----------------|-------------|
@@ -109,19 +110,14 @@ Payments can have the following approval states:
 | Pending | Payment is awaiting additional confirmation |
 | Approved | Payment has been explicitly approved |
 | Decline | Payment has been explicitly declined |
+| Waiting for Sender Approval | Payment requires explicit sender authorization |
 
 ## Best Practices
 
-- Implement proper error handling to account for declined payments
-- Regularly check payment statuses to ensure proper processing
-- Use appropriate payment types (INTERNAL vs. EXTERNAL) based on the recipient
-- Include meaningful payment names and tags for better organization
-- Set up appropriate approval thresholds based on business requirements
-
-## Next Steps
-
-Use the endpoints in this section to manage payment operations. After processing payments, you can:
-
-- Track [transaction history](/api-reference/transactions/get-transaction-summary) for financial reporting
-- Set up [savings accounts](/api-reference/savings/introduction) to optimize idle funds
-- Manage [agent funding](/api-reference/agents/deposit) based on payment patterns
+- Use meaningful payment names and tags for better organization and reporting
+- Implement proper error handling for declined or failed payments
+- Set appropriate approval thresholds in agent configuration based on risk tolerance
+- Use the correct payment type based on recipient relationship (INTERNAL vs. EXTERNAL)
+- Regularly monitor payment statuses, especially those requiring approval
+- Check the approval status before assuming a payment has been processed
+- Include relevant contact details for external payments to facilitate communication

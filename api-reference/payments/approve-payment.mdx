@@ -4,16 +4,14 @@ api: 'POST /payments/setApprove'
 description: 'Approve a payment that requires authorization'
 ---
 
-Approves a payment that is waiting for authorization, allowing it to proceed with fund transfer.
+<Note>
+**Authorization Step**: Approve payments that are waiting for authorization to proceed with blockchain fund transfer.
+</Note>
 
 ## Request Headers
 
 <ParamField header="x-api-key" type="string" required>
   Your API key for authentication
-</ParamField>
-
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
 </ParamField>
 
 ## Request Body
@@ -28,101 +26,22 @@ Approves a payment that is waiting for authorization, allowing it to proceed wit
   Confirmation message indicating the approval status has been updated
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/payments/setApprove" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "paymentId": "payee_c7m5fdJAfaV3R7VVpWk2MT"
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function approvePayment(paymentId) {
-  try {
-    const response = await axios.post('https://api.magebank.ai/payments/setApprove', {
-      paymentId: paymentId
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Payment approval result:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error approving payment:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-approvePayment('payee_c7m5fdJAfaV3R7VVpWk2MT');
-```
-
-```python Python
-import requests
-import json
-
-def approve_payment(payment_id):
-    url = "https://api.magebank.ai/payments/setApprove"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "paymentId": payment_id
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        result = response.json()
-        print("Payment approval result:", result)
-        return result
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-approve_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "message": "Approval Status Done."
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Bad Request
+```json 400 
 {
   "error": "Payment ID is required"
 }
 ```
 
-```json 404 Not Found
+```json 404 
 {
   "error": "Payment not found"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
@@ -136,9 +55,10 @@ approve_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
 | 404 | Not Found - Payment not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Warning>
+**Status Transition**: Only payments with an approval status of "Waiting for Sender Approval" can be approved.
+</Warning>
 
-- Only payments with an approval status of "Waiting for Sender Approval" can be approved.
-- Once approved, the payment will be processed on the blockchain.
-- The payment's status will change to "New" after approval, then to "Confirmed" once processed.
-- Only users with appropriate permissions can approve payments.
+<Info>
+**Post-Approval Process**: Once approved, the payment will be processed on the blockchain and its status will change to "New", then to "Confirmed" once processed.
+</Info>

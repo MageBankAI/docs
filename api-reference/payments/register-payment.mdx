@@ -4,16 +4,14 @@ api: 'POST /payments/register'
 description: "Create a new payment transaction between agents"
 ---
 
-Creates a new payment transaction between agents and processes it based on the sender agent's approval rules.
+<Note>
+**Agent Transactions**: Create payments between agents with automatic application of approval rules based on the sender's configuration.
+</Note>
 
 ## Request Headers
 
 <ParamField header="x-api-key" type="string" required>
   Your API key for authentication
-</ParamField>
-
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
 </ParamField>
 
 ## Request Body
@@ -27,17 +25,7 @@ Creates a new payment transaction between agents and processes it based on the s
 </ParamField>
 
 <ParamField body="paymentdetails" type="object" required>
-  <Expandable title="properties">
-    <ParamField body="amount" type="number" required>
-      Payment amount
-    </ParamField>
-    <ParamField body="currency" type="string" required>
-      Payment currency (typically "USDC")
-    </ParamField>
-    <ParamField body="method" type="string" required>
-      Payment method (typically "CRYPTO_ADDRESS")
-    </ParamField>
-  </Expandable>
+  Object containing amount, currency, and payment method
 </ParamField>
 
 <ParamField body="name" type="string" required>
@@ -45,44 +33,21 @@ Creates a new payment transaction between agents and processes it based on the s
 </ParamField>
 
 <ParamField body="type" type="string" required>
-  Type of payment (EXTERNAL or INTERNAL)
-</ParamField>
-
-<ParamField body="contactdetails" type="object">
-  <Expandable title="properties">
-    <ParamField body="email" type="string">
-      Contact email for the payment recipient
-    </ParamField>
-    <ParamField body="phoneNumber" type="string">
-      Contact phone number for the payment recipient
-    </ParamField>
-  </Expandable>
+  Type of payment: "EXTERNAL" or "INTERNAL"
 </ParamField>
 
 <ParamField body="tags" type="array">
-  Tags or categories for the payment
+  Optional tags or categories for the payment
 </ParamField>
 
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique payment identifier in short ID format
-</ResponseField>
-
-<ResponseField name="name" type="string">
-  Name or description of the payment
-</ResponseField>
-
-<ResponseField name="type" type="string">
-  Type of payment (EXTERNAL or INTERNAL)
+  Unique payment identifier
 </ResponseField>
 
 <ResponseField name="status" type="string">
-  Current status of the payment (New, Pending, or Confirmed)
-</ResponseField>
-
-<ResponseField name="createdat" type="string">
-  Timestamp when the payment was created
+  Current status of the payment
 </ResponseField>
 
 <ResponseField name="approvalRequired" type="boolean">
@@ -90,172 +55,43 @@ Creates a new payment transaction between agents and processes it based on the s
 </ResponseField>
 
 <ResponseField name="approvalstatus" type="string">
-  Current approval status (Waiting, Pending, Approved, or Decline)
+  Current approval status
 </ResponseField>
 
 <ResponseField name="txHash" type="string">
-  Transaction hash on the blockchain (if processed immediately)
+  Transaction hash (if processed immediately)
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/payments/register" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "senderagentid": "agent_eC6ZezevNsqxvoKmQrUuoU",
-    "receiveragentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
-    "paymentdetails": {
-      "amount": 6,
-      "currency": "USDC",
-      "method": "CRYPTO_ADDRESS"
-    },
-    "name": "Vendor XYZ Payment",
-    "type": "EXTERNAL",
-    "contactdetails": {
-      "email": "contact@vendorxyz.com",
-      "phoneNumber": "+1234567890"
-    },
-    "tags": ["vendor", "regular"]
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function registerPayment() {
-  try {
-    const response = await axios.post('https://api.magebank.ai/payments/register', {
-      senderagentid: "agent_eC6ZezevNsqxvoKmQrUuoU",
-      receiveragentid: "agent_k77NTwxp2Ym3JCmVsKtXQA",
-      paymentdetails: {
-        amount: 6,
-        currency: "USDC",
-        method: "CRYPTO_ADDRESS"
-      },
-      name: "Vendor XYZ Payment",
-      type: "EXTERNAL",
-      contactdetails: {
-        email: "contact@vendorxyz.com",
-        phoneNumber: "+1234567890"
-      },
-      tags: ["vendor", "regular"]
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Payment registered:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error registering payment:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-registerPayment();
-```
-
-```python Python
-import requests
-import json
-
-def register_payment():
-    url = "https://api.magebank.ai/payments/register"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "senderagentid": "agent_eC6ZezevNsqxvoKmQrUuoU",
-        "receiveragentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
-        "paymentdetails": {
-            "amount": 6,
-            "currency": "USDC",
-            "method": "CRYPTO_ADDRESS"
-        },
-        "name": "Vendor XYZ Payment",
-        "type": "EXTERNAL",
-        "contactdetails": {
-            "email": "contact@vendorxyz.com",
-            "phoneNumber": "+1234567890"
-        },
-        "tags": ["vendor", "regular"]
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        payment_data = response.json()
-        print("Payment registered:", payment_data)
-        return payment_data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-register_payment()
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 Requires Approval
 {
   "id": "payee_wDG5cavUCoK53uvFzTvkey",
-  "name": "Vendor XYZ Payment",
+  "name": "Invoice payment for services",
   "type": "EXTERNAL",
   "status": "New",
   "approvalstatus": "Waiting",
   "approvalRequired": true,
-  "createdat": "2025-04-17T10:28:18.512792",
+  "createdat": "2025-04-17T10:28:18Z",
   "txHash": null
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Missing Required Fields
+```json 200 Instant Payment
 {
-  "error": "Required fields missing: senderagentid, receiveragentid, paymentdetails, name, type"
+  "id": "payee_xFG8eqvUXeK23zmFwTasLc",
+  "name": "Small transaction",
+  "type": "INTERNAL",
+  "status": "Confirmed",
+  "approvalstatus": "Approved",
+  "approvalRequired": false,
+  "createdat": "2025-04-17T10:30:22Z",
+  "txHash": "0xabc123..."
 }
 ```
 
-```json 400 Invalid Payment Details
-{
-  "error": "Invalid payment details. Amount must be positive."
-}
-```
-
-```json 404 Agent Not Found
-{
-  "error": "Sender agent not found"
-}
-```
-
-```json 400 Insufficient Balance
+```json 400 
 {
   "error": "Insufficient balance in sender agent's wallet"
-}
-```
-
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
@@ -265,16 +101,18 @@ register_payment()
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Payment registered successfully |
-| 400 | Bad Request - Invalid or missing parameters |
-| 401 | Unauthorized - Invalid or missing API key |
+| 400 | Bad Request - Invalid parameters or insufficient balance |
 | 404 | Not Found - Agent not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Warning>
+**Payment Limits**: The payment will fail if it exceeds the sender agent's transaction or daily limits.
+</Warning>
 
-- If the payment amount exceeds the sender agent's limits, the request will fail.
-- Payments requiring approval will have `approvalRequired` set to `true`.
-- You'll need to use the [Approve Payment](/api-reference/payments/approve-payment) endpoint for payments that require approval.
-- Payments that don't require approval will be processed immediately.
-- Agent IDs can be in either short format or UUID format.
-- Use "EXTERNAL" type for payments outside the user's agent network and "INTERNAL" for payments between the user's own agents.
+<Info>
+**Payment Types**: Use "EXTERNAL" for payments to recipients outside your agent network and "INTERNAL" for payments between your own agents.
+</Info>
+
+<Info>
+**Approval Flow**: Payments requiring approval will need to be approved using the [Approve Payment](/api-reference/payments/approve-payment) endpoint before they are processed.
+</Info>

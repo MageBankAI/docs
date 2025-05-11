@@ -4,7 +4,9 @@ api: 'GET /payments/{id}'
 description: 'Fetch details of a specific payment'
 ---
 
-Retrieves detailed information about a specific payment based on its ID.
+<Note>
+**Payment Details**: Retrieve comprehensive information about a payment including its status, approval state, and transaction details.
+</Note>
 
 ## Path Parameters
 
@@ -21,7 +23,7 @@ Retrieves detailed information about a specific payment based on its ID.
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique payment identifier in short ID format
+  Unique payment identifier
 </ResponseField>
 
 <ResponseField name="name" type="string">
@@ -41,113 +43,23 @@ Retrieves detailed information about a specific payment based on its ID.
 </ResponseField>
 
 <ResponseField name="status" type="string">
-  Current status of the payment (New, Confirmed, Completed, Failed)
+  Current status of the payment
 </ResponseField>
 
 <ResponseField name="approvalstatus" type="string">
-  Approval status of the payment (Approved, Declined, Pending, Waiting, Waiting for Sender Approval)
-</ResponseField>
-
-<ResponseField name="approvalrequired" type="boolean">
-  Whether this payment requires approval
+  Approval status of the payment
 </ResponseField>
 
 <ResponseField name="paymentdetails" type="object">
-  <Expandable title="properties">
-    <ResponseField name="method" type="string">
-      Payment method used
-    </ResponseField>
-    <ResponseField name="amount" type="number">
-      Payment amount
-    </ResponseField>
-    <ResponseField name="currency" type="string">
-      Payment currency
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-<ResponseField name="contactdetails" type="object">
-  <Expandable title="properties">
-    <ResponseField name="email" type="string">
-      Contact email for the payment recipient
-    </ResponseField>
-    <ResponseField name="phoneNumber" type="string">
-      Contact phone number for the payment recipient
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-<ResponseField name="tags" type="array">
-  Tags or categories for the payment
+  Method, amount, and currency information
 </ResponseField>
 
 <ResponseField name="createdat" type="string">
   Timestamp when the payment was created
 </ResponseField>
 
-<ResponseField name="approvedat" type="string">
-  Timestamp when the payment was approved/declined
-</ResponseField>
-
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/payments/payee_8tJo7vZb1RKo4oeyWuqgK" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getPayment(paymentId) {
-  try {
-    const response = await axios.get(`https://api.magebank.ai/payments/${paymentId}`, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log('Payment details:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving payment:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-getPayment('payee_8tJo7vZb1RKo4oeyWuqgK');
-```
-
-```python Python
-import requests
-
-def get_payment(payment_id):
-    url = f"https://api.magebank.ai/payments/{payment_id}"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        payment_data = response.json()
-        print("Payment details:", payment_data)
-        return payment_data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_payment("payee_8tJo7vZb1RKo4oeyWuqgK")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "id": "payee_wDG5cavUCoK53uvFzTvkey",
   "name": "Vendor XYZ Payment",
@@ -162,37 +74,15 @@ get_payment("payee_8tJo7vZb1RKo4oeyWuqgK")
     "amount": 6,
     "currency": "USDC"
   },
-  "contactdetails": {
-    "email": "contact@vendorxyz.com",
-    "phoneNumber": "+1234567890"
-  },
-  "tags": [
-    "vendor",
-    "regular"
-  ],
-  "createdat": "2025-04-17T10:28:18.512792+00:00",
+  "tags": ["vendor", "regular"],
+  "createdat": "2025-04-17T10:28:18Z",
   "approvedat": null
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 404 Not Found
+```json 404 
 {
   "error": "Payment not found"
-}
-```
-
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
@@ -202,13 +92,13 @@ get_payment("payee_8tJo7vZb1RKo4oeyWuqgK")
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Payment details retrieved successfully |
-| 401 | Unauthorized - Invalid or missing API key |
 | 404 | Not Found - Payment not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Info>
+**Payment Types**: Use "EXTERNAL" for payments to recipients outside your agent network and "INTERNAL" for payments between your own agents.
+</Info>
 
-- The payment ID can be in the short format (e.g., `payee_8tJo7vZb1RKo4oeyWuqgK`).
-- The `approvedat` field will be null if the payment has not yet been approved or declined.
-- The `contactdetails` object may be empty if no contact information was provided.
-- The `type` field can be either "EXTERNAL" (to recipients outside the user's agent network) or "INTERNAL" (between the user's own agents).
+<Info>
+**Approval Flow**: The `approvedat` field will be null if the payment has not yet been approved or declined.
+</Info>

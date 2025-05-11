@@ -4,7 +4,9 @@ api: 'GET /user/payments'
 description: "Get all payments related to the authenticated user's agents"
 ---
 
-Retrieves a list of payments where either the sender or receiver is one of the user's agents, with optional filtering by approval status.
+<Note>
+**Payment History**: View all incoming and outgoing payments associated with your agents, with optional filtering by approval status.
+</Note>
 
 ## Request Headers
 
@@ -15,7 +17,7 @@ Retrieves a list of payments where either the sender or receiver is one of the u
 ## Query Parameters
 
 <ParamField query="approvalStatus" type="string">
-  Filter payments by approval status
+  Filter payments by approval status (Approved, Declined, Pending, Waiting)
 </ParamField>
 
 ## Response
@@ -23,15 +25,11 @@ Retrieves a list of payments where either the sender or receiver is one of the u
 Returns an array of payment objects, each containing:
 
 <ResponseField name="id" type="string">
-  Unique payment identifier in short ID format
+  Unique payment identifier
 </ResponseField>
 
-<ResponseField name="senderagentid" type="string">
-  ID of the agent sending the payment
-</ResponseField>
-
-<ResponseField name="receiveragentid" type="string">
-  ID of the agent receiving the payment
+<ResponseField name="direction" type="string">
+  Direction of the payment (incoming, outgoing)
 </ResponseField>
 
 <ResponseField name="initiatedBy" type="string">
@@ -42,10 +40,6 @@ Returns an array of payment objects, each containing:
   Name of the agent that received the payment
 </ResponseField>
 
-<ResponseField name="direction" type="string">
-  Direction of the payment relative to the user's agents (incoming, outgoing)
-</ResponseField>
-
 <ResponseField name="name" type="string">
   Name or description of the payment
 </ResponseField>
@@ -54,110 +48,12 @@ Returns an array of payment objects, each containing:
   Approval status of the payment
 </ResponseField>
 
-<ResponseField name="createdat" type="string">
-  Timestamp when the payment was created
-</ResponseField>
-
-<ResponseField name="type" type="string">
-  Type of payment (EXTERNAL, INTERNAL)
-</ResponseField>
-
 <ResponseField name="paymentdetails" type="object">
-  <Expandable title="properties">
-    <ResponseField name="method" type="string">
-      Payment method used
-    </ResponseField>
-    <ResponseField name="amount" type="number">
-      Payment amount
-    </ResponseField>
-    <ResponseField name="currency" type="string">
-      Payment currency
-    </ResponseField>
-  </Expandable>
+  Method, amount, and currency information
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-# Get all payments
-curl -X GET "https://api.magebank.ai/user/payments" \
-  -H "x-api-key: YOUR_API_KEY"
-
-# Get only payments waiting for approval
-curl -X GET "https://api.magebank.ai/user/payments?approvalStatus=Waiting%20for%20Sender%20Approval" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getUserPayments(approvalStatus = null) {
-  try {
-    const params = {};
-    if (approvalStatus) {
-      params.approvalStatus = approvalStatus;
-    }
-    
-    const response = await axios.get('https://api.magebank.ai/user/payments', {
-      params: params,
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log(`Found ${response.data.length} payments`);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving payments:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-// Get all payments
-getUserPayments();
-
-// Get only payments waiting for approval
-getUserPayments('Waiting for Sender Approval');
-```
-
-```python Python
-import requests
-
-def get_user_payments(approval_status=None):
-    url = "https://api.magebank.ai/user/payments"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    params = {}
-    if approval_status:
-        params["approvalStatus"] = approval_status
-    
-    response = requests.get(url, headers=headers, params=params)
-    
-    if response.status_code == 200:
-        payments = response.json()
-        print(f"Found {len(payments)} payments")
-        return payments
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-# Get all payments
-get_user_payments()
-
-# Get only payments waiting for approval
-get_user_payments("Waiting for Sender Approval")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 [
   {
     "id": "payee_8tJo7vZb1RKo4oeyWuqgK",
@@ -178,37 +74,21 @@ get_user_payments("Waiting for Sender Approval")
   },
   {
     "id": "payee_9tJo7vZb1RKo4oeyWuqgK",
-    "senderagentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
-    "receiveragentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
+    "direction": "incoming",
     "initiatedBy": "Bob",
     "receivedBy": "Alice",
-    "direction": "incoming",
     "name": "Payment from Bob to Alice",
     "approvalstatus": "Waiting",
-    "createdat": "2025-04-08T10:00:00Z",
-    "type": "EXTERNAL",
     "paymentdetails": {
-      "method": "CRYPTO_ADDRESS",
       "amount": 50,
       "currency": "USDC"
     }
   }
+
+  // or
+
+  []
 ]
-```
-
-## Error Responses
-
-<ResponseExample>
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
-}
 ```
 </ResponseExample>
 
@@ -217,12 +97,12 @@ get_user_payments("Waiting for Sender Approval")
 | Status Code | Description |
 |-------------|-------------|
 | 200 | List of payments retrieved successfully |
-| 401 | Unauthorized - Invalid or missing API key |
 | 500 | Internal Server Error |
 
-## Notes
+<Info>
+**Direction**: The `direction` field indicates whether a payment is incoming (to your agent) or outgoing (from your agent).
+</Info>
 
-- The `direction` field indicates whether the payment is incoming or outgoing relative to your agents.
-- Payments are sorted by creation date, with the most recent first.
-- Valid approval status values include "Approved", "Declined", "Pending", "Waiting", and "Waiting for Sender Approval".
-- If no payments match the filter criteria, an empty array will be returned.
+<Info>
+**Empty Result**: If no payments match the filter criteria, an empty array will be returned with a 200 status code.
+</Info>

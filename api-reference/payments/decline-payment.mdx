@@ -4,16 +4,14 @@ api: 'POST /payments/setDecline'
 description: 'Decline a payment to prevent processing'
 ---
 
-Updates a payment's status to declined, preventing it from being processed and transferring funds.
+<Note>
+**Rejection Action**: Cancel pending payments by declining them, which prevents any funds from being transferred.
+</Note>
 
 ## Request Headers
 
 <ParamField header="x-api-key" type="string" required>
   Your API key for authentication
-</ParamField>
-
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
 </ParamField>
 
 ## Request Body
@@ -36,78 +34,8 @@ Updates a payment's status to declined, preventing it from being processed and t
   Transaction hash (will be null for declined payments)
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/payments/setDecline" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "paymentId": "payee_c7m5fdJAfaV3R7VVpWk2MT"
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function declinePayment(paymentId) {
-  try {
-    const response = await axios.post('https://api.magebank.ai/payments/setDecline', {
-      paymentId: paymentId
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Payment decline result:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error declining payment:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-declinePayment('payee_c7m5fdJAfaV3R7VVpWk2MT');
-```
-
-```python Python
-import requests
-import json
-
-def decline_payment(payment_id):
-    url = "https://api.magebank.ai/payments/setDecline"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "paymentId": payment_id
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        result = response.json()
-        print("Payment decline result:", result)
-        return result
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-decline_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "message": "Payment declined successfully",
   "status": "Decline",
@@ -115,24 +43,15 @@ decline_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Bad Request
+```json 400 
 {
   "error": "Payment ID is required"
 }
 ```
 
-```json 404 Not Found
+```json 404 
 {
   "error": "Payment not found"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
@@ -146,9 +65,10 @@ decline_payment("payee_c7m5fdJAfaV3R7VVpWk2MT")
 | 404 | Not Found - Payment not found |
 | 500 | Internal Server Error |
 
-## Notes
+<Warning>
+**Final Action**: Declined payments cannot be later approved. A new payment must be created if necessary.
+</Warning>
 
-- Only payments with an approval status of "Waiting for Sender Approval" can be declined.
-- Once declined, no funds will be transferred and the transaction won't be processed.
-- The payment's status will be updated to "Confirmed" with an approval status of "Decline".
-- Declined payments cannot be later approved; a new payment must be created if necessary.
+<Info>
+**Status Change**: The payment's status will be updated to "Confirmed" with an approval status of "Decline".
+</Info>
