@@ -4,7 +4,9 @@ api: 'GET /transactions/summary'
 description: 'Get a summary of financial activity for a date range'
 ---
 
-Provides a summary of financial activity within the specified date range, including deposits, payments, and interest earned.
+<Note>
+**Financial Overview**: Get a concise summary of transaction totals across all your agents for any specified date range.
+</Note>
 
 ## Request Headers
 
@@ -15,189 +17,47 @@ Provides a summary of financial activity within the specified date range, includ
 ## Query Parameters
 
 <ParamField query="start_date" type="string" format="date-time" required>
-  Start date for summary calculation (ISO 8601 format)
+  Start date for summary (ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ)
 </ParamField>
 
 <ParamField query="end_date" type="string" format="date-time" required>
-  End date for summary calculation (ISO 8601 format)
+  End date for summary (ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ)
 </ParamField>
 
 ## Response
 
-<ResponseField name="totalIncoming" type="number">
-  Total amount received during the period
+<ResponseField name="totalEarned" type="number">
+  Total amount received by your agents during the period
 </ResponseField>
 
-<ResponseField name="totalOutgoing" type="number">
-  Total amount spent during the period
+<ResponseField name="totalSpent" type="number">
+  Total amount spent by your agents during the period
 </ResponseField>
 
-<ResponseField name="netChange" type="number">
-  Net financial change (incoming - outgoing)
+<ResponseField name="transactionCount" type="number">
+  Total number of transactions during the period
 </ResponseField>
-
-<ResponseField name="interestEarned" type="number">
-  Interest earned from savings during the period
-</ResponseField>
-
-<ResponseField name="breakdown" type="object">
-  <Expandable title="properties">
-    <ResponseField name="deposits" type="number">
-      Total deposits to agent wallets
-    </ResponseField>
-    <ResponseField name="withdrawals" type="number">
-      Total withdrawals from agent wallets
-    </ResponseField>
-    <ResponseField name="payments" type="number">
-      Total payments to external accounts
-    </ResponseField>
-    <ResponseField name="savingsDeposits" type="number">
-      Total deposits to savings accounts
-    </ResponseField>
-    <ResponseField name="savingsWithdrawals" type="number">
-      Total withdrawals from savings accounts
-    </ResponseField>
-    <ResponseField name="interest" type="number">
-      Total interest earned
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-<ResponseField name="period" type="object">
-  <Expandable title="properties">
-    <ResponseField name="start" type="string">
-      Start date of the summary period
-    </ResponseField>
-    <ResponseField name="end" type="string">
-      End date of the summary period
-    </ResponseField>
-    <ResponseField name="days" type="number">
-      Number of days in the period
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/transactions/summary?start_date=2025-05-01T00:00:00Z&end_date=2025-05-31T23:59:59Z" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getTransactionSummary(startDate, endDate) {
-  try {
-    const response = await axios.get('https://api.magebank.ai/transactions/summary', {
-      params: {
-        start_date: startDate.toISOString(),
-        end_date: endDate.toISOString()
-      },
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log('Transaction summary:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving transaction summary:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-// Example: Get summary for May 2025
-const startDate = new Date('2025-05-01T00:00:00Z');
-const endDate = new Date('2025-05-31T23:59:59Z');
-getTransactionSummary(startDate, endDate);
-```
-
-```python Python
-import requests
-from datetime import datetime
-
-def get_transaction_summary(start_date, end_date):
-    url = "https://api.magebank.ai/transactions/summary"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    params = {
-        "start_date": start_date.isoformat(),
-        "end_date": end_date.isoformat()
-    }
-    
-    response = requests.get(url, headers=headers, params=params)
-    
-    if response.status_code == 200:
-        summary = response.json()
-        print("Transaction summary:", summary)
-        return summary
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-# Example: Get summary for May 2025
-from datetime import datetime
-start_date = datetime(2025, 5, 1, 0, 0, 0)
-end_date = datetime(2025, 5, 31, 23, 59, 59)
-get_transaction_summary(start_date, end_date)
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
-{
-  "totalIncoming": 1250.50,
-  "totalOutgoing": 750.25,
-  "netChange": 500.25,
-  "interestEarned": 12.75,
-  "breakdown": {
-    "deposits": 1000.00,
-    "withdrawals": 500.00,
-    "payments": 250.25,
-    "savingsDeposits": 250.50,
-    "savingsWithdrawals": 0.00,
-    "interest": 12.75
-  },
-  "period": {
-    "start": "2025-05-01T00:00:00Z",
-    "end": "2025-05-31T23:59:59Z",
-    "days": 31
-  }
-}
-```
-
-## Error Responses
 
 <ResponseExample>
-```json 400 Bad Request
+```json 200
 {
-  "error": "Invalid date format. Please use ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)."
+  "totalEarned": 1250.50,
+  "totalSpent": 750.25,
+  "transactionCount": 15
 }
 ```
 
-```json 400 Invalid Range
+```json 400 
 {
-  "error": "End date must be after start date."
+  "success": false,
+  "error": "start_date and end_date are required"
 }
 ```
 
-```json 401 Unauthorized
+```json 400
 {
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
-{
-  "error": "Internal Server Error"
+  "success": false,
+  "error": "Invalid date format. Use ISO format (e.g., 2023-05-01T00:00:00Z)"
 }
 ```
 </ResponseExample>
@@ -207,13 +67,14 @@ get_transaction_summary(start_date, end_date)
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Summary data retrieved successfully |
-| 400 | Bad Request - Invalid parameters |
-| 401 | Unauthorized - Invalid or missing API key |
+| 400 | Bad Request - Invalid or missing parameters |
+| 401 | Unauthorized - User not authenticated |
 | 500 | Internal Server Error |
 
-## Notes
+<Info>
+**All Agents Included**: The summary automatically combines transactions across all your agents, providing a consolidated financial overview.
+</Info>
 
-- Dates must be provided in ISO 8601 format (e.g., `2025-05-01T00:00:00Z`).
-- The maximum date range is 366 days (1 year).
-- All financial amounts are returned in USDC by default.
-- The summary includes all transactions for all agents associated with the user.
+<Info>
+**Zero Results**: If no agents are found or no transactions exist for the specified period, the endpoint will return zeros for all values with a 200 status code.
+</Info>
