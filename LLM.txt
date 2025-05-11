@@ -3502,6 +3502,10 @@ description: 'Create a new agent and fund its wallet'
   ID of the user creating the agent
 </ParamField>
 
+<ParamField body="walletaddress" type="string">
+  User's wallet address for funding (optional)
+</ParamField>
+
 <ParamField body="name" type="string" required>
   Name of the agent
 </ParamField>
@@ -3511,7 +3515,7 @@ description: 'Create a new agent and fund its wallet'
 </ParamField>
 
 <ParamField body="balance" type="integer">
-  Initial balance to fund the agent
+  Initial balance to fund the agent (in smallest units)
 </ParamField>
 
 <ParamField body="dailylimit" type="integer">
@@ -3522,11 +3526,15 @@ description: 'Create a new agent and fund its wallet'
   Maximum amount for a single transaction
 </ParamField>
 
+<ParamField body="currency" type="string" default="USDC">
+  Currency type to use (defaults to USDC)
+</ParamField>
+
 <ParamField body="requireapprovalforall" type="boolean" default="false">
   Whether all transactions require approval
 </ParamField>
 
-<ParamField body="requireapprovalaboveamount" type="number">
+<ParamField body="requireapprovalaboveamount" type="integer">
   Transactions above this amount require approval
 </ParamField>
 
@@ -3537,11 +3545,19 @@ description: 'Create a new agent and fund its wallet'
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique agent identifier in short ID format
+  Unique agent identifier
 </ResponseField>
 
 <ResponseField name="apikey" type="string">
-  The API key for authentication
+  The API key for the agent
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the agent
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Purpose and functionality of the agent
 </ResponseField>
 
 <ResponseField name="status" type="string">
@@ -3549,36 +3565,92 @@ description: 'Create a new agent and fund its wallet'
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  The blockchain wallet information
+  <Expandable title="properties">
+    <ResponseField name="addressId" type="string">
+      ID of the wallet address
+    </ResponseField>
+    <ResponseField name="networkId" type="string">
+      Blockchain network ID
+    </ResponseField>
+    <ResponseField name="walletId" type="string">
+      ID of the wallet
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Initial balance of the agent's wallet
+  Current balance of the agent
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency type used
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  Configuration for transaction limits and approval requirements
+  <Expandable title="properties">
+    <ResponseField name="dailyLimit" type="integer">
+      Maximum amount that can be spent per day
+    </ResponseField>
+    <ResponseField name="transactionLimit" type="integer">
+      Maximum amount for a single transaction
+    </ResponseField>
+    <ResponseField name="requireApprovalAboveAmount" type="integer">
+      Transactions above this amount require approval
+    </ResponseField>
+    <ResponseField name="requireApprovalForAll" type="boolean">
+      Whether all transactions require approval
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Categories or labels assigned to the agent
+</ResponseField>
+
+<ResponseField name="created" type="string">
+  Timestamp when the agent was created
 </ResponseField>
 
 <ResponseField name="transferResult" type="object">
-  Result of the fund transfer from user to agent
+  <Expandable title="properties">
+    <ResponseField name="success" type="boolean">
+      Whether the transfer was successful
+    </ResponseField>
+    <ResponseField name="txHash" type="string">
+      Transaction hash of the transfer
+    </ResponseField>
+    <ResponseField name="message" type="string">
+      Description of the transfer result
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="faucetTransaction" type="object">
-  Result of any testnet faucet funding transaction
+  <Expandable title="properties">
+    <ResponseField name="success" type="boolean">
+      Whether the faucet transaction was successful
+    </ResponseField>
+    <ResponseField name="txHash" type="string">
+      Transaction hash of the faucet transaction
+    </ResponseField>
+    <ResponseField name="message" type="string">
+      Description of the faucet transaction result
+    </ResponseField>
+  </Expandable>
 </ResponseField>
-
 
 <ResponseExample>
 ```json 200
 {
   "id": "agent_bRSEFnMRD1fvkMM39hzPdM",
-  "apikey": "mag_eJwVyN0OgiAYANA3...",
+  "apikey": "mag_eJwVyN0OgiAYANA3cprT1qV_tY8E0jCVuyILSMtNG-LTt87l6SySt4NQVCGoVvCIggneZSASCOE1NpcE7ZzOopH_Q1c-12A4K4e8zgxnMJM0sjjxFE3xJmc4wDUsre4lGUpJzzDB0Mt7AiFmwiUaAppin1ijeCMN6M9C1mKD12ihTPiPwjkNZXQPme6DbGlNBc9aPfcCbb_dMRb2MbE-vqIKzdgtfgVGPxc",
   "name": "Payment Assistant",
   "description": "Handles payment processing for customer support",
   "status": "active",
   "walletAddress": {
-    "networkId": "base-sepolia"
+    "addressId": "",
+    "networkId": "base-sepolia",
+    "walletId": ""
   },
   "balance": "6",
   "currency": "USDC",
@@ -3588,10 +3660,20 @@ description: 'Create a new agent and fund its wallet'
     "requireApprovalAboveAmount": 50,
     "requireApprovalForAll": false
   },
+  "tags": [
+    "customer-support",
+    "payments"
+  ],
+  "created": "2025-05-03T18:52:39.911685+00:00",
   "transferResult": {
     "success": true,
     "txHash": "0x123...abc",
     "message": "Successfully transferred 6 USDC from user to agent wallet"
+  },
+  "faucetTransaction": {
+    "success": true,
+    "txHash": "0xabc...123",
+    "message": "ETH testnet funds received via faucet"
   }
 }
 ```
@@ -3603,7 +3685,7 @@ description: 'Create a new agent and fund its wallet'
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "Agent name is required"
 }
@@ -3617,7 +3699,7 @@ description: 'Create a new agent and fund its wallet'
 
 ```json 500
 {
-  "error": "Internal server error occurred while creating agent"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -3633,7 +3715,7 @@ description: 'Create a new agent and fund its wallet'
 | 500 | Internal Server Error |
 
 <Warning>
-**Important**: Save the returned agent ID and API key securely, as they'll be needed for future operations with this agent.
+**Important**: Store the returned API key securely as it will be needed for all future operations with this agent.
 </Warning>
 
 
@@ -3671,7 +3753,7 @@ description: "Deposit funds into an agent's wallet"
 </ParamField>
 
 <ParamField body="currency" type="string" default="USDC">
-  Currency type to deposit
+  Currency type to deposit (defaults to USDC)
 </ParamField>
 
 ## Response
@@ -3702,13 +3784,25 @@ description: "Deposit funds into an agent's wallet"
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "userid, agentid, and amount are required."
 }
 ```
 
-```json 404 
+```json 400
+{
+  "error": "Invalid deposit amount"
+}
+```
+
+```json 400
+{
+  "error": "User wallet not found or inaccessible"
+}
+```
+
+```json 404
 {
   "error": "Agent not found"
 }
@@ -3756,7 +3850,7 @@ description: 'Fetch details of a specific agent'
 ## Path Parameters
 
 <ParamField path="id" type="string" required>
-  Agent ID in the format `agent_xxx`
+  Agent ID (can be a short ID like agent_xxx)
 </ParamField>
 
 ## Request Headers
@@ -3775,24 +3869,53 @@ description: 'Fetch details of a specific agent'
   Name of the agent
 </ResponseField>
 
+<ResponseField name="description" type="string">
+  Purpose and functionality of the agent
+</ResponseField>
+
 <ResponseField name="status" type="string">
-  Current status (active, inactive, paused)
+  Current status of the agent (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  Blockchain wallet information
+  <Expandable title="properties">
+    <ResponseField name="addressId" type="string">
+      Blockchain wallet address
+    </ResponseField>
+    <ResponseField name="networkId" type="string">
+      Blockchain network ID
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current balance of the agent's wallet
+  Current balance of the agent
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency type used
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  Transaction limits and approval requirements
+  <Expandable title="properties">
+    <ResponseField name="dailyLimit" type="integer">
+      Maximum amount that can be spent per day
+    </ResponseField>
+    <ResponseField name="transactionLimit" type="integer">
+      Maximum amount for a single transaction
+    </ResponseField>
+    <ResponseField name="requireApprovalAboveAmount" type="integer">
+      Transactions above this amount require approval
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="tags" type="array">
   Categories or labels assigned to the agent
+</ResponseField>
+
+<ResponseField name="created" type="string">
+  Timestamp when the agent was created
 </ResponseField>
 
 <ResponseExample>
@@ -3826,7 +3949,7 @@ description: 'Fetch details of a specific agent'
 
 ```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -3854,7 +3977,7 @@ description: 'Fetch all agents for a user'
 ---
 
 <Note>
-**User Agents**: Retrieve all agents associated with a specific user ID, including their wallet details and payment rules.
+**User Agents**: Returns an array of agents assigned to the user based on the provided user ID.
 </Note>
 
 ## Path Parameters
@@ -3881,28 +4004,56 @@ Returns an array of agent objects, each containing:
   Name of the agent
 </ResponseField>
 
+<ResponseField name="description" type="string">
+  Purpose and functionality of the agent
+</ResponseField>
+
 <ResponseField name="status" type="string">
-  Current status (active, inactive, paused)
+  Current status of the agent (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  Blockchain wallet information
+  <Expandable title="properties">
+    <ResponseField name="addressId" type="string">
+      Blockchain wallet address
+    </ResponseField>
+    <ResponseField name="networkId" type="string">
+      Blockchain network ID
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current balance of the wallet
+  Current balance of the agent
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency type used
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  Transaction limits and approval requirements
+  <Expandable title="properties">
+    <ResponseField name="dailyLimit" type="integer">
+      Maximum amount that can be spent per day
+    </ResponseField>
+    <ResponseField name="transactionLimit" type="integer">
+      Maximum amount for a single transaction
+    </ResponseField>
+    <ResponseField name="requireApprovalAboveAmount" type="integer">
+      Transactions above this amount require approval
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="tags" type="array">
   Categories or labels assigned to the agent
 </ResponseField>
 
-<ResponseExample>
+<ResponseField name="created" type="string">
+  Timestamp when the agent was created
+</ResponseField>
 
+<ResponseExample>
 ```json 200
 [
   {
@@ -3946,7 +4097,7 @@ Returns an array of agent objects, each containing:
 
 ```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -4007,17 +4158,22 @@ An agent consists of:
   "status": "active",
   "walletAddress": {
     "addressId": "0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB",
-    "networkId": "base-sepolia"
+    "networkId": "base-sepolia",
+    "walletId": "07f490dc-34e3-447f-9972-df2778fcb3c3"
   },
   "balance": "100",
   "currency": "USDC",
   "paymentRules": {
     "dailyLimit": 1000,
     "transactionLimit": 100,
-    "requireApprovalAboveAmount": 50
+    "requireApprovalForAll": false,
+    "requireApprovalAboveAmount": 50.00
   },
-  "tags": ["customer-support", "payments"],
-  "created": "2025-04-15T11:00:08Z"
+  "tags": [
+    "customer-support",
+    "payments"
+  ],
+  "createdat": "2025-04-15T11:00:08.432269+00:00"
 }
 ```
 
@@ -4041,6 +4197,17 @@ An agent consists of:
   </Card>
 </CardGroup>
 
+
+## Agent Lifecycle
+
+The typical lifecycle of an agent includes:
+
+1. **Creation**: An agent is created with a name, description, and initial funding
+2. **Configuration**: Payment rules are set to control transaction limits and approval requirements
+3. **Active Operation**: The agent processes transactions according to its configured rules
+4. **Maintenance**: Funds can be added or withdrawn as needed
+5. **Status Changes**: An agent's status can be modified as needed
+
 ## Payment Rules
 
 <Check>
@@ -4051,15 +4218,17 @@ Payment rules determine how an agent can spend funds:
 
 - **Daily Limit**: Maximum amount the agent can spend in a 24-hour period
 - **Transaction Limit**: Maximum amount for a single transaction
-- **Approval Requirements**: Set thresholds for transactions that require manual review
+- **Approval Requirements**:
+  - `requireApprovalForAll`: When true, all transactions require manual approval
+  - `requireApprovalAboveAmount`: Transactions above this amount require approval
 
 ## Best Practices
 
 - Create separate agents for different purposes or departments
 - Use descriptive names and tags to easily identify agents
 - Set appropriate transaction limits based on expected usage patterns
-- Regularly monitor agent activity through transaction history
-- Start with small balances when testing new agents
+- Consider requiring approval for large transactions to prevent unauthorized spending
+- Regularly monitor agent activity to ensure proper operation
 
 <Info>
 **Blockchain Integration**: All agent wallets are real blockchain wallets, with transactions recorded on-chain for maximum transparency and security.
@@ -4076,7 +4245,7 @@ description: "Withdraw funds from an agent's wallet"
 ---
 
 <Note>
-**Reverse Transfer**: This endpoint moves funds from an agent's wallet back to the user's wallet through an on-chain transaction.
+**Withdrawal Process**: Transfers funds from the agent's wallet to the user's wallet. The operation includes: 1. Verification of user and agent existence 2. Validation of withdrawal amount against available balance 3. Transfer of funds on blockchain 4. Update of agent balance in database 5. Creation of transaction record
 </Note>
 
 ## Request Headers
@@ -4100,7 +4269,7 @@ description: "Withdraw funds from an agent's wallet"
 </ParamField>
 
 <ParamField body="currency" type="string" default="USDC">
-  Currency type to withdraw
+  Currency type to withdraw (defaults to USDC)
 </ParamField>
 
 ## Response
@@ -4122,7 +4291,7 @@ description: "Withdraw funds from an agent's wallet"
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "success": true,
   "txHash": "0x123...abc",
@@ -4131,23 +4300,31 @@ description: "Withdraw funds from an agent's wallet"
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "userid, agentid, and amount are required."
 }
-// OR
+```
+
+```json 400
+{
+  "error": "Invalid withdraw amount"
+}
+```
+
+```json 400
 {
   "error": "Insufficient balance"
 }
 ```
 
-```json 404 
+```json 404
 {
   "error": "Agent not found"
 }
 ```
 
-```json 500 
+```json 500
 {
   "success": false,
   "error": "Transfer failed on-chain"
@@ -4160,16 +4337,16 @@ description: "Withdraw funds from an agent's wallet"
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Funds withdrawn successfully |
-| 400 | Bad Request - Invalid or missing parameters |
-| 404 | Not Found - Agent or user not found |
-| 500 | Internal Server Error - Transaction failed |
+| 400 | Invalid request parameters |
+| 404 | Not Found |
+| 500 | Transaction failed |
 
 <Warning>
-**Balance Check**: The agent must have sufficient funds in its wallet to complete the withdrawal.
+**Balance Requirement**: The agent must have sufficient balance to complete the withdrawal. The transaction will fail if the requested amount exceeds the available balance.
 </Warning>
 
 <Info>
-**Rule Bypass**: Withdrawals bypass the agent's payment rules (daily limit, transaction limit, approval requirements) as they are initiated by the user, not the agent.
+**Blockchain Transaction**: This operation creates an on-chain transaction which may take a few moments to be confirmed depending on network conditions.
 </Info>
 
 
@@ -4220,6 +4397,12 @@ description: 'Approve a payment that requires authorization'
 ```json 404 
 {
   "error": "Payment not found"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -4300,6 +4483,11 @@ description: 'Decline a payment to prevent processing'
 {
   "error": "Payment not found"
 }
+
+```json 500 
+{
+  "error": "Internal Server Error"
+}
 ```
 </ResponseExample>
 
@@ -4343,25 +4531,49 @@ description: 'Export payments data in various formats (CSV, XLSX, PDF)'
 ## Request Body
 
 <ParamField body="format" type="string" required>
-  Export format: "csv", "xlsx", or "pdf"
+  Export format
+  <Expandable title="Allowed values">
+    "csv", "xlsx", "pdf"
+  </Expandable>
 </ParamField>
 
 <ParamField body="dateRange" type="object">
-  Optional date range filter with start and end dates (YYYY-MM-DD)
+  <Expandable title="properties">
+    <ParamField body="start" type="string" format="date">
+      Start date for filtering payments
+    </ParamField>
+    <ParamField body="end" type="string" format="date">
+      End date for filtering payments
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 ## Response
 
-The response is a file download in the requested format.
+The response is a file download in the requested format containing payment data.
 
 <ResponseExample>
-```json 400 Invalid Format
+```json 400
 {
   "error": "Invalid export format. Supported formats are: csv, xlsx, pdf"
+}
+```
 
-  // OR
-  
-  "error": "Invalid date range. End date must be after start date"
+```json 400
+{
+  "error": "Invalid date range format"
+}
+```
+
+```json 401
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -4370,8 +4582,9 @@ The response is a file download in the requested format.
 
 | Status Code | Description |
 |-------------|-------------|
-| 200 | Export completed successfully |
+| 200 | Export completed successfully, file is returned |
 | 400 | Bad Request - Invalid parameters |
+| 401 | Unauthorized - Authentication failed |
 | 500 | Internal Server Error |
 
 <Info>
@@ -4396,13 +4609,13 @@ description: 'Fetch details of a specific payment'
 ---
 
 <Note>
-**Payment Details**: Retrieve comprehensive information about a payment including its status, approval state, and transaction details.
+**Payment Details**: Retrieves detailed information about a specific payment based on its ID. Converts short ID format to UUID format internally before querying the database.
 </Note>
 
 ## Path Parameters
 
 <ParamField path="id" type="string" required>
-  Payment ID in the format `payee_xxx`
+  Payment ID (can be a short ID like payee_xxx)
 </ParamField>
 
 ## Request Headers
@@ -4441,12 +4654,45 @@ description: 'Fetch details of a specific payment'
   Approval status of the payment
 </ResponseField>
 
+<ResponseField name="approvalrequired" type="boolean">
+  Whether this payment requires approval
+</ResponseField>
+
 <ResponseField name="paymentdetails" type="object">
-  Method, amount, and currency information
+  <Expandable title="properties">
+    <ResponseField name="method" type="string">
+      Payment method used
+    </ResponseField>
+    <ResponseField name="amount" type="number">
+      Payment amount
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Payment currency
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="contactdetails" type="object">
+  <Expandable title="properties">
+    <ResponseField name="email" type="string">
+      Contact email for the payment recipient
+    </ResponseField>
+    <ResponseField name="phoneNumber" type="string">
+      Contact phone number for the payment recipient
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Tags or categories for the payment
 </ResponseField>
 
 <ResponseField name="createdat" type="string">
   Timestamp when the payment was created
+</ResponseField>
+
+<ResponseField name="approvedat" type="string">
+  Timestamp when the payment was approved
 </ResponseField>
 
 <ResponseExample>
@@ -4460,6 +4706,10 @@ description: 'Fetch details of a specific payment'
   "status": "New",
   "approvalstatus": "Waiting for Sender Approval",
   "approvalrequired": true,
+  "contactdetails": {
+    "email": "contact@vendorxyz.com",
+    "phoneNumber": "+1234567890"
+  },
   "paymentdetails": {
     "method": "CRYPTO_ADDRESS",
     "amount": 6,
@@ -4474,6 +4724,12 @@ description: 'Fetch details of a specific payment'
 ```json 404 
 {
   "error": "Payment not found"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -4528,8 +4784,12 @@ Returns an array of payment objects, each containing:
   Unique payment identifier
 </ResponseField>
 
-<ResponseField name="direction" type="string">
-  Direction of the payment (incoming, outgoing)
+<ResponseField name="senderagentid" type="string">
+  ID of the agent sending the payment
+</ResponseField>
+
+<ResponseField name="receiveragentid" type="string">
+  ID of the agent receiving the payment
 </ResponseField>
 
 <ResponseField name="initiatedBy" type="string">
@@ -4540,6 +4800,10 @@ Returns an array of payment objects, each containing:
   Name of the agent that received the payment
 </ResponseField>
 
+<ResponseField name="direction" type="string">
+  Direction of the payment relative to the user's agents (incoming, outgoing)
+</ResponseField>
+
 <ResponseField name="name" type="string">
   Name or description of the payment
 </ResponseField>
@@ -4548,12 +4812,30 @@ Returns an array of payment objects, each containing:
   Approval status of the payment
 </ResponseField>
 
+<ResponseField name="createdat" type="string">
+  Timestamp when the payment was created
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of payment (EXTERNAL or INTERNAL)
+</ResponseField>
+
 <ResponseField name="paymentdetails" type="object">
-  Method, amount, and currency information
+  <Expandable title="properties">
+    <ResponseField name="method" type="string">
+      Payment method used
+    </ResponseField>
+    <ResponseField name="amount" type="number">
+      Payment amount
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Payment currency
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 [
   {
     "id": "payee_8tJo7vZb1RKo4oeyWuqgK",
@@ -4574,21 +4856,34 @@ Returns an array of payment objects, each containing:
   },
   {
     "id": "payee_9tJo7vZb1RKo4oeyWuqgK",
-    "direction": "incoming",
+    "senderagentid": "agent_7tJo7vZb1RKo4oeyWuqgK",
+    "receiveragentid": "agent_8tJo7vZb1RKo4oeyWuqgK",
     "initiatedBy": "Bob",
     "receivedBy": "Alice",
+    "direction": "incoming",
     "name": "Payment from Bob to Alice",
     "approvalstatus": "Waiting",
+    "createdat": "2025-04-08T10:00:00Z",
+    "type": "EXTERNAL",
     "paymentdetails": {
+      "method": "CRYPTO_ADDRESS",
       "amount": 50,
       "currency": "USDC"
     }
   }
-
-  // or
-
-  []
 ]
+```
+
+```json 401
+{
+  "error": "Unauthorized"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
+}
 ```
 </ResponseExample>
 
@@ -4597,14 +4892,15 @@ Returns an array of payment objects, each containing:
 | Status Code | Description |
 |-------------|-------------|
 | 200 | List of payments retrieved successfully |
-| 500 | Internal Server Error |
+| 401 | Unauthorized |
+| 500 | Internal Error |
 
 <Info>
-**Direction**: The `direction` field indicates whether a payment is incoming (to your agent) or outgoing (from your agent).
+**Approval Status Values**: Possible values for approvalStatus filter include: "Approved", "Declined", "Pending", "Waiting", "Waiting for Sender Approval"
 </Info>
 
 <Info>
-**Empty Result**: If no payments match the filter criteria, an empty array will be returned with a 200 status code.
+**Direction**: The "direction" field makes it easy to identify whether a payment is incoming to your agent (received) or outgoing from your agent (sent).
 </Info>
 
 
@@ -4657,7 +4953,7 @@ Different approval statuses determine how payments are processed:
   "senderagentid": "agent_eC6ZezevNsqxvoKmQrUuoU",
   "receiveragentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
   "status": "New",
-  "approvalstatus": "Waiting for Sender Approval",
+  "approvalstatus": "Waiting",
   "approvalrequired": true,
   "paymentdetails": {
     "method": "CRYPTO_ADDRESS",
@@ -4665,11 +4961,15 @@ Different approval statuses determine how payments are processed:
     "currency": "USDC"
   },
   "contactdetails": {
-    "email": "contact@vendorxyz.com"
+    "email": "contact@vendorxyz.com",
+    "phoneNumber": "+1234567890"
   },
-  "tags": ["vendor", "regular"],
-  "createdat": "2025-04-17T10:28:18Z",
-  "approvedat": null
+  "tags": [
+    "vendor",
+    "regular"
+  ],
+  "createdat": "2025-04-17T10:28:18.512792+00:00",
+  "approvedat": "2025-04-17T11:30:00.000000+00:00"
 }
 ```
 
@@ -4695,6 +4995,16 @@ Different approval statuses determine how payments are processed:
     Export payments data in various formats
   </Card>
 </CardGroup>
+
+## Payment Lifecycle
+
+The typical lifecycle of a payment includes:
+
+1. **Creation**: A payment is registered with sender, receiver, and amount details
+2. **Approval Check**: The system determines if approval is required based on agent rules
+3. **Approval/Decline**: If required, the payment is approved or declined by an authorized user
+4. **Processing**: For approved payments, funds are transferred on the blockchain
+5. **Completion**: The payment status is updated to "Confirmed" when complete
 
 ## Payment Types
 
@@ -4766,29 +5076,59 @@ description: "Create a new payment transaction between agents"
 </ParamField>
 
 <ParamField body="paymentdetails" type="object" required>
-  Object containing amount, currency, and payment method
+  <Expandable title="properties">
+    <ParamField body="amount" type="number" required>
+      Payment amount
+    </ParamField>
+    <ParamField body="currency" type="string" required>
+      Payment currency (typically "USDC")
+    </ParamField>
+    <ParamField body="method" type="string" required>
+      Payment method (typically "CRYPTO_ADDRESS")
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="name" type="string" required>
   Name or description of the payment
 </ParamField>
 
-<ParamField body="type" type="string" required>
-  Type of payment: "EXTERNAL" or "INTERNAL"
+<ParamField body="contactdetails" type="object">
+  <Expandable title="properties">
+    <ParamField body="email" type="string">
+      Contact email for the payment recipient
+    </ParamField>
+    <ParamField body="phoneNumber" type="string">
+      Contact phone number for the payment recipient
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField body="tags" type="array">
-  Optional tags or categories for the payment
+  Tags or categories for the payment
 </ParamField>
+
 
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique payment identifier
+  Unique payment identifier in short ID format
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name or description of the payment
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of payment (EXTERNAL or INTERNAL)
 </ResponseField>
 
 <ResponseField name="status" type="string">
-  Current status of the payment
+  Current status of the payment (New, Pending, or Confirmed)
+</ResponseField>
+
+<ResponseField name="createdat" type="string">
+  Timestamp when the payment was created
 </ResponseField>
 
 <ResponseField name="approvalRequired" type="boolean">
@@ -4796,23 +5136,23 @@ description: "Create a new payment transaction between agents"
 </ResponseField>
 
 <ResponseField name="approvalstatus" type="string">
-  Current approval status
+  Current approval status (Waiting, Pending, Approved, or Decline)
 </ResponseField>
 
 <ResponseField name="txHash" type="string">
-  Transaction hash (if processed immediately)
+  Transaction hash on the blockchain (if processed immediately)
 </ResponseField>
 
 <ResponseExample>
 ```json 200 Requires Approval
 {
   "id": "payee_wDG5cavUCoK53uvFzTvkey",
-  "name": "Invoice payment for services",
+  "name": "Vendor XYZ Payment",
   "type": "EXTERNAL",
   "status": "New",
   "approvalstatus": "Waiting",
   "approvalRequired": true,
-  "createdat": "2025-04-17T10:28:18Z",
+  "createdat": "2025-04-17T10:28:18.512792",
   "txHash": null
 }
 ```
@@ -4833,6 +5173,32 @@ description: "Create a new payment transaction between agents"
 ```json 400 
 {
   "error": "Insufficient balance in sender agent's wallet"
+
+  // OR
+
+  "error": "Required fields missing: senderagentid, receiveragentid, paymentdetails, name, type"
+
+  // OR
+
+  "error": "Invalid payment details. Amount must be positive."
+}
+```
+
+```json 401 
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 
+{
+  "error": "Internal Server Error"
+}
+```
+
+```json 404 
+{
+  "error": "Sender agent not found"
 }
 ```
 </ResponseExample>
@@ -4843,6 +5209,7 @@ description: "Create a new payment transaction between agents"
 |-------------|-------------|
 | 200 | Payment registered successfully |
 | 400 | Bad Request - Invalid parameters or insufficient balance |
+| 401 | Unauthorized - Invalid or missing API key |
 | 404 | Not Found - Agent not found |
 | 500 | Internal Server Error |
 
@@ -4865,7 +5232,7 @@ FILE: api-reference/savings/calculate-interest.mdx
 ---
 title: 'Calculate Interest'
 api: 'POST /investment/calculator'
-description: 'Calculate potential interest for a given investment amount and period'
+description: 'Calculate potential interest'
 ---
 
 <Note>
@@ -4898,6 +5265,10 @@ description: 'Calculate potential interest for a given investment amount and per
   Principal amount for the calculation
 </ResponseField>
 
+<ResponseField name="days" type="number">
+  Duration of the investment in days
+</ResponseField>
+
 <ResponseField name="interestRate" type="number">
   Annual interest rate applied to the calculation
 </ResponseField>
@@ -4910,12 +5281,23 @@ description: 'Calculate potential interest for a given investment amount and per
   Total amount including principal and interest
 </ResponseField>
 
+<ResponseField name="annualYield" type="string">
+  Annual percentage yield
+</ResponseField>
+
 <ResponseField name="calculation" type="object">
-  Formula and step-by-step calculation process
+  <Expandable title="properties">
+    <ResponseField name="formula" type="string">
+      Formula used for the calculation
+    </ResponseField>
+    <ResponseField name="steps" type="array">
+      Step-by-step breakdown of the calculation
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "principal": 1000,
   "days": 365,
@@ -4935,17 +5317,30 @@ description: 'Calculate potential interest for a given investment amount and per
 }
 ```
 
-```json 400 
+```json 400
 {
   "success": false,
   "error": "Amount and days are required"
 }
 ```
 
-```json 400 
+```json 400
 {
   "success": false,
   "error": "Amount must be a positive number"
+}
+```
+
+```json 400
+{
+  "success": false,
+  "error": "Days must be a positive number"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -4955,20 +5350,16 @@ description: 'Calculate potential interest for a given investment amount and per
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Interest calculation completed successfully |
-| 400 | Bad Request - Invalid or missing parameters |
-| 500 | Internal Server Error - Error fetching interest rate or calculating interest |
+| 400 | Invalid request parameters |
+| 500 | Internal Error |
 
 <Info>
-**Current Rate**: If no custom rate is provided, the calculation will use the platform's current interest rate fetched from the database.
+**Default Rate**: If no custom rate is provided, the calculation uses the platform's current base interest rate.
 </Info>
 
 <Info>
-**Formula Used**: Interest is calculated using the simple interest formula: `principal × rate × (days ÷ 365)`.
+**Simple Interest**: The calculator uses a simple interest formula that divides the annual rate by 365 days for daily accrual.
 </Info>
-
-<Check>
-**Financial Planning**: You can compare different investment scenarios by adjusting the amount, duration, and custom rate parameters.
-</Check>
 
 
 ================================================
@@ -4977,11 +5368,11 @@ FILE: api-reference/savings/deposit.mdx
 ---
 title: 'Deposit Savings'
 api: 'POST /savings/deposit'
-description: "Deposit an agent's funds into the savings vault"
+description: "Deposit savings into an agent's account"
 ---
 
 <Note>
-**Interest Earning**: Creates a new investment by moving funds from an agent's wallet into the savings vault to start earning interest.
+**Investment Creation**: Creates a new investment by depositing funds into an agent's savings account. The operation converts the agent ID to UUID format if provided in short format, validates the deposit amount, and creates a new investment record.
 </Note>
 
 ## Request Headers
@@ -4990,17 +5381,13 @@ description: "Deposit an agent's funds into the savings vault"
   Your API key for authentication
 </ParamField>
 
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
-</ParamField>
-
 ## Request Body
 
 <ParamField body="agentId" type="string" required>
   The short ID or UUID of the agent
 </ParamField>
 
-<ParamField body="amount" type="number" format="decimal(16,2)" required>
+<ParamField body="amount" type="number" required>
   Amount to deposit (must be positive)
 </ParamField>
 
@@ -5042,7 +5429,7 @@ description: "Deposit an agent's funds into the savings vault"
 }
 ```
 
-```json 400 
+```json 400
 {
   "error": "agentId and amount are required"
 
@@ -5056,7 +5443,7 @@ description: "Deposit an agent's funds into the savings vault"
 }
 ```
 
-```json 404 
+```json 404
 {
   "error": "Agent not found"
 }
@@ -5068,9 +5455,9 @@ description: "Deposit an agent's funds into the savings vault"
 }
 ```
 
-```json 500 
+```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -5086,15 +5473,15 @@ description: "Deposit an agent's funds into the savings vault"
 | 500 | Internal Server Error |
 
 <Info>
-**Interest Accrual**: Interest begins accruing immediately at the current platform rate once the deposit is confirmed.
+**Agent ID Format**: The API accepts both short ID format (agent_xxx) and UUID format for the agent ID parameter.
 </Info>
 
 <Warning>
-**Balance Requirement**: The agent must have sufficient funds in its wallet to complete the deposit.
+**Amount Validation**: The deposit amount must be a positive number. The system will validate this before processing the transaction.
 </Warning>
 
 <Info>
-**Investment Tracking**: The returned investment ID can be used to track the investment or to withdraw funds later.
+**Investment Record**: A new investment record is created when the deposit is processed successfully. This can be used to track the investment's growth over time.
 </Info>
 
 
@@ -5108,7 +5495,7 @@ description: 'Get all investments for a specific agent'
 ---
 
 <Note>
-**Investment History**: Retrieve a complete history of all investments (both active and completed) for a specific agent with real-time valuation of active investments.
+**Investment History**: Retrieves all investments (both active and completed) associated with a specific agent. For active investments, calculates the current value and interest earned based on the principal amount, interest rate, and investment duration. Returns detailed information including investment status and creation timestamp.
 </Note>
 
 ## Path Parameters
@@ -5152,7 +5539,7 @@ description: 'Get all investments for a specific agent'
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "investments": [
     {
@@ -5177,21 +5564,25 @@ description: 'Get all investments for a specific agent'
 }
 ```
 
-```json 404 
+```json 400
 {
-  "error": "Agent not found"
-}
-```
-
-```json 400 
-{
-  "error": "Invalid agent ID format"
+  "error": "Bad request"
 }
 ```
 
 ```json 401 
 {
   "error": "Invalid or missing API key"
+}
+```json 404
+{
+  "error": "Agent not found"
+}
+```
+
+```json 500
+{
+  "error": "Internal server error"
 }
 ```
 </ResponseExample>
@@ -5286,7 +5677,7 @@ description: "Get a comprehensive overview of the user's savings portfolio"
 </ResponseField>
 
 <ResponseExample>
-```json 200 
+```json 200
 {
   "totalSavings": 1500.75,
   "interestRate": 5,
@@ -5323,7 +5714,7 @@ description: "Get a comprehensive overview of the user's savings portfolio"
 }
 ```
 
-```json 500 
+```json 500
 {
   "error": "Internal Server Error"
 }
@@ -5392,6 +5783,12 @@ description: 'Get the current annual interest rate for investments'
 ```json 401
 {
   "error": "Invalid or missing API key"
+}
+```
+
+```jsom 500
+{
+  "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
@@ -5780,6 +6177,16 @@ description: 'Withdraw funds from a savings investment'
 {
   "error": "Investment has already been completed or cancelled"
 }
+```json 401 Unauthorized
+{
+  "error": "Invalid or missing API key"
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Internal Server Error"
+}
 ```
 </ResponseExample>
 
@@ -5789,6 +6196,7 @@ description: 'Withdraw funds from a savings investment'
 |-------------|-------------|
 | 200 | Withdrawal completed successfully |
 | 400 | Bad Request - Invalid or missing parameters |
+| 401 | Unauthorized - Invalid or missing API key |
 | 404 | Not Found - Investment not found |
 | 500 | Internal Server Error |
 
