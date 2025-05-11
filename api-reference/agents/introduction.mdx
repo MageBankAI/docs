@@ -3,23 +3,33 @@ title: 'Introduction'
 description: 'Create and manage AI financial agents'
 ---
 
-Agents are the core entities in the MageBank platform. Each agent has its own wallet, balance, and transaction rules. Use the Agents API to create, fund, and manage your AI financial agents.
+# Agents API
 
-<Note type="warning">
-  In sandbox mode only agent-to-agent transactions are currently supported. Agent-to-bank account, agent-to-businesses, and agent-to-checkout pages are coming soon.
+<Note>
+**Core Feature**: Agents are autonomous financial entities with their own wallets, balances, and transaction rules.
 </Note>
 
+Each agent has its own blockchain wallet, balance, and configurable payment rules. Use the Agents API to create, fund, and manage your AI financial agents.
+
+<Warning>
+In sandbox mode only agent-to-agent transactions are currently supported. Agent-to-bank account, agent-to-businesses, and agent-to-checkout pages are coming soon.
+</Warning>
+
 ## Agent Model
+
+<Info>
+**Complete Control**: Configure transaction limits, approval requirements, and other rules to precisely control how your agents handle funds.
+</Info>
 
 An agent consists of:
 
 - **Identity**: Unique ID, name, and description
 - **Financial Details**: Associated wallet address and balance
 - **Payment Rules**: Transaction limits and approval requirements 
-- **Status**: Current operational status
+- **Status**: Current operational status (active, inactive, paused)
 - **Metadata**: Tags, creation timestamp, and other attributes
 
-Here's an example of the agent data structure:
+## Agent Structure
 
 ```json
 {
@@ -29,22 +39,17 @@ Here's an example of the agent data structure:
   "status": "active",
   "walletAddress": {
     "addressId": "0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB",
-    "networkId": "base-sepolia",
-    "walletId": "07f490dc-34e3-447f-9972-df2778fcb3c3"
+    "networkId": "base-sepolia"
   },
   "balance": "100",
   "currency": "USDC",
   "paymentRules": {
     "dailyLimit": 1000,
     "transactionLimit": 100,
-    "requireApprovalForAll": false,
-    "requireApprovalAboveAmount": 50.00
+    "requireApprovalAboveAmount": 50
   },
-  "tags": [
-    "customer-support",
-    "payments"
-  ],
-  "createdat": "2025-04-15T11:00:08.432269+00:00"
+  "tags": ["customer-support", "payments"],
+  "created": "2025-04-15T11:00:08Z"
 }
 ```
 
@@ -68,38 +73,26 @@ Here's an example of the agent data structure:
   </Card>
 </CardGroup>
 
-## Agent Lifecycle
-
-The typical lifecycle of an agent includes:
-
-1. **Creation**: An agent is created with a name, description, and initial funding
-2. **Configuration**: Payment rules are set to control transaction limits and approval requirements
-3. **Active Operation**: The agent processes transactions according to its configured rules
-4. **Maintenance**: Funds can be added or withdrawn as needed
-5. **Status Changes**: An agent's status can be modified as needed
-
 ## Payment Rules
+
+<Check>
+**Safety First**: Configure rules to prevent unauthorized spending and ensure financial operations stay within your defined parameters.
+</Check>
 
 Payment rules determine how an agent can spend funds:
 
 - **Daily Limit**: Maximum amount the agent can spend in a 24-hour period
 - **Transaction Limit**: Maximum amount for a single transaction
-- **Approval Requirements**:
-  - `requireApprovalForAll`: When true, all transactions require manual approval
-  - `requireApprovalAboveAmount`: Transactions above this amount require approval
+- **Approval Requirements**: Set thresholds for transactions that require manual review
 
 ## Best Practices
 
 - Create separate agents for different purposes or departments
 - Use descriptive names and tags to easily identify agents
 - Set appropriate transaction limits based on expected usage patterns
-- Consider requiring approval for large transactions to prevent unauthorized spending
-- Regularly monitor agent activity to ensure proper operation
+- Regularly monitor agent activity through transaction history
+- Start with small balances when testing new agents
 
-## Next Steps
-
-Use the endpoints in this section to create and manage your agents. After creating an agent, you can:
-
-- Process [payments](/api-reference/payments/introduction) between agents
-- Set up [savings](/api-reference/savings/introduction) to earn interest on idle funds
-- Monitor [transactions](/api-reference/transactions/introduction) for financial activity
+<Info>
+**Blockchain Integration**: All agent wallets are real blockchain wallets, with transactions recorded on-chain for maximum transparency and security.
+</Info>

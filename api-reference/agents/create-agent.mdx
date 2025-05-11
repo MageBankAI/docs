@@ -4,7 +4,9 @@ api: 'POST /agents/create'
 description: 'Create a new agent and fund its wallet'
 ---
 
-Creates a new agent, generates a wallet, and optionally funds it from the user's wallet.
+<Note>
+**Multi-step Process**: This endpoint creates a new agent, generates a blockchain wallet, and can fund the wallet from your user account or via a testnet faucet.
+</Note>
 
 ## Request Headers
 
@@ -12,18 +14,10 @@ Creates a new agent, generates a wallet, and optionally funds it from the user's
   Your API key for authentication
 </ParamField>
 
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
-</ParamField>
-
 ## Request Body
 
 <ParamField body="userid" type="string" required>
   ID of the user creating the agent
-</ParamField>
-
-<ParamField body="walletaddress" type="string">
-  User's wallet address for funding (optional)
 </ParamField>
 
 <ParamField body="name" type="string" required>
@@ -44,10 +38,6 @@ Creates a new agent, generates a wallet, and optionally funds it from the user's
 
 <ParamField body="transactionlimit" type="integer">
   Maximum amount for a single transaction
-</ParamField>
-
-<ParamField body="currency" type="string" default="USDC">
-  Currency type to use
 </ParamField>
 
 <ParamField body="requireapprovalforall" type="boolean" default="false">
@@ -72,250 +62,80 @@ Creates a new agent, generates a wallet, and optionally funds it from the user's
   The API key for authentication
 </ResponseField>
 
-<ResponseField name="name" type="string">
-  Name of the agent
-</ResponseField>
-
-<ResponseField name="description" type="string">
-  Purpose and functionality of the agent
-</ResponseField>
-
 <ResponseField name="status" type="string">
-  Current status of the agent
+  Current status of the agent (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  <Expandable title="properties">
-    <ResponseField name="addressId" type="string">
-      The blockchain address associated with the agent
-    </ResponseField>
-    <ResponseField name="networkId" type="string">
-      The blockchain network (e.g., "base-sepolia")
-    </ResponseField>
-    <ResponseField name="walletId" type="string">
-      Internal wallet identifier
-    </ResponseField>
-  </Expandable>
+  The blockchain wallet information
 </ResponseField>
 
 <ResponseField name="balance" type="string">
   Initial balance of the agent's wallet
 </ResponseField>
 
-<ResponseField name="currency" type="string">
-  Currency used by the agent
-</ResponseField>
-
 <ResponseField name="paymentRules" type="object">
-  <Expandable title="properties">
-    <ResponseField name="dailyLimit" type="integer">
-      Maximum amount that can be spent per day
-    </ResponseField>
-    <ResponseField name="transactionLimit" type="integer">
-      Maximum amount for a single transaction
-    </ResponseField>
-    <ResponseField name="requireApprovalForAll" type="boolean">
-      Whether all transactions require approval
-    </ResponseField>
-    <ResponseField name="requireApprovalAboveAmount" type="number">
-      Transactions above this amount require approval
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-<ResponseField name="tags" type="array">
-  Categories or labels assigned to the agent
-</ResponseField>
-
-<ResponseField name="created" type="string">
-  Timestamp when the agent was created
+  Configuration for transaction limits and approval requirements
 </ResponseField>
 
 <ResponseField name="transferResult" type="object">
-  <Expandable title="properties">
-    <ResponseField name="success" type="boolean">
-      Whether the fund transfer was successful
-    </ResponseField>
-    <ResponseField name="txHash" type="string">
-      Transaction hash on the blockchain
-    </ResponseField>
-    <ResponseField name="message" type="string">
-      Information about the transfer
-    </ResponseField>
-  </Expandable>
+  Result of the fund transfer from user to agent
 </ResponseField>
 
 <ResponseField name="faucetTransaction" type="object">
-  <Expandable title="properties">
-    <ResponseField name="success" type="boolean">
-      Whether the faucet funding was successful
-    </ResponseField>
-    <ResponseField name="txHash" type="string">
-      Transaction hash on the blockchain
-    </ResponseField>
-    <ResponseField name="message" type="string">
-      Information about the faucet funding
-    </ResponseField>
-  </Expandable>
+  Result of any testnet faucet funding transaction
 </ResponseField>
 
-## Example Request
 
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/agents/create" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "userid": "user_piXARPaD2jefNBGxzb84Qd",
-    "walletaddress": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6",
-    "name": "Payment Assistant",
-    "description": "Handles payment processing for customer support",
-    "balance": 6,
-    "dailylimit": 1000,
-    "transactionlimit": 100,
-    "currency": "USDC",
-    "requireapprovalforall": false,
-    "requireapprovalaboveamount": 50.00,
-    "tags": ["customer-support", "payments"]
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function createAgent() {
-  try {
-    const response = await axios.post('https://api.magebank.ai/agents/create', {
-      userid: "user_piXARPaD2jefNBGxzb84Qd",
-      walletaddress: "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6",
-      name: "Payment Assistant",
-      description: "Handles payment processing for customer support",
-      balance: 6,
-      dailylimit: 1000,
-      transactionlimit: 100,
-      currency: "USDC",
-      requireapprovalforall: false,
-      requireapprovalaboveamount: 50.00,
-      tags: ["customer-support", "payments"]
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Agent created:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error creating agent:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-createAgent();
-```
-
-```python Python
-import requests
-import json
-
-def create_agent():
-    url = "https://api.magebank.ai/agents/create"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "userid": "user_piXARPaD2jefNBGxzb84Qd",
-        "walletaddress": "0xa55B42bA7B639bB9CEc2dB2520aC8Cff588895f6",
-        "name": "Payment Assistant",
-        "description": "Handles payment processing for customer support",
-        "balance": 6,
-        "dailylimit": 1000,
-        "transactionlimit": 100,
-        "currency": "USDC",
-        "requireapprovalforall": False,
-        "requireapprovalaboveamount": 50.00,
-        "tags": ["customer-support", "payments"]
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        agent_data = response.json()
-        print("Agent created:", agent_data)
-        return agent_data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-create_agent()
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200
 {
   "id": "agent_bRSEFnMRD1fvkMM39hzPdM",
-  "apikey": "mag_eJwVyN0OgiAYANA3cprT1qV_tY8E0jCVuyILSMtNG-LTt87l6SySt4NQVCGoVvCIggneZSASCOE1NpcE7ZzOopH_Q1c-12A4K4e8zgxnMJM0sjjxFE3xJmc4wDUsre4lGUpJzzDB0Mt7AiFmwiUaAppin1ijeCMN6M9C1mKD12ihTPiPwjkNZXQPme6DbGlNBc9aPfcCbb_dMRb2MbE-vqIKzdgtfgVGPxc",
+  "apikey": "mag_eJwVyN0OgiAYANA3...",
   "name": "Payment Assistant",
   "description": "Handles payment processing for customer support",
   "status": "active",
   "walletAddress": {
-    "addressId": "",
-    "networkId": "base-sepolia",
-    "walletId": ""
+    "networkId": "base-sepolia"
   },
   "balance": "6",
   "currency": "USDC",
   "paymentRules": {
     "dailyLimit": 1000,
     "transactionLimit": 100,
-    "requireApprovalAboveAmount": 50.00,
+    "requireApprovalAboveAmount": 50,
     "requireApprovalForAll": false
   },
-  "tags": [
-    "customer-support",
-    "payments"
-  ],
-  "created": "2025-05-03T18:52:39.911685+00:00",
   "transferResult": {
     "success": true,
     "txHash": "0x123...abc",
     "message": "Successfully transferred 6 USDC from user to agent wallet"
-  },
-  "faucetTransaction": {
-    "success": true,
-    "txHash": "0xabc...123",
-    "message": "ETH testnet funds received via faucet"
   }
 }
 ```
 
-## Error Responses
+```json 201
+{
+  "id": "agent_bRSEFnMRD1fvkMM39hzPdM",
+  "warning": "Agent created successfully, but funding transfer failed. Please try funding the agent manually."
+}
+```
 
-<ResponseExample>
-```json 400 Bad Request - Missing Name
+```json 400 
 {
   "error": "Agent name is required"
 }
 ```
 
-```json 400 Bad Request - Invalid Balance
+```json 404
 {
-  "error": "Invalid balance amount"
+  "error": "User not found"
 }
 ```
 
-```json 500 Internal Server Error
+```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Internal server error occurred while creating agent"
 }
 ```
 </ResponseExample>
@@ -327,11 +147,9 @@ create_agent()
 | 200 | Agent created and funded successfully |
 | 201 | Agent created, but funding transfer failed |
 | 400 | Bad Request - Invalid or missing parameters |
+| 404 | Not Found - User ID not found |
 | 500 | Internal Server Error |
 
-## Notes
-
-- If the wallet funding fails but agent creation succeeds, a 201 status code is returned with a warning message.
-- The `balance` parameter specifies the amount to transfer from the user's wallet to the agent's wallet.
-- For testnet environments, a faucet transaction may be included to provide gas for transactions.
-- Make note of the returned agent ID, as you'll need it for future API calls with this agent.
+<Warning>
+**Important**: Save the returned agent ID and API key securely, as they'll be needed for future operations with this agent.
+</Warning>

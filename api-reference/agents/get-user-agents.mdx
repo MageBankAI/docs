@@ -4,7 +4,9 @@ api: 'GET /agents/{id}'
 description: 'Fetch all agents for a user'
 ---
 
-Retrieves an array of agents assigned to the user based on the provided user ID.
+<Note>
+**User Agents**: Retrieve all agents associated with a specific user ID, including their wallet details and payment rules.
+</Note>
 
 ## Path Parameters
 
@@ -23,127 +25,36 @@ Retrieves an array of agents assigned to the user based on the provided user ID.
 Returns an array of agent objects, each containing:
 
 <ResponseField name="id" type="string">
-  Unique agent identifier in short ID format
+  Unique agent identifier
 </ResponseField>
 
 <ResponseField name="name" type="string">
   Name of the agent
 </ResponseField>
 
-<ResponseField name="description" type="string">
-  Purpose and functionality of the agent
-</ResponseField>
-
 <ResponseField name="status" type="string">
-  Current status of the agent (active, inactive, paused)
+  Current status (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  <Expandable title="properties">
-    <ResponseField name="addressId" type="string">
-      The blockchain address associated with the agent
-    </ResponseField>
-    <ResponseField name="networkId" type="string">
-      The blockchain network (e.g., "base-sepolia")
-    </ResponseField>
-    <ResponseField name="walletId" type="string">
-      Internal wallet identifier
-    </ResponseField>
-  </Expandable>
+  Blockchain wallet information
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current balance of the agent's wallet
-</ResponseField>
-
-<ResponseField name="currency" type="string">
-  Currency used by the agent
+  Current balance of the wallet
 </ResponseField>
 
 <ResponseField name="paymentRules" type="object">
-  <Expandable title="properties">
-    <ResponseField name="dailyLimit" type="number">
-      Maximum amount that can be spent per day
-    </ResponseField>
-    <ResponseField name="transactionLimit" type="number">
-      Maximum amount for a single transaction
-    </ResponseField>
-    <ResponseField name="requireApprovalForAll" type="boolean">
-      Whether all transactions require approval
-    </ResponseField>
-    <ResponseField name="requireApprovalAboveAmount" type="number">
-      Transactions above this amount require approval
-    </ResponseField>
-  </Expandable>
+  Transaction limits and approval requirements
 </ResponseField>
 
 <ResponseField name="tags" type="array">
   Categories or labels assigned to the agent
 </ResponseField>
 
-<ResponseField name="created" type="string">
-  Timestamp when the agent was created
-</ResponseField>
+<ResponseExample>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/agents/user_piXARPaD2jefNBGxzb84Qd" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getUserAgents(userId) {
-  try {
-    const response = await axios.get(`https://api.magebank.ai/agents/${userId}`, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log('User agents:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user agents:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-getUserAgents('user_piXARPaD2jefNBGxzb84Qd');
-```
-
-```python Python
-import requests
-
-def get_user_agents(user_id):
-    url = f"https://api.magebank.ai/agents/{user_id}"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        agents = response.json()
-        print(f"Found {len(agents)} agents for user")
-        return agents
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_user_agents("user_piXARPaD2jefNBGxzb84Qd")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+```json 200
 [
   {
     "id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
@@ -152,60 +63,39 @@ get_user_agents("user_piXARPaD2jefNBGxzb84Qd")
     "status": "active",
     "walletAddress": {
       "addressId": "0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB",
-      "networkId": "base-sepolia",
-      "walletId": "07f490dc-34e3-447f-9972-df2778fcb3c3"
+      "networkId": "base-sepolia"
     },
     "balance": "100",
     "currency": "USDC",
     "paymentRules": {
       "dailyLimit": 1000,
       "transactionLimit": 100,
-      "requireApprovalForAll": false,
       "requireApprovalAboveAmount": 50
     },
-    "tags": [
-      "customer-support",
-      "payments"
-    ],
-    "created": "2025-04-15T11:00:08.432269+00:00"
+    "tags": ["customer-support", "payments"],
+    "created": "2025-04-15T11:00:08Z"
   },
   {
     "id": "agent_bRSEFnMRD1fvkMM39hzPdM",
     "name": "Marketing Budget",
-    "description": "Manages marketing expenses and subscriptions",
+    "description": "Manages marketing expenses",
     "status": "active",
     "walletAddress": {
       "addressId": "0x8c30dE668c8F9fb431cf6D6BBA48ee60Fe8E1CAB",
-      "networkId": "base-sepolia",
-      "walletId": "07f490dc-34e3-447f-9972-df2778fcb3c4"
+      "networkId": "base-sepolia"
     },
     "balance": "500",
     "currency": "USDC",
     "paymentRules": {
       "dailyLimit": 2000,
-      "transactionLimit": 200,
-      "requireApprovalForAll": false,
-      "requireApprovalAboveAmount": 100
+      "transactionLimit": 200
     },
-    "tags": [
-      "marketing",
-      "subscriptions"
-    ],
-    "created": "2025-04-20T14:30:22.123456+00:00"
+    "tags": ["marketing", "subscriptions"]
   }
 ]
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
+```json 500
 {
   "error": "Internal Server Error"
 }
@@ -216,11 +106,9 @@ get_user_agents("user_piXARPaD2jefNBGxzb84Qd")
 
 | Status Code | Description |
 |-------------|-------------|
-| 200 | List of agents successfully retrieved |
-| 401 | Unauthorized - Invalid or missing API key |
+| 200 | List of agents successfully retrieved (may be empty) |
 | 500 | Internal Server Error |
 
-## Notes
-
-- The user ID can be in the short format (e.g., `user_piXARPaD2jefNBGxzb84Qd`).
-- If the user has no agents, an empty array will be returned.
+<Info>
+**Empty Response**: If the user has no agents, an empty array will be returned with a 200 status code.
+</Info>

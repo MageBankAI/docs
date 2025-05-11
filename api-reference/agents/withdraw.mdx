@@ -4,21 +4,14 @@ api: 'POST /agents/withdraw'
 description: "Withdraw funds from an agent's wallet"
 ---
 
-Transfers funds from the agent's wallet to the user's wallet. The operation includes:
-1. Verification of user and agent existence
-2. Validation of withdrawal amount against available balance
-3. Transfer of funds on blockchain
-4. Update of agent balance in database
-5. Creation of transaction record
+<Note>
+**Reverse Transfer**: This endpoint moves funds from an agent's wallet back to the user's wallet through an on-chain transaction.
+</Note>
 
 ## Request Headers
 
 <ParamField header="x-api-key" type="string" required>
   Your API key for authentication
-</ParamField>
-
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
 </ParamField>
 
 ## Request Body
@@ -57,87 +50,8 @@ Transfers funds from the agent's wallet to the user's wallet. The operation incl
   New balance of the agent after the withdrawal
 </ResponseField>
 
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X POST "https://api.magebank.ai/agents/withdraw" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "userid": "user_piXARPaD2jefNBGxzb84Qd",
-    "agentid": "agent_k77NTwxp2Ym3JCmVsKtXQA",
-    "amount": 50,
-    "currency": "USDC"
-  }'
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function withdrawFromAgent(userId, agentId, amount, currency = "USDC") {
-  try {
-    const response = await axios.post('https://api.magebank.ai/agents/withdraw', {
-      userid: userId,
-      agentid: agentId,
-      amount: amount,
-      currency: currency
-    }, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY',
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    console.log('Withdrawal result:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error withdrawing from agent:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-withdrawFromAgent('user_piXARPaD2jefNBGxzb84Qd', 'agent_k77NTwxp2Ym3JCmVsKtXQA', 50);
-```
-
-```python Python
-import requests
-import json
-
-def withdraw_from_agent(user_id, agent_id, amount, currency="USDC"):
-    url = "https://api.magebank.ai/agents/withdraw"
-    headers = {
-        "x-api-key": "YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "userid": user_id,
-        "agentid": agent_id,
-        "amount": amount,
-        "currency": currency
-    }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    
-    if response.status_code == 200:
-        result = response.json()
-        print("Withdrawal result:", result)
-        return result
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-withdraw_from_agent("user_piXARPaD2jefNBGxzb84Qd", "agent_k77NTwxp2Ym3JCmVsKtXQA", 50)
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "success": true,
   "txHash": "0x123...abc",
@@ -146,34 +60,23 @@ withdraw_from_agent("user_piXARPaD2jefNBGxzb84Qd", "agent_k77NTwxp2Ym3JCmVsKtXQA
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Missing Parameters
+```json 400 
 {
   "error": "userid, agentid, and amount are required."
 }
-```
-
-```json 400 Invalid Amount
-{
-  "error": "Invalid withdraw amount"
-}
-```
-
-```json 400 Insufficient Balance
+// OR
 {
   "error": "Insufficient balance"
 }
 ```
 
-```json 404 Not Found
+```json 404 
 {
   "error": "Agent not found"
 }
 ```
 
-```json 500 Transaction Failed
+```json 500 
 {
   "success": false,
   "error": "Transfer failed on-chain"
@@ -190,11 +93,10 @@ withdraw_from_agent("user_piXARPaD2jefNBGxzb84Qd", "agent_k77NTwxp2Ym3JCmVsKtXQA
 | 404 | Not Found - Agent or user not found |
 | 500 | Internal Server Error - Transaction failed |
 
-## Notes
+<Warning>
+**Balance Check**: The agent must have sufficient funds in its wallet to complete the withdrawal.
+</Warning>
 
-- The amount must be a positive number.
-- The agent must have sufficient funds in its wallet to complete the withdrawal.
-- The transaction may take a few moments to be confirmed on the blockchain.
-- The updated balance is returned as a string to preserve precision for financial calculations.
-- Both user ID and agent ID can be in either short format or UUID format.
-- Withdrawals bypass the agent's payment rules (daily limit, transaction limit, approval requirements) as they are initiated by the user, not the agent.
+<Info>
+**Rule Bypass**: Withdrawals bypass the agent's payment rules (daily limit, transaction limit, approval requirements) as they are initiated by the user, not the agent.
+</Info>

@@ -4,7 +4,9 @@ api: 'GET /agentsWith/{id}'
 description: 'Fetch details of a specific agent'
 ---
 
-Retrieve detailed information about a specific agent based on its ID.
+<Note>
+**Quick Lookup**: Retrieve comprehensive details about an agent using its unique ID.
+</Note>
 
 ## Path Parameters
 
@@ -21,127 +23,35 @@ Retrieve detailed information about a specific agent based on its ID.
 ## Response
 
 <ResponseField name="id" type="string">
-  Unique agent identifier in short ID format
+  Unique agent identifier
 </ResponseField>
 
 <ResponseField name="name" type="string">
   Name of the agent
 </ResponseField>
 
-<ResponseField name="description" type="string">
-  Purpose and functionality of the agent
-</ResponseField>
-
 <ResponseField name="status" type="string">
-  Current status of the agent (active, inactive, paused)
+  Current status (active, inactive, paused)
 </ResponseField>
 
 <ResponseField name="walletAddress" type="object">
-  <Expandable title="properties">
-    <ResponseField name="addressId" type="string">
-      The blockchain address associated with the agent
-    </ResponseField>
-    <ResponseField name="networkId" type="string">
-      The blockchain network (e.g., "base-sepolia")
-    </ResponseField>
-    <ResponseField name="walletId" type="string">
-      Internal wallet identifier
-    </ResponseField>
-  </Expandable>
+  Blockchain wallet information
 </ResponseField>
 
 <ResponseField name="balance" type="string">
   Current balance of the agent's wallet
 </ResponseField>
 
-<ResponseField name="currency" type="string">
-  Currency used by the agent (default: "USDC")
-</ResponseField>
-
 <ResponseField name="paymentRules" type="object">
-  <Expandable title="properties">
-    <ResponseField name="dailyLimit" type="number">
-      Maximum amount that can be spent per day
-    </ResponseField>
-    <ResponseField name="transactionLimit" type="number">
-      Maximum amount for a single transaction
-    </ResponseField>
-    <ResponseField name="requireApprovalForAll" type="boolean">
-      Whether all transactions require approval
-    </ResponseField>
-    <ResponseField name="requireApprovalAboveAmount" type="number">
-      Transactions above this amount require approval
-    </ResponseField>
-  </Expandable>
+  Transaction limits and approval requirements
 </ResponseField>
 
 <ResponseField name="tags" type="array">
   Categories or labels assigned to the agent
 </ResponseField>
 
-<ResponseField name="created" type="string">
-  Timestamp when the agent was created
-</ResponseField>
-
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/agentsWith/agent_k77NTwxp2Ym3JCmVsKtXQA" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getAgent(agentId) {
-  try {
-    const response = await axios.get(`https://api.magebank.ai/agentsWith/${agentId}`, {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log('Agent details:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching agent:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-getAgent('agent_k77NTwxp2Ym3JCmVsKtXQA');
-```
-
-```python Python
-import requests
-
-def get_agent(agent_id):
-    url = f"https://api.magebank.ai/agentsWith/{agent_id}"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        agent_data = response.json()
-        print("Agent details:", agent_data)
-        return agent_data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_agent("agent_k77NTwxp2Ym3JCmVsKtXQA")
-```
-
-</CodeGroup>
-
-## Example Response
-
-```json
+<ResponseExample>
+```json 200 
 {
   "id": "agent_k77NTwxp2Ym3JCmVsKtXQA",
   "name": "Payment Assistant",
@@ -149,48 +59,41 @@ get_agent("agent_k77NTwxp2Ym3JCmVsKtXQA")
   "status": "active",
   "walletAddress": {
     "addressId": "0x9d20dE668c8F9fb431cf6D6BBA48ee60Fe8E2BAB",
-    "networkId": "base-sepolia",
-    "walletId": "07f490dc-34e3-447f-9972-df2778fcb3c3"
+    "networkId": "base-sepolia"
   },
   "balance": "100",
   "currency": "USDC",
   "paymentRules": {
     "dailyLimit": 1000,
     "transactionLimit": 100,
-    "requireApprovalForAll": false,
     "requireApprovalAboveAmount": 50
   },
-  "tags": [
-    "customer-support",
-    "payments"
-  ],
-  "created": "2025-04-15T11:00:08.432269+00:00"
+  "tags": ["customer-support", "payments"],
+  "created": "2025-04-15T11:00:08Z"
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
-```json 404 Not Found
+```json 404
 {
   "error": "Agent not found"
 }
 ```
 
-```json 401 Unauthorized
-{
-  "error": "Invalid or missing API key"
-}
-```
-
-```json 500 Internal Server Error
+```json 500
 {
   "error": "Internal Server Error"
 }
 ```
 </ResponseExample>
 
-## Notes
+## Status Codes
 
-- The agent ID can be in the short format (e.g., `agent_k77NTwxp2Ym3JCmVsKtXQA`).
-- Balance is returned as a string to preserve precision for financial calculations.
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Agent details successfully retrieved |
+| 404 | Not Found - Agent ID doesn't exist |
+| 500 | Internal Server Error |
+
+<Info>
+**Balance Format**: Balance is returned as a string to preserve precision for financial calculations.
+</Info>
