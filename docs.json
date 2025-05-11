@@ -7,6 +7,27 @@
         "light": "#FF7043",
         "dark": "#E64A19"
     },
+    "background": {
+        "color": {
+            "light": "#fff",
+            "dark": "#000"
+        }
+    },
+    "banner": {
+        "dismissible": true,
+        "content": "🚀 MageBank is now live! Visit our [Dashboard](https://www.magebank.ai/dashboard) to start managing your AI agents' finances."
+    },
+    "contextual": {
+        "options": [
+            "chatgpt",
+            "claude",
+            "copy",
+            "view"
+        ]
+    },
+    "appearance": {
+        "default": "system"
+    },
     "favicon": "/logo/favicon.png",
     "navigation": {
         "tabs": [
