@@ -3,9 +3,19 @@ title: 'Introduction'
 description: 'Manage user accounts and wallet balances'
 ---
 
+# Users API
+
+<Note>
+**Key Feature**: The Users API provides real-time blockchain balance information through a reliable fallback strategy.
+</Note>
+
 The Users API provides endpoints for managing user accounts and accessing wallet balances. These endpoints enable you to check your wallet balance and manage other user-specific data.
 
 ## User and Wallet Model
+
+<Tip>
+**Best Practice**: Store the user's wallet address securely as it's used automatically in balance retrieval operations.
+</Tip>
 
 Each user in the MageBank platform includes:
 
@@ -29,11 +39,15 @@ Each user in the MageBank platform includes:
 
 <CardGroup>
   <Card title="Get Wallet Balance" icon="wallet" href="/api-reference/users/get-wallet-balance">
-    Retrieve the user's wallet balance
+    Retrieve the authenticated user's wallet balance from the blockchain
   </Card>
 </CardGroup>
 
 ## Wallet Operations
+
+<Warning>
+**Important**: The wallet balance endpoint automatically determines the user's wallet address from their account. No need to provide the address in your requests.
+</Warning>
 
 Wallets in MageBank have several key characteristics:
 
@@ -41,9 +55,25 @@ Wallets in MageBank have several key characteristics:
 2. **Automatic Agent Wallets**: Each agent also automatically gets a dedicated wallet upon creation
 3. **Network Specific**: Wallets operate on specific blockchain networks (mainnet or testnets)
 4. **Balance Reporting**: All balances are retrieved in real-time from the blockchain
-5. **Fallback Strategy**: Balance retrieval follows a fallback strategy to ensure reliability
+5. **Fallback Strategy**: Balance retrieval follows a priority system - first USDC, then ETH, and finally any other non-zero balance
+
+## Asset Support
+
+<Info>
+**Response Format**: All balance values are returned as strings to preserve precision for financial calculations.
+</Info>
+
+The wallet balance endpoint supports multiple cryptocurrencies:
+
+- **USDC**: Primary stablecoin for transactions (checked first)
+- **ETH**: Secondary asset (checked if USDC is unavailable)
+- **Other Assets**: Additional tokens may be reported if both USDC and ETH balances are zero
 
 ## User Authentication
+
+<Check>
+**Required**: All wallet balance requests must include your API key in the header to authenticate the user and access their wallet data.
+</Check>
 
 All API requests require authentication using an API key. The key identifies the user and provides access to their data. 
 
@@ -52,3 +82,7 @@ Your API key should be included in all requests as an HTTP header:
 ```bash
 x-api-key: YOUR_API_KEY
 ```
+
+<Warning>
+**Authentication Error**: Requests without a valid API key will receive a 401 error and cannot access wallet data.
+</Warning>

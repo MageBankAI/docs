@@ -1,10 +1,10 @@
 ---
 title: 'Get Wallet Balance'
 api: 'GET /user/wallet-balance'
-description: "Retrieve the balance of a user's wallet"
+description: "Retrieve the authenticated user's wallet balance from the blockchain"
 ---
 
-Retrieves the user's wallet balance from the blockchain in USDC, ETH, or other available assets.
+Retrieves the user's wallet balance from the blockchain using their wallet address. The endpoint follows a fallback strategy, first attempting to fetch USDC balance, then ETH, and finally any other non-zero balance.
 
 ## Request Headers
 
@@ -19,128 +19,57 @@ Retrieves the user's wallet balance from the blockchain in USDC, ETH, or other a
 </ResponseField>
 
 <ResponseField name="balance" type="string">
-  Current wallet balance
+  Current wallet balance formatted as a string to preserve precision
 </ResponseField>
 
 <ResponseField name="asset" type="string">
-  Asset type (cryptocurrency)
+  Asset type (USDC, ETH, or other cryptocurrency)
 </ResponseField>
 
 <ResponseField name="message" type="string">
-  Additional information about the balance retrieval
+  Additional information about the balance retrieval (appears when balance fetching methods fail)
 </ResponseField>
-
-<ResponseField name="source" type="string">
-  Source of the balance information
-</ResponseField>
-
-## Example Request
-
-<CodeGroup>
-
-```bash cURL
-curl -X GET "https://api.magebank.ai/user/wallet-balance" \
-  -H "x-api-key: YOUR_API_KEY"
-```
-
-```javascript Node.js
-const axios = require('axios');
-
-async function getWalletBalance() {
-  try {
-    const response = await axios.get('https://api.magebank.ai/user/wallet-balance', {
-      headers: {
-        'x-api-key': 'YOUR_API_KEY'
-      }
-    });
-    
-    console.log('Wallet balance:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error retrieving wallet balance:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
-
-getWalletBalance();
-```
-
-```python Python
-import requests
-
-def get_wallet_balance():
-    url = "https://api.magebank.ai/user/wallet-balance"
-    headers = {
-        "x-api-key": "YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        balance_data = response.json()
-        print("Wallet balance:", balance_data)
-        return balance_data
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        raise Exception(f"API request failed with status {response.status_code}")
-
-get_wallet_balance()
-```
-
-</CodeGroup>
-
-## Example Responses
 
 <ResponseExample>
-```json USDC Balance
+```json 200 USDC Balance
 {
   "success": true,
   "balance": "100.50",
-  "asset": "USDC",
-  "message": "Balance retrieved successfully",
-  "source": "blockchain"
+  "asset": "USDC"
 }
 ```
 
-```json ETH Balance
+```json 200 ETH Balance
 {
   "success": true,
   "balance": "0.05",
-  "asset": "ETH",
-  "message": "USDC balance not found, using ETH balance",
-  "source": "blockchain"
+  "asset": "ETH"
 }
 ```
 
-```json Zero Balance
+```json 200 Zero Balance
 {
   "success": true,
   "balance": "0.00",
-  "message": "All balance fetching methods failed",
-  "source": "blockchain"
+  "message": "All balance fetching methods failed"
 }
 ```
-</ResponseExample>
 
-## Error Responses
-
-<ResponseExample>
-```json 400 Bad Request
-{
+```json 400
+{ 
   "error": "Invalid wallet address format"
 }
 ```
 
-```json 401 Unauthorized
+```json 401
 {
   "error": "Invalid or missing API key"
 }
 ```
 
-```json 500 Internal Server Error
+```json 500
 {
-  "error": "Internal Server Error"
+  "error": "Unexpected error"
 }
 ```
 </ResponseExample>
@@ -150,13 +79,13 @@ get_wallet_balance()
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Wallet balance retrieved successfully |
-| 400 | Bad Request - Invalid wallet address |
+| 400 | Bad Request - Invalid wallet address format |
 | 401 | Unauthorized - Invalid or missing API key |
-| 500 | Internal Server Error |
+| 500 | Unexpected error |
 
 ## Notes
 
-- The API automatically determines the user's wallet address from their account.
-- The endpoint checks for USDC first, then ETH, and finally any other tokens.
+- Requires authentication with a valid API key.
+- The endpoint uses a fallback strategy: first checks USDC, then ETH, and finally any other non-zero balance.
 - Balance is returned as a string to preserve precision for financial calculations.
-- If no balance is found, the API will return a successful response with a zero balance.
+- If all balance fetching methods fail, the API will return a successful response with a zero balance and an explanatory message.
