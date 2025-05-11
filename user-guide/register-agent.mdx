@@ -4,7 +4,9 @@ description: "Create and manage AI agents on MageBank"
 icon: "robot"
 ---
 
-Create an AI agent to execute transactions and manage funds on your behalf. Agents can be configured with custom spending limits and approval requirements.
+<Note>
+**Autonomous Finance**: Create intelligent agents that can execute financial transactions and manage funds within your defined limits and rules.
+</Note>
 
 ## Creating a New Agent
 
@@ -31,8 +33,6 @@ Create an AI agent to execute transactions and manage funds on your behalf. Agen
     - **Name**: A descriptive name for your agent
     - **Description**: Purpose and functionality of the agent
     - **Allocated Balance**: Amount to fund your agent (this will be deducted from your main wallet)
-      - Select from preset amounts or use the custom amount option
-      - For custom amounts, enter a value and click "Set Amount"
     - **Tags** (optional): Add up to 5 tags to categorize your agent
     
     <Frame>
@@ -51,6 +51,10 @@ Create an AI agent to execute transactions and manage funds on your behalf. Agen
     <Frame>
       <img src="/images/register-agent/payment-rules.png" alt="Payment Rules Configuration" />
     </Frame>
+    
+    <Warning>
+    **Security Consideration**: Carefully configure these limits based on your risk tolerance. Lower limits and approval requirements provide more security but may require more manual intervention.
+    </Warning>
   </Step>
   
   <Step title="Complete Agent Registration">
@@ -66,9 +70,9 @@ Create an AI agent to execute transactions and manage funds on your behalf. Agen
       <img src="/images/register-agent/agent-created.png" alt="Agent Created Successfully" />
     </Frame>
     
-    <Note>
-      Keep your API key secure and never share it publicly. You'll need both the API key and Agent ID to make transactions with this agent.
-    </Note>
+    <Warning>
+      Keep your API key and Agent ID secure. These credentials provide access to your agent's funds and functionality.
+    </Warning>
   </Step>
 </Steps>
 
@@ -76,13 +80,17 @@ Create an AI agent to execute transactions and manage funds on your behalf. Agen
 
 ### Balance Allocation
 
+<Info>
+**Blockchain Transfers**: When you create an agent, funds are transferred from your main wallet to the agent's dedicated blockchain wallet through a secure on-chain transaction.
+</Info>
+
 When you create an agent, you allocate funds from your main wallet to the agent's wallet. This amount is deducted immediately from your global balance and becomes available for the agent to use within its configured limits.
 
-<Note>
-  It might take a few moments for the allocated funds to be fully transferred from your global account to the agent. During this time, you'll see the updated balances, but the blockchain transaction may still be processing.
-</Note>
-
 ### Payment Rules
+
+<Check>
+**Transaction Control**: Payment rules provide granular control over how your agents can spend funds, allowing you to balance autonomy with security.
+</Check>
 
 Payment rules determine how your agent can spend funds:
 
@@ -109,31 +117,13 @@ Once created, your agent can:
 - Automatically process transactions within set limits
 - Request approval for transactions exceeding limits
 
-Access your agent in code using its unique Agent ID and your API key:
-
-```javascript
-// Example API call using your agent
-const response = await fetch('https://api.magebank.ai/payments/register', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'YOUR_API_KEY'
-  },
-  body: JSON.stringify({
-    senderagentid: 'agent_9LsHq7YUoDEuFrzBjO9paJ', // Your unique Agent ID
-    receiveragentid: 'RECIPIENT_AGENT_ID',
-    paymentdetails: {
-      amount: 10,
-      currency: 'USDC',
-      method: 'CRYPTO_ADDRESS'
-    },
-    name: 'Payment description',
-    type: 'EXTERNAL'
-  })
-});
-```
+For details on how to use your agent with the API, see the [API Reference](/api-reference/agents/introduction) documentation.
 
 ## Managing Agents
+
+<Info>
+**Central Dashboard**: All your agents can be monitored and managed from a single interface, giving you complete visibility of your automated financial operations.
+</Info>
 
 After creating agents, you can:
 

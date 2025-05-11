@@ -4,9 +4,15 @@ description: "Track and manage financial operations between agents"
 icon: "money-bill-transfer"
 ---
 
-Monitor and manage all financial operations between your agents and external accounts. The Transactions page provides a comprehensive view of your payment history and approval workflows.
+<Note>
+**Financial Visibility**: The Transactions dashboard provides complete transparency into all financial movements between your agents and external accounts, with detailed tracking and approval workflows.
+</Note>
 
 ## Transaction Dashboard
+
+<Info>
+**Comprehensive Monitoring**: View all financial activities in a single interface with detailed information about each transaction's status, direction, and approval requirements.
+</Info>
 
 The Transactions dashboard displays all your financial activities in a detailed table with key information:
 
@@ -23,6 +29,10 @@ The Transactions dashboard displays all your financial activities in a detailed 
 </Frame>
 
 ## Transaction Lifecycle
+
+<Check>
+**Transparent Process**: Each transaction follows a well-defined lifecycle with clear status indicators, allowing you to track its progress from creation to completion.
+</Check>
 
 Each transaction follows a specific workflow:
 
@@ -43,6 +53,10 @@ Each transaction follows a specific workflow:
 
 ### Approval Flow
 
+<Warning>
+**Approval Timeout**: Transactions requiring approval will remain in the "Waiting for Sender Approval" state until approved or declined. They will not process automatically without explicit action.
+</Warning>
+
 1. When a transaction is first created, its status is set to "Waiting" while the system evaluates whether approval is required
 2. If approval is required:
    - Status changes to "New"
@@ -54,6 +68,10 @@ Each transaction follows a specific workflow:
    - Once successful, status updates to "Confirmed" with "Approved" approval status
 
 ## Approving Transactions
+
+<Info>
+**Decision Control**: The approval system gives you final oversight on transactions that exceed defined thresholds, balancing agent autonomy with financial security.
+</Info>
 
 When a transaction requires approval, you'll receive a notification in the Payment Approval Requests section:
 
@@ -75,6 +93,10 @@ To approve or decline a transaction:
    - No funds are transferred
 
 ## Transaction Filtering and Export
+
+<Check>
+**Financial Reporting**: Powerful filtering and export capabilities allow you to generate custom reports for accounting, analysis, and record-keeping.
+</Check>
 
 Manage your transaction history with built-in tools:
 
@@ -105,6 +127,10 @@ Click the "Export" button and select your preferred format.
 
 ## Understanding the Approval Flow
 
+<Warning>
+**Approval Triggers**: Transactions will automatically require approval under any of these conditions: amount exceeds approval threshold, "Approve All" is enabled, or transaction would exceed daily limit.
+</Warning>
+
 The approval workflow depends on the agent's configured payment rules:
 
 1. **No Approval Required**: If the transaction is below the approval threshold and "Require Approval For All Transactions" is off, the transaction processes automatically.
@@ -116,45 +142,4 @@ The approval workflow depends on the agent's configured payment rules:
 
 3. **Processing Time**: Even after approval, blockchain transactions may take a few minutes to process before showing as "Confirmed".
 
-## API Integration
-
-Integrate transaction management into your AI agents using the API:
-
-```javascript
-// Example: Create a payment between agents
-const createPayment = async () => {
-  const response = await fetch('https://api.magebank.ai/payments/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': 'YOUR_API_KEY'
-    },
-    body: JSON.stringify({
-      senderagentid: 'agent_9LsHq7YUoDEuFrzBjO9paJ',
-      receiveragentid: 'agent_mB5Da4t...',
-      paymentdetails: {
-        amount: 1.50,
-        currency: 'USDC',
-        method: 'CRYPTO_ADDRESS'
-      },
-      name: 'Monthly subscription payment',
-      type: 'EXTERNAL'
-    })
-  });
-  
-  return await response.json();
-};
-
-// Example: Check payment status
-const checkPaymentStatus = async (paymentId) => {
-  const response = await fetch(`https://api.magebank.ai/payments/${paymentId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': 'YOUR_API_KEY'
-    }
-  });
-  
-  return await response.json();
-};
-```
+For more details on integrating transaction functionality into your applications, please refer to the [Payments API](/api-reference/payments/introduction) documentation.

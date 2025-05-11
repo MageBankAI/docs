@@ -4,9 +4,15 @@ description: "Earn interest on your USDC holdings"
 icon: "vault"
 ---
 
-The MageBank Savings Vault allows you to earn interest on your USDC while maintaining full control and liquidity of your funds. Deposit from any of your agents and watch your savings grow in real-time.
+<Note>
+**Passive Income**: The MageBank Savings Vault allows your AI agents to deposit idle funds into interest-bearing accounts, automatically growing your portfolio while maintaining full liquidity.
+</Note>
 
 ## Savings Dashboard
+
+<Info>
+**Real-Time Analytics**: The Savings dashboard provides real-time insights into your interest earnings and portfolio performance across all your agents.
+</Info>
 
 The Savings Vault dashboard provides a comprehensive overview of your savings performance:
 
@@ -21,7 +27,7 @@ The Savings Vault dashboard provides a comprehensive overview of your savings pe
 - **Invested**: Total amount deposited into savings
 - **1-year Projection**: Estimated value of your savings after one year at the current APY
 
-### Transaction History
+### Investment Table
 
 The dashboard includes a detailed table showing all your active investments:
 
@@ -36,7 +42,9 @@ The dashboard includes a detailed table showing all your active investments:
 
 ## Depositing Funds
 
-Earn interest by depositing funds from your agent accounts into the Savings Vault:
+<Check>
+**No Lock-up Period**: Unlike traditional savings products, the MageBank Savings Vault has no minimum deposit period, allowing complete flexibility and liquidity.
+</Check>
 
 <Steps>
   <Step title="Click Deposit">
@@ -54,9 +62,9 @@ Earn interest by depositing funds from your agent accounts into the Savings Vaul
       <img src="/images/savings-vault/deposit-modal.png" alt="Deposit Modal" />
     </Frame>
     
-    <Note>
+    <Info>
       The system automatically calculates your projected earnings at the current APY rate and displays the estimated total value after one year.
-    </Note>
+    </Info>
   </Step>
   
   <Step title="Confirm Deposit">
@@ -89,7 +97,9 @@ Earn interest by depositing funds from your agent accounts into the Savings Vaul
 
 ## Withdrawing Funds
 
-You can withdraw your funds at any time without penalties or waiting periods:
+<Check>
+**Instant Access**: Withdraw your funds at any time without penalties or waiting periods, with interest calculated up to the exact moment of withdrawal.
+</Check>
 
 <Steps>
   <Step title="Click Withdraw">
@@ -129,9 +139,9 @@ You can withdraw your funds at any time without penalties or waiting periods:
       <img src="/images/savings-vault/withdrawal-confirmation.png" alt="Confirm Withdrawal" />
     </Frame>
     
-    <Note>
+    <Info>
       The entire investment (principal plus earned interest) will be transferred back to the selected agent's wallet.
-    </Note>
+    </Info>
   </Step>
   
   <Step title="Withdrawal Complete">
@@ -149,78 +159,24 @@ You can withdraw your funds at any time without penalties or waiting periods:
 
 ## How Interest Works
 
+<Info>
+**Continuous Compounding**: The Savings Vault uses continuous compounding, the most favorable interest calculation method, allowing your investments to grow at the maximum possible rate.
+</Info>
+
 The Savings Vault uses a compound interest model to grow your savings:
 
-- **Interest Rate**: The current APY (Annual Percentage Yield) is displayed on the dashboard can be updated to as high as 12.5%
+- **Interest Rate**: The current APY (Annual Percentage Yield) is displayed on the dashboard and can be updated to as high as 12.5%
 - **Real-time Calculation**: Interest accrues continuously and is calculated in real-time
 - **No Lock-up Period**: Funds can be deposited or withdrawn at any time without penalties
 - **Interest Disbursement**: Interest is added directly to your investment's current value
 
-### Interest Calculation Formula
+### Interest Calculation
 
-Your interest is calculated using the standard compound interest formula:
+Your interest is calculated using the standard compound interest formula, which takes into account:
 
-```
-A = P(1 + r/n)^(nt)
-```
+- Principal amount invested
+- Annual interest rate (APY)
+- Investment duration (including partial days)
+- Continuous compounding methodology
 
-Where:
-- A = Final amount
-- P = Principal (initial deposit)
-- r = Annual interest rate (APY)
-- n = Number of times interest is compounded per year
-- t = Time (in years)
-
-For the MageBank Savings Vault, interest is compounded continuously, resulting in the most favorable growth rate for your savings.
-
-## API Integration
-
-Integrate savings functionality into your applications using the MageBank API:
-
-```javascript
-// Example: Deposit to savings
-const depositToSavings = async (agentId, amount) => {
-  const response = await fetch('https://api.magebank.ai/savings/deposit', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': 'YOUR_API_KEY'
-    },
-    body: JSON.stringify({
-      agentId: agentId,
-      amount: amount
-    })
-  });
-  
-  return await response.json();
-};
-
-// Example: Withdraw from savings
-const withdrawFromSavings = async (investmentId) => {
-  const response = await fetch('https://api.magebank.ai/savings/withdraw', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': 'YOUR_API_KEY'
-    },
-    body: JSON.stringify({
-      investmentId: investmentId
-    })
-  });
-  
-  return await response.json();
-};
-
-// Example: Get savings dashboard data
-const getSavingsDashboard = async () => {
-  const response = await fetch('https://api.magebank.ai/savings/dashboard', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': 'YOUR_API_KEY'
-    }
-  });
-  
-  return await response.json();
-};
-```
+For more details on interest calculations and to simulate different investment scenarios, visit the [Interest Calculator](/api-reference/savings/calculate-interest) in the API documentation.
