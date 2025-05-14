@@ -116,7 +116,7 @@
                 },
                 {
                     "anchor": "LLM.txt",
-                    "href": "https://github.com/MageBankAI/docs/blob/master/LLM.txt",
+                    "href": "https://raw.githubusercontent.com/MageBankAI/docs/refs/heads/master/LLM.txt",
                     "icon": "robot"
                 }
             ]
