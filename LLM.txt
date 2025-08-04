@@ -1,5 +1,5 @@
 Directory structure:
-└── magebankai-docs/
+└── mageai-docs/
     ├── README.md
     ├── docs.json
     ├── index.mdx
@@ -65,10 +65,10 @@ Directory structure:
 ================================================
 FILE: README.md
 ================================================
-# MageBank API Documentation
+# Mage API Documentation
 
 <p align="center">
-  <img src="/logo/favicon.ico" alt="MageBank Logo" width="100" height="100"/>
+  <img src="/logo/favicon.ico" alt="Mage Logo" width="100" height="100"/>
 </p>
 
 <p align="center">
@@ -81,13 +81,13 @@ FILE: README.md
   <a href="mailto:contact@magebank.ai">Support</a>
 </p>
 
-## 🏦 About MageBank
+## 🏦 About Mage
 
-MageBank is a multi-agentic economy bank where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, MageBank connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
+Mage is a multi-agentic economy bank where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, Mage connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
 
 ## 📚 Documentation Overview
 
-This repository contains the official MageBank API documentation, built with [Mintlify](https://mintlify.com/). Our comprehensive documentation covers:
+This repository contains the official Mage API documentation, built with [Mintlify](https://mintlify.com/). Our comprehensive documentation covers:
 
 - **Agent Management**: Create and manage AI financial agents
 - **Wallet Operations**: Handle deposits, withdrawals, and transfers
@@ -107,7 +107,7 @@ This repository contains the official MageBank API documentation, built with [Mi
 1. Clone this repository:
 ```bash
 git clone https://github.com/MageBankAI/magebank-docs.git
-cd magebank-docs
+cd mage-docs
 ```
 
 2. Install the Mintlify CLI:
@@ -125,7 +125,7 @@ The documentation will be available at `http://localhost:3000`.
 ## 🧩 Project Structure
 
 ```
-magebank-docs/
+mage-docs/
 ├── README.md                      # This file
 ├── docs.json                      # Main configuration file
 ├── index.mdx                      # Homepage
@@ -197,7 +197,7 @@ FILE: docs.json
 {
     "$schema": "https://mintlify.com/docs.json",
     "theme": "mint",
-    "name": "MageBank API Documentation",
+    "name": "Mage API Documentation",
     "colors": {
         "primary": "#FF5722",
         "light": "#FF7043",
@@ -211,7 +211,7 @@ FILE: docs.json
     },
     "banner": {
         "dismissible": true,
-        "content": "🚀 MageBank is now live! Visit our [Dashboard](https://www.magebank.ai/dashboard) to start managing your AI agents' finances."
+        "content": "🚀 Mage is now live! Visit our [Dashboard](https://www.magebank.ai/dashboard) to start managing your AI agents' finances."
     },
     "contextual": {
         "options": [
@@ -314,7 +314,7 @@ FILE: docs.json
                 },
                 {
                     "anchor": "LLM.txt",
-                    "href": "https://raw.githubusercontent.com/MageBankAI/docs/refs/heads/master/LLM.txt",
+                    "href": "https://raw.githubusercontent.com/MageAI/docs/refs/heads/master/LLM.txt",
                     "icon": "robot"
                 }
             ]
@@ -360,24 +360,24 @@ FILE: index.mdx
 ================================================
 ---
 title: Introduction
-description: "Welcome to the MageBank API documentation - Financial infrastructure for AI agents"
+description: "Welcome to the Mage API documentation - Financial infrastructure for AI agents"
 icon: "landmark"
 ---
 
 <img
     className="block dark:hidden rounded-lg shadow-xl border border-gray-200"
     src="/images/hero-dashboard.png"
-    alt="MageBank Hero Light"
+    alt="Mage Hero Light"
 />
 <img
     className="hidden dark:block rounded-lg shadow-xl border border-gray-800"
     src="/images/hero-dashboard.png"
-    alt="MageBank Hero Dark"
+    alt="Mage Hero Dark"
 />
 
-## Welcome to MageBank API
+## Welcome to Mage API
 
-MageBank is a **multi-agentic economy bank** where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, MageBank connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
+Mage is a **multi-agentic economy bank** where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, Mage connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
 
 <Warning>
     **SANDBOX MODE ACTIVE**: We are currently in sandbox mode. Only Agent-to-agent transactions are
@@ -390,7 +390,7 @@ MageBank is a **multi-agentic economy bank** where AI agents can manage, grow, a
     deposit** to test the application and explore all features!
 </Note>
 
-Our API provides programmatic access to all MageBank features, enabling you to integrate powerful financial automation into your applications.
+Our API provides programmatic access to all Mage features, enabling you to integrate powerful financial automation into your applications.
 
 ## Getting Started
 
@@ -416,7 +416,7 @@ Our API provides programmatic access to all MageBank features, enabling you to i
 
 ## API Reference
 
-Integrate MageBank directly into your applications with our comprehensive API.
+Integrate Mage directly into your applications with our comprehensive API.
 
 <CardGroup cols={2}>
     <Card
@@ -517,7 +517,7 @@ When an error occurs, the API returns an appropriate HTTP status code and a JSON
 
 ## Rate Limiting
 
-To ensure service stability, the MageBank API implements rate limiting. If you exceed the limits, you'll receive a `429 Too Many Requests` response.
+To ensure service stability, the Mage API implements rate limiting. If you exceed the limits, you'll receive a `429 Too Many Requests` response.
 
 ### Standard Limits
 
@@ -540,21 +540,21 @@ FILE: mcp-and-a2a.mdx
 ================================================
 ---
 title: 'MCP and A2A Compatibility'
-description: 'How MageBank integrates with Multi-Agent Communication Protocol and Agent-to-Agent frameworks'
+description: 'How Mage integrates with Multi-Agent Communication Protocol and Agent-to-Agent frameworks'
 icon: 'network-wired'
 ---
 
-MageBank is built from the ground up to be compatible with emerging multi-agent frameworks and protocols, providing the financial infrastructure needed for the agent economy to flourish.
+Mage is built from the ground up to be compatible with emerging multi-agent frameworks and protocols, providing the financial infrastructure needed for the agent economy to flourish.
 
 ## Native Integration with Agent Frameworks
 
 <Tip>
-  <span className="font-bold">MageBank</span> is fully compatible with <span className="font-bold">MCP servers</span> and <span className="font-bold">Google's Agent-to-Agent (A2A) framework</span>, bringing the missing economic collaboration layer among multi-agentic systems.
+  <span className="font-bold">Mage</span> is fully compatible with <span className="font-bold">MCP servers</span> and <span className="font-bold">Google's Agent-to-Agent (A2A) framework</span>, bringing the missing economic collaboration layer among multi-agentic systems.
 </Tip>
 
 ## What This Means For Developers
 
-By integrating with MCP and A2A frameworks, MageBank enables:
+By integrating with MCP and A2A frameworks, Mage enables:
 
 ### 1. Seamless Economic Transactions Between Agents
 
@@ -566,7 +566,7 @@ Agents from different systems can transact with each other using a standardized 
 
 ### 2. Financial Autonomy for Agent Networks
 
-With MageBank as the financial backbone:
+With Mage as the financial backbone:
 
 - **Autonomous payments**: Agents can independently initiate and complete financial transactions
 - **Programmable payment rules**: Define complex payment logic for agent-driven workflows
@@ -591,25 +591,25 @@ With MageBank as the financial backbone:
 
 ## Technical Integration
 
-MageBank's integration with MCP and A2A frameworks is accomplished through our comprehensive API endpoints. We provide examples in both JavaScript and Python to accommodate your preferred implementation language.
+Mage's integration with MCP and A2A frameworks is accomplished through our comprehensive API endpoints. We provide examples in both JavaScript and Python to accommodate your preferred implementation language.
 
 ### MCP Integration Examples
 
 <CodeGroup>
 ```javascript JavaScript
-// Example of integrating MageBank with an MCP server
+// Example of integrating Mage with an MCP server
 // Using direct API calls instead of an SDK
 
-// Set up an MCP server that can process payments via MageBank
+// Set up an MCP server that can process payments via Mage
 async function setupMCPPaymentProcessor(apiKey) {
   // Register payment capabilities with MCP server
   const paymentService = {
     name: "payment_service",
-    description: "Process payments via MageBank API",
+    description: "Process payments via Mage API",
     methods: {
       // Define payment method that MCP can call
       "process_payment": async (sender, receiver, amount, currency = "USDC") => {
-        // Call MageBank API to register a payment
+        // Call Mage API to register a payment
         const response = await fetch('https://api.magebank.ai/payments/register', {
           method: 'POST',
           headers: {
@@ -640,7 +640,7 @@ async function setupMCPPaymentProcessor(apiKey) {
 ```
 
 ```python Python
-# Example of integrating MageBank with an MCP server in Python
+# Example of integrating Mage with an MCP server in Python
 # Using direct API calls with the requests library
 
 import requests
@@ -648,10 +648,10 @@ import json
 
 def setup_mcp_payment_processor(api_key):
     """
-    Set up an MCP server that can process payments via MageBank
+    Set up an MCP server that can process payments via Mage
     
     Args:
-        api_key (str): Your MageBank API key
+        api_key (str): Your Mage API key
         
     Returns:
         dict: Payment service definition for MCP server registration
@@ -660,7 +660,7 @@ def setup_mcp_payment_processor(api_key):
     # Define the payment service for MCP integration
     payment_service = {
         "name": "payment_service",
-        "description": "Process payments via MageBank API",
+        "description": "Process payments via Mage API",
         "methods": {
             "process_payment": lambda sender, receiver, amount, currency="USDC": process_payment(
                 api_key, sender, receiver, amount, currency
@@ -672,10 +672,10 @@ def setup_mcp_payment_processor(api_key):
 
 def process_payment(api_key, sender, receiver, amount, currency="USDC"):
     """
-    Process a payment between agents using the MageBank API
+    Process a payment between agents using the Mage API
     
     Args:
-        api_key (str): Your MageBank API key
+        api_key (str): Your Mage API key
         sender (str): ID of the sender agent
         receiver (str): ID of the receiver agent
         amount (float): Payment amount
@@ -685,7 +685,7 @@ def process_payment(api_key, sender, receiver, amount, currency="USDC"):
         dict: Result of the payment operation
     """
     
-    # Call MageBank API to register a payment
+    # Call Mage API to register a payment
     response = requests.post(
         'https://api.magebank.ai/payments/register',
         headers={
@@ -714,12 +714,12 @@ def process_payment(api_key, sender, receiver, amount, currency="USDC"):
 
 <CodeGroup>
 ```javascript JavaScript
-// Example of integrating MageBank with Google's A2A framework
+// Example of integrating Mage with Google's A2A framework
 // This example shows how a financial agent could advertise payment capabilities via A2A
 
-// Define an A2A Agent Card with MageBank payment capabilities
+// Define an A2A Agent Card with Mage payment capabilities
 const agentCard = {
-  "name": "MageBank Payment Agent",
+  "name": "Mage Payment Agent",
   "description": "Agent for processing payments and financial transactions",
   "version": "1.0.0",
   "skills": [
@@ -761,7 +761,7 @@ async function handleA2ATask(task, apiKey) {
   if (task.skill === "process_payment") {
     const params = task.parameters;
     
-    // Call MageBank API to process payment
+    // Call Mage API to process payment
     const response = await fetch('https://api.magebank.ai/payments/register', {
       method: 'POST',
       headers: {
@@ -793,7 +793,7 @@ async function handleA2ATask(task, apiKey) {
   }
   
   if (task.skill === "check_balance") {
-    // Call MageBank API to get agent balance
+    // Call Mage API to get agent balance
     const response = await fetch(`https://api.magebank.ai/agentsWith/${task.parameters.agentId}`, {
       headers: {
         'x-api-key': apiKey
@@ -819,15 +819,15 @@ async function handleA2ATask(task, apiKey) {
 ```
 
 ```python Python
-# Example of integrating MageBank with Google's A2A framework in Python
+# Example of integrating Mage with Google's A2A framework in Python
 # This example shows how a financial agent could advertise payment capabilities via A2A
 
 import requests
 import json
 
-# Define an A2A Agent Card with MageBank payment capabilities
+# Define an A2A Agent Card with Mage payment capabilities
 agent_card = {
-    "name": "MageBank Payment Agent",
+    "name": "Mage Payment Agent",
     "description": "Agent for processing payments and financial transactions",
     "version": "1.0.0",
     "skills": [
@@ -870,7 +870,7 @@ def handle_a2a_task(task, api_key):
     
     Args:
         task (dict): Task request from A2A framework
-        api_key (str): Your MageBank API key
+        api_key (str): Your Mage API key
         
     Returns:
         dict: Task response for A2A framework
@@ -879,7 +879,7 @@ def handle_a2a_task(task, api_key):
     if task["skill"] == "process_payment":
         params = task["parameters"]
         
-        # Call MageBank API to process payment
+        # Call Mage API to process payment
         response = requests.post(
             'https://api.magebank.ai/payments/register',
             headers={
@@ -910,7 +910,7 @@ def handle_a2a_task(task, api_key):
         }
     
     elif task["skill"] == "check_balance":
-        # Call MageBank API to get agent balance
+        # Call Mage API to get agent balance
         response = requests.get(
             f"https://api.magebank.ai/agentsWith/{task['parameters']['agentId']}",
             headers={'x-api-key': api_key}
@@ -935,7 +935,7 @@ def handle_a2a_task(task, api_key):
 
 ## Getting Started
 
-To begin integrating MageBank with your MCP or A2A implementation:
+To begin integrating Mage with your MCP or A2A implementation:
 
 <Steps>
   <Step title="Get your API key">
@@ -947,7 +947,7 @@ To begin integrating MageBank with your MCP or A2A implementation:
     <a href="/user-guide/register-agent" className="text-primary">Register your first agent</a>
   </Step>
   <Step title="Explore the API Reference">
-    Understand the full capabilities of the MageBank API
+    Understand the full capabilities of the Mage API
     <a href="/api-reference/introduction" className="text-primary">API Reference</a>
   </Step>
   <Step title="Install the SDK">
@@ -965,10 +965,10 @@ FILE: api-reference/introduction.mdx
 ================================================
 ---
 title: 'API Introduction'
-description: 'Overview of the MageBank API for AI-Driven Financial Agents'
+description: 'Overview of the Mage API for AI-Driven Financial Agents'
 ---
 
-The MageBank API enables developers to integrate AI-driven financial agent functionality into their applications. This section provides a comprehensive reference for all available endpoints.
+The Mage API enables developers to integrate AI-driven financial agent functionality into their applications. This section provides a comprehensive reference for all available endpoints.
 
 ## API Base URL
 
@@ -987,12 +987,12 @@ x-api-key: YOUR_API_KEY
 ```
 
 <Note>
-  To get your API key, visit the [MageBank Dashboard](https://www.magebank.ai/dashboard) and navigate to the "Integrate Agent" section.
+  To get your API key, visit the [Mage Dashboard](https://www.magebank.ai/dashboard) and navigate to the "Integrate Agent" section.
 </Note>
 
 ## API Endpoints
 
-The MageBank API is organized into the following categories:
+The Mage API is organized into the following categories:
 
 <CardGroup cols={2}>
   <Card title="Agents" icon="robot" href="/api-reference/agents/introduction">
@@ -4918,7 +4918,7 @@ description: 'Process and manage payments between agents and external accounts'
 **Financial Transactions**: The Payments API provides a complete system for creating, approving, and tracking payments between agents on the blockchain.
 </Note>
 
-Process and manage financial transactions between agents with automatic approval workflows and detailed tracking. Use these endpoints to initiate, approve/decline, and analyze payments within the MageBank ecosystem.
+Process and manage financial transactions between agents with automatic approval workflows and detailed tracking. Use these endpoints to initiate, approve/decline, and analyze payments within the Mage ecosystem.
 
 <Warning>
 In sandbox mode only agent-to-agent transactions are currently supported. Agent-to-bank account, agent-to-businesses, and agent-to-checkout pages are coming soon.
@@ -4930,7 +4930,7 @@ In sandbox mode only agent-to-agent transactions are currently supported. Agent-
 **Approval Flow**: Payments respect each agent's configured rules, with transactions above certain thresholds requiring explicit approval before execution.
 </Info>
 
-Each payment in the MageBank system includes:
+Each payment in the Mage system includes:
 
 - **Identifiers**: Unique ID, name, and type
 - **Participants**: Sender and receiver agent IDs
@@ -5009,7 +5009,7 @@ The typical lifecycle of a payment includes:
 ## Payment Types
 
 <Check>
-**Payment Classifications**: MageBank provides distinct payment types to clearly identify the relationship between transacting parties.
+**Payment Classifications**: Mage provides distinct payment types to clearly identify the relationship between transacting parties.
 </Check>
 
 - **EXTERNAL**: Payments to recipients outside your agent network
@@ -6001,7 +6001,7 @@ Each savings investment includes:
 ## Interest Rate Model
 
 <Check>
-**Transparent Rates**: MageBank offers competitive interest rates on USDC holdings, with current rates always accessible through the API.
+**Transparent Rates**: Mage offers competitive interest rates on USDC holdings, with current rates always accessible through the API.
 </Check>
 
 Key features of the interest rate system:
@@ -6014,7 +6014,7 @@ Key features of the interest rate system:
 ## Interest Calculation
 
 <Info>
-**Compound Interest**: MageBank uses standard compound interest formulas to calculate earnings, with real-time calculation of accrued interest.
+**Compound Interest**: Mage uses standard compound interest formulas to calculate earnings, with real-time calculation of accrued interest.
 </Info>
 
 ```
@@ -6317,10 +6317,10 @@ Monitor and analyze blockchain transactions between agents and external wallets.
 ## Transaction Model
 
 <Info>
-**Blockchain Integration**: All financial transfers in MageBank are executed on the blockchain, providing an immutable record of every transaction.
+**Blockchain Integration**: All financial transfers in Mage are executed on the blockchain, providing an immutable record of every transaction.
 </Info>
 
-Each transaction in the MageBank system consists of:
+Each transaction in the Mage system consists of:
 
 - **Transaction Hash**: Unique blockchain identifier (txHash)
 - **Status**: Current state of the transaction
@@ -6352,7 +6352,7 @@ Each transaction in the MageBank system consists of:
 ## Transaction Categories
 
 <Check>
-**Comprehensive Tracking**: MageBank monitors all financial movements involving your agents' wallets.
+**Comprehensive Tracking**: Mage monitors all financial movements involving your agents' wallets.
 </Check>
 
 The Transaction Summary endpoint provides aggregated totals for:
@@ -6492,7 +6492,7 @@ The Users API provides endpoints for managing user accounts and accessing wallet
 **Best Practice**: Store the user's wallet address securely as it's used automatically in balance retrieval operations.
 </Tip>
 
-Each user in the MageBank platform includes:
+Each user in the Mage platform includes:
 
 1. **Identity**:
    - Unique user ID (UUID)
@@ -6524,7 +6524,7 @@ Each user in the MageBank platform includes:
 **Important**: The wallet balance endpoint automatically determines the user's wallet address from their account. No need to provide the address in your requests.
 </Warning>
 
-Wallets in MageBank have several key characteristics:
+Wallets in Mage have several key characteristics:
 
 1. **Associated with User**: Each user has a primary wallet for funding agents
 2. **Automatic Agent Wallets**: Each agent also automatically gets a dedicated wallet upon creation
@@ -7350,21 +7350,21 @@ FILE: user-guide/get-api-key.mdx
 ================================================
 ---
 title: "Get API Key"
-description: "Generate and manage your MageBank API key"
+description: "Generate and manage your Mage API key"
 icon: "key"
 ---
 
 <Note>
-**Authentication Essentials**: Your API key authenticates all requests to the MageBank platform and is required for all API operations.
+**Authentication Essentials**: Your API key authenticates all requests to the Mage platform and is required for all API operations.
 </Note>
 
 ## Getting Your API Key
 
 <Steps>
-    <Step title="Visit MageBank Dashboard">
-        Navigate to the [MageBank Dashboard](https://www.magebank.ai/dashboard/)
+    <Step title="Visit Mage Dashboard">
+        Navigate to the [Mage Dashboard](https://www.magebank.ai/dashboard/)
         <Frame>
-            <img src="/images/get-api-key/dashboard-login.png" alt="MageBank Dashboard" />
+            <img src="/images/get-api-key/dashboard-login.png" alt="Mage Dashboard" />
         </Frame>
     </Step>
 
@@ -7404,7 +7404,7 @@ All API requests must include your API key in the `x-api-key` header as describe
 ## Security Best Practices
 
 <Warning>
-**Key Protection**: Your API key grants full access to your MageBank account. Treat it with the same care as a password.
+**Key Protection**: Your API key grants full access to your Mage account. Treat it with the same care as a password.
 </Warning>
 
 - **Server-side only**: Never expose your API key in client-side code
@@ -7418,7 +7418,7 @@ FILE: user-guide/register-agent.mdx
 ================================================
 ---
 title: "Register Agent"
-description: "Create and manage AI agents on MageBank"
+description: "Create and manage AI agents on Mage"
 icon: "robot"
 ---
 
@@ -7479,7 +7479,7 @@ icon: "robot"
     After clicking "Next", your agent will be created. The confirmation screen displays:
     
     - **Agent ID**: Unique identifier for your agent (copy this for API calls)
-    - **API Key**: Your MageBank API key (same for all your agents)
+    - **API Key**: Your Mage API key (same for all your agents)
     - **Balance**: The amount allocated to your agent
     - **Payment Rules**: Summary of all transaction limits and approval settings
     - **Updated Balance**: Your remaining wallet balance after funding the agent
@@ -7566,7 +7566,7 @@ icon: "vault"
 ---
 
 <Note>
-**Passive Income**: The MageBank Savings Vault allows your AI agents to deposit idle funds into interest-bearing accounts, automatically growing your portfolio while maintaining full liquidity.
+**Passive Income**: The Mage Savings Vault allows your AI agents to deposit idle funds into interest-bearing accounts, automatically growing your portfolio while maintaining full liquidity.
 </Note>
 
 ## Savings Dashboard
@@ -7604,7 +7604,7 @@ The dashboard includes a detailed table showing all your active investments:
 ## Depositing Funds
 
 <Check>
-**No Lock-up Period**: Unlike traditional savings products, the MageBank Savings Vault has no minimum deposit period, allowing complete flexibility and liquidity.
+**No Lock-up Period**: Unlike traditional savings products, the Mage Savings Vault has no minimum deposit period, allowing complete flexibility and liquidity.
 </Check>
 
 <Steps>

@@ -1,7 +1,7 @@
-# MageBank API Documentation
+# Mage API Documentation
 
 <p align="center">
-  <img src="/logo/favicon.ico" alt="MageBank Logo" width="100" height="100"/>
+  <img src="/logo/favicon.ico" alt="Mage Logo" width="100" height="100"/>
 </p>
 
 <p align="center">
@@ -14,13 +14,13 @@
   <a href="mailto:contact@magebank.ai">Support</a>
 </p>
 
-## 🏦 About MageBank
+## 🏦 About Mage
 
-MageBank is a multi-agentic economy bank where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, MageBank connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
+Mage is a multi-agentic economy bank where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, Mage connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
 
 ## 📚 Documentation Overview
 
-This repository contains the official MageBank API documentation, built with [Mintlify](https://mintlify.com/). Our comprehensive documentation covers:
+This repository contains the official Mage API documentation, built with [Mintlify](https://mintlify.com/). Our comprehensive documentation covers:
 
 - **Agent Management**: Create and manage AI financial agents
 - **Wallet Operations**: Handle deposits, withdrawals, and transfers
