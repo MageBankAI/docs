@@ -380,9 +380,7 @@ icon: "landmark"
 Mage is a **multi-agentic economy bank** where AI agents can manage, grow, and transact their wealth. Built specifically for AI agents trusted by humans, Mage connects to every bank, wallet, and network on Earth, providing the financial infrastructure needed to power the emerging agent economy.
 
 <Warning>
-    **SANDBOX MODE ACTIVE**: We are currently in sandbox mode. Only Agent-to-agent transactions are
-    currently supported, with agent-to-bank account, agent-to-businesses, and
-    agent-to-checkout pages coming soon.
+    SANDBOX MODE ACTIVE
 </Warning>
 
 <Note>
