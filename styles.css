@@ -1,0 +1,28 @@
+/* Custom navbar logo styling */
+#navbar img,
+.navbar img,
+[data-testid="navbar"] img,
+.navbar-logo img,
+.logo img {
+    height: 36px !important;
+    max-height: 36px !important;
+    width: auto !important;
+    transform: translateX(-8px) !important;
+    -webkit-transform: translateX(-8px) !important;
+    -moz-transform: translateX(-8px) !important;
+    -ms-transform: translateX(-8px) !important;
+    -o-transform: translateX(-8px) !important;
+}
+
+/* Alternative selectors for logo */
+img[src*="logo-light"],
+img[src*="logo-dark"] {
+    height: 36px !important;
+    max-height: 36px !important;
+    width: auto !important;
+    transform: translateX(-8px) !important;
+    -webkit-transform: translateX(-8px) !important;
+    -moz-transform: translateX(-8px) !important;
+    -ms-transform: translateX(-8px) !important;
+    -o-transform: translateX(-8px) !important;
+}

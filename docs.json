@@ -153,5 +153,8 @@
         "mdx": {
             "server": "https://api.magebank.ai"
         }
-    }
+    },
+    "stylesheets": [
+        "/styles.css"
+    ]
 }
