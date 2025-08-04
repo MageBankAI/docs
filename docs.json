@@ -123,8 +123,8 @@
         }
     },
     "logo": {
-        "light": "/logo/logo.svg",
-        "dark": "/logo/logo.svg"
+        "light": "/logo/logo-light.svg",
+        "dark": "/logo/logo-dark.svg"
     },
     "navbar": {
         "links": [

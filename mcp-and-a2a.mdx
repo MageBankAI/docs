@@ -1,20 +1,20 @@
 ---
 title: 'MCP and A2A Compatibility'
-description: 'How MageBank integrates with Model Context Protocol and Agent-to-Agent frameworks'
+description: 'How Mage integrates with Model Context Protocol and Agent-to-Agent frameworks'
 icon: 'network-wired'
 ---
 
-MageBank is built from the ground up to be compatible with emerging multi-agent frameworks and protocols, providing the financial infrastructure needed for the agent economy to flourish.
+Mage is built from the ground up to be compatible with emerging multi-agent frameworks and protocols, providing the financial infrastructure needed for the agent economy to flourish.
 
 ## Native Integration with Agent Frameworks
 
 <Tip>
-  <span className="font-bold">MageBank</span> is fully compatible with <span className="font-bold">MCP servers</span> and <span className="font-bold">Google's Agent-to-Agent (A2A) framework</span>, bringing the missing economic collaboration layer among multi-agentic systems.
+  <span className="font-bold">Mage</span> is fully compatible with <span className="font-bold">MCP servers</span> and <span className="font-bold">Google's Agent-to-Agent (A2A) framework</span>, bringing the missing economic collaboration layer among multi-agentic systems.
 </Tip>
 
 ## What This Means For Developers
 
-By integrating with MCP and A2A frameworks, MageBank enables:
+By integrating with MCP and A2A frameworks, Mage enables:
 
 ### 1. Seamless Economic Transactions Between Agents
 
@@ -26,7 +26,7 @@ Agents from different systems can transact with each other using a standardized 
 
 ### 2. Financial Autonomy for Agent Networks
 
-With MageBank as the financial backbone:
+With Mage as the financial backbone:
 
 - **Autonomous payments**: Agents can independently initiate and complete financial transactions
 - **Programmable payment rules**: Define complex payment logic for agent-driven workflows
@@ -51,25 +51,25 @@ With MageBank as the financial backbone:
 
 ## Technical Integration
 
-MageBank's integration with MCP and A2A frameworks is accomplished through our comprehensive API endpoints. We provide examples in both JavaScript and Python to accommodate your preferred implementation language.
+Mage's integration with MCP and A2A frameworks is accomplished through our comprehensive API endpoints. We provide examples in both JavaScript and Python to accommodate your preferred implementation language.
 
 ### MCP Integration Examples
 
 <CodeGroup>
 ```javascript JavaScript
-// Example of integrating MageBank with an MCP server
+// Example of integrating Mage with an MCP server
 // Using direct API calls instead of an SDK
 
-// Set up an MCP server that can process payments via MageBank
+// Set up an MCP server that can process payments via Mage
 async function setupMCPPaymentProcessor(apiKey) {
   // Register payment capabilities with MCP server
   const paymentService = {
     name: "payment_service",
-    description: "Process payments via MageBank API",
+    description: "Process payments via Mage API",
     methods: {
       // Define payment method that MCP can call
       "process_payment": async (sender, receiver, amount, currency = "USDC") => {
-        // Call MageBank API to register a payment
+        // Call Mage API to register a payment
         const response = await fetch('https://api.magebank.ai/payments/register', {
           method: 'POST',
           headers: {
@@ -100,7 +100,7 @@ async function setupMCPPaymentProcessor(apiKey) {
 ```
 
 ```python Python
-# Example of integrating MageBank with an MCP server in Python
+# Example of integrating Mage with an MCP server in Python
 # Using direct API calls with the requests library
 
 import requests
@@ -108,10 +108,10 @@ import json
 
 def setup_mcp_payment_processor(api_key):
     """
-    Set up an MCP server that can process payments via MageBank
+    Set up an MCP server that can process payments via Mage
     
     Args:
-        api_key (str): Your MageBank API key
+        api_key (str): Your Mage API key
         
     Returns:
         dict: Payment service definition for MCP server registration
@@ -120,7 +120,7 @@ def setup_mcp_payment_processor(api_key):
     # Define the payment service for MCP integration
     payment_service = {
         "name": "payment_service",
-        "description": "Process payments via MageBank API",
+        "description": "Process payments via Mage API",
         "methods": {
             "process_payment": lambda sender, receiver, amount, currency="USDC": process_payment(
                 api_key, sender, receiver, amount, currency
@@ -132,10 +132,10 @@ def setup_mcp_payment_processor(api_key):
 
 def process_payment(api_key, sender, receiver, amount, currency="USDC"):
     """
-    Process a payment between agents using the MageBank API
+    Process a payment between agents using the Mage API
     
     Args:
-        api_key (str): Your MageBank API key
+        api_key (str): Your Mage API key
         sender (str): ID of the sender agent
         receiver (str): ID of the receiver agent
         amount (float): Payment amount
@@ -145,7 +145,7 @@ def process_payment(api_key, sender, receiver, amount, currency="USDC"):
         dict: Result of the payment operation
     """
     
-    # Call MageBank API to register a payment
+    # Call Mage API to register a payment
     response = requests.post(
         'https://api.magebank.ai/payments/register',
         headers={
@@ -174,12 +174,12 @@ def process_payment(api_key, sender, receiver, amount, currency="USDC"):
 
 <CodeGroup>
 ```javascript JavaScript
-// Example of integrating MageBank with Google's A2A framework
+// Example of integrating Mage with Google's A2A framework
 // This example shows how a financial agent could advertise payment capabilities via A2A
 
-// Define an A2A Agent Card with MageBank payment capabilities
+// Define an A2A Agent Card with Mage payment capabilities
 const agentCard = {
-  "name": "MageBank Payment Agent",
+  "name": "Mage Payment Agent",
   "description": "Agent for processing payments and financial transactions",
   "version": "1.0.0",
   "skills": [
@@ -221,7 +221,7 @@ async function handleA2ATask(task, apiKey) {
   if (task.skill === "process_payment") {
     const params = task.parameters;
     
-    // Call MageBank API to process payment
+    // Call Mage API to process payment
     const response = await fetch('https://api.magebank.ai/payments/register', {
       method: 'POST',
       headers: {
@@ -253,7 +253,7 @@ async function handleA2ATask(task, apiKey) {
   }
   
   if (task.skill === "check_balance") {
-    // Call MageBank API to get agent balance
+    // Call Mage API to get agent balance
     const response = await fetch(`https://api.magebank.ai/agentsWith/${task.parameters.agentId}`, {
       headers: {
         'x-api-key': apiKey
@@ -279,15 +279,15 @@ async function handleA2ATask(task, apiKey) {
 ```
 
 ```python Python
-# Example of integrating MageBank with Google's A2A framework in Python
+# Example of integrating Mage with Google's A2A framework in Python
 # This example shows how a financial agent could advertise payment capabilities via A2A
 
 import requests
 import json
 
-# Define an A2A Agent Card with MageBank payment capabilities
+# Define an A2A Agent Card with Mage payment capabilities
 agent_card = {
-    "name": "MageBank Payment Agent",
+    "name": "Mage Payment Agent",
     "description": "Agent for processing payments and financial transactions",
     "version": "1.0.0",
     "skills": [
@@ -330,7 +330,7 @@ def handle_a2a_task(task, api_key):
     
     Args:
         task (dict): Task request from A2A framework
-        api_key (str): Your MageBank API key
+        api_key (str): Your Mage API key
         
     Returns:
         dict: Task response for A2A framework
@@ -339,7 +339,7 @@ def handle_a2a_task(task, api_key):
     if task["skill"] == "process_payment":
         params = task["parameters"]
         
-        # Call MageBank API to process payment
+        # Call Mage API to process payment
         response = requests.post(
             'https://api.magebank.ai/payments/register',
             headers={
@@ -370,7 +370,7 @@ def handle_a2a_task(task, api_key):
         }
     
     elif task["skill"] == "check_balance":
-        # Call MageBank API to get agent balance
+        # Call Mage API to get agent balance
         response = requests.get(
             f"https://api.magebank.ai/agentsWith/{task['parameters']['agentId']}",
             headers={'x-api-key': api_key}
@@ -395,7 +395,7 @@ def handle_a2a_task(task, api_key):
 
 ## Getting Started
 
-To begin integrating MageBank with your MCP or A2A implementation:
+To begin integrating Mage with your MCP or A2A implementation:
 
 <Steps>
   <Step title="Get your API key">
@@ -407,7 +407,7 @@ To begin integrating MageBank with your MCP or A2A implementation:
     <a href="/user-guide/register-agent" className="text-primary">Register your first agent</a>
   </Step>
   <Step title="Explore the API Reference">
-    Understand the full capabilities of the MageBank API
+    Understand the full capabilities of the Mage API
     <a href="/api-reference/introduction" className="text-primary">API Reference</a>
   </Step>
 </Steps>
