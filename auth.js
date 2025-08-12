@@ -50,9 +50,92 @@
         return false;
     }
 
+    function getTheme() {
+        // First check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            console.log('System prefers light theme');
+            return 'light';
+        }
+        
+        // Check for Mintlify/documentation specific selectors
+        const documentationSelectors = [
+            '[data-theme]',
+            '.nextra-nav-container',
+            '.sidebar',
+            '.navbar',
+            'nav[class*="nav"]',
+            'main[class*="content"]',
+            '.documentation',
+            '.docs-container'
+        ];
+        
+        for (const selector of documentationSelectors) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const computedStyle = window.getComputedStyle(element);
+                const backgroundColor = computedStyle.backgroundColor;
+                
+                if (backgroundColor && backgroundColor !== 'rgba(0, 0, 0, 0)' && backgroundColor !== 'transparent') {
+                    const rgb = backgroundColor.match(/\d+/g);
+                    if (rgb && rgb.length >= 3) {
+                        const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+                        console.log(`Found ${selector} with brightness:`, brightness);
+                        return brightness > 128 ? 'light' : 'dark';
+                    }
+                }
+            }
+        }
+        
+        // Check body text color as indicator
+        if (document.body) {
+            const bodyStyle = window.getComputedStyle(document.body);
+            const textColor = bodyStyle.color;
+            
+            if (textColor && textColor !== 'rgba(0, 0, 0, 0)') {
+                const rgb = textColor.match(/\d+/g);
+                if (rgb && rgb.length >= 3) {
+                    const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+                    console.log('Body text brightness:', brightness);
+                    // Light text = dark theme, dark text = light theme
+                    return brightness > 128 ? 'dark' : 'light';
+                }
+            }
+        }
+        
+        // Check common CSS variables
+        const rootStyle = window.getComputedStyle(document.documentElement);
+        const themeVars = [
+            '--background-primary',
+            '--background',
+            '--bg-primary',
+            '--color-bg-primary',
+            '--gray-50',
+            '--white',
+            '--black'
+        ];
+        
+        for (const varName of themeVars) {
+            const varValue = rootStyle.getPropertyValue(varName).trim();
+            if (varValue) {
+                console.log(`Found CSS var ${varName}:`, varValue);
+                if (varValue.includes('255') || varValue.includes('#fff') || varValue.includes('white')) {
+                    return 'light';
+                }
+                if (varValue.includes('#000') || varValue.includes('black') || varValue.includes('rgb(0')) {
+                    return 'dark';
+                }
+            }
+        }
+        
+        // Default to system preference or light
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
     function createLoginModal() {
         const modal = document.createElement('div');
         modal.id = 'auth-modal';
+        const theme = getTheme();
+        modal.setAttribute('data-theme', theme);
         modal.innerHTML = `
             <div class="auth-overlay">
                 <div class="auth-modal">
@@ -68,6 +151,11 @@
                                 <h2>Access Required</h2>
                                 <p>Please enter the password to access the documentation</p>
                             </div>
+                            <button type="button" class="auth-theme-toggle" data-theme="dark" title="Toggle theme">
+                                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 18C8.69 18 6 15.31 6 12S8.69 6 12 6 18 8.69 18 12 15.31 18 12 18M20 8.69V4H15.31L12 0.69 8.69 4H4V8.69L0.69 12 4 15.31V20H8.69L12 23.31 15.31 20H20V15.31L23.31 12 20 8.69Z"/>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     
@@ -113,9 +201,46 @@
         
         document.body.appendChild(modal);
         
+        // Debug: Log initial theme detection
+        const initialTheme = getTheme();
+        console.log('Initial theme detected:', initialTheme);
+        console.log('HTML classes:', document.documentElement.className);
+        console.log('Body classes:', document.body ? document.body.className : 'No body element');
+        console.log('HTML data-theme:', document.documentElement.getAttribute('data-theme'));
+        console.log('Body data-theme:', document.body ? document.body.getAttribute('data-theme') : 'No body element');
+        
+        // Test function to manually toggle theme (for debugging)
+        window.toggleAuthModalTheme = function(theme) {
+            modal.setAttribute('data-theme', theme);
+            console.log('Manually set theme to:', theme);
+        };
+        
+        // Set initial theme and stick with it to prevent flickering
+        const finalTheme = initialTheme;
+        modal.setAttribute('data-theme', finalTheme);
+        console.log('Theme set to:', finalTheme, '(preventing automatic changes)');
+        
+        // Only watch for explicit theme toggle clicks, not automatic changes
+        const cleanupObserver = () => {
+            // No observer to disconnect since we removed automatic theme detection
+        };
+        
         const form = document.getElementById('auth-form');
         const passwordInput = document.getElementById('auth-password');
         const errorDiv = document.getElementById('auth-error');
+        const themeToggle = modal.querySelector('.auth-theme-toggle');
+        
+        // Set initial theme toggle state
+        themeToggle.dataset.theme = initialTheme;
+        
+        // Add click handler for theme toggle
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = modal.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            modal.setAttribute('data-theme', newTheme);
+            themeToggle.dataset.theme = newTheme;
+            console.log('Theme toggled to:', newTheme);
+        });
         
         passwordInput.focus();
         
@@ -124,6 +249,7 @@
             const password = passwordInput.value;
             
             if (authenticate(password)) {
+                cleanupObserver();
                 document.body.removeChild(modal);
                 showContent();
             } else {

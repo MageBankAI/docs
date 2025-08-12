@@ -71,6 +71,7 @@ html.auth-active {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
 }
 
+
 .auth-overlay {
     position: absolute;
     top: 0;
@@ -101,6 +102,36 @@ html.auth-active {
     flex-direction: column;
 }
 
+/* Dark theme styles (explicit) */
+#auth-modal[data-theme="dark"] .auth-modal {
+    background: #1a1a1a;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(13, 13, 13, 0.05);
+}
+
+/* Light theme styles - Multiple selectors for better compatibility */
+#auth-modal[data-theme="light"] .auth-modal,
+.light #auth-modal .auth-modal,
+[data-theme="light"] #auth-modal .auth-modal,
+body.light #auth-modal .auth-modal {
+    background: #ffffff !important;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Remove background from modal container */
+#auth-modal[data-theme="light"] {
+    background: transparent !important;
+}
+
+#auth-modal[data-theme="light"] .auth-overlay {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
 
 /* Header - Fixed */
 .auth-header {
@@ -110,10 +141,25 @@ html.auth-active {
     flex-shrink: 0;
 }
 
+#auth-modal[data-theme="dark"] .auth-header {
+    border-bottom: 1px solid rgba(230, 230, 232, 0.1);
+}
+
+#auth-modal[data-theme="light"] .auth-header,
+.light #auth-modal .auth-header,
+[data-theme="light"] #auth-modal .auth-header,
+body.light #auth-modal .auth-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
 .auth-header-content {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.auth-theme-toggle {
+    display: none !important;
 }
 
 .auth-icon-container {
@@ -147,12 +193,34 @@ html.auth-active {
     line-height: 1.2;
 }
 
+#auth-modal[data-theme="dark"] .auth-header h2 {
+    color: #ffffff;
+}
+
+#auth-modal[data-theme="light"] .auth-header h2,
+.light #auth-modal .auth-header h2,
+[data-theme="light"] #auth-modal .auth-header h2,
+body.light #auth-modal .auth-header h2 {
+    color: #1a1a1a !important;
+}
+
 .auth-header p {
     margin: 2px 0 0 0;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.3;
     font-weight: 500;
+}
+
+#auth-modal[data-theme="dark"] .auth-header p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#auth-modal[data-theme="light"] .auth-header p,
+.light #auth-modal .auth-header p,
+[data-theme="light"] #auth-modal .auth-header p,
+body.light #auth-modal .auth-header p {
+    color: rgba(26, 26, 26, 0.7) !important;
 }
 
 /* Scrollable Content */
@@ -183,10 +251,32 @@ html.auth-active {
     gap: 4px;
 }
 
+#auth-modal[data-theme="dark"] .auth-input-label {
+    color: #ffffff;
+}
+
+#auth-modal[data-theme="light"] .auth-input-label,
+.light #auth-modal .auth-input-label,
+[data-theme="light"] #auth-modal .auth-input-label,
+body.light #auth-modal .auth-input-label {
+    color: #1a1a1a !important;
+}
+
 .auth-label-icon {
     width: 12px;
     height: 12px;
     color: rgba(255, 255, 255, 0.6);
+}
+
+#auth-modal[data-theme="dark"] .auth-label-icon {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+#auth-modal[data-theme="light"] .auth-label-icon,
+.light #auth-modal .auth-label-icon,
+[data-theme="light"] #auth-modal .auth-label-icon,
+body.light #auth-modal .auth-label-icon {
+    color: rgba(26, 26, 26, 0.6) !important;
 }
 
 #auth-password {
@@ -203,6 +293,21 @@ html.auth-active {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+#auth-modal[data-theme="dark"] #auth-password {
+    color: #ffffff;
+    background: rgba(45, 45, 45, 0.7);
+    border: 1px solid rgba(230, 230, 232, 0.2);
+}
+
+#auth-modal[data-theme="light"] #auth-password,
+.light #auth-modal #auth-password,
+[data-theme="light"] #auth-modal #auth-password,
+body.light #auth-modal #auth-password {
+    color: #1a1a1a !important;
+    background: rgba(245, 245, 245, 0.8) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+
 #auth-password:hover {
     border-color: #FF7A00;
 }
@@ -213,9 +318,31 @@ html.auth-active {
     background: rgba(45, 45, 45, 0.9);
 }
 
+#auth-modal[data-theme="dark"] #auth-password:focus {
+    background: rgba(45, 45, 45, 0.9);
+}
+
+#auth-modal[data-theme="light"] #auth-password:focus,
+.light #auth-modal #auth-password:focus,
+[data-theme="light"] #auth-modal #auth-password:focus,
+body.light #auth-modal #auth-password:focus {
+    background: rgba(245, 245, 245, 1) !important;
+}
+
 #auth-password::placeholder {
     color: rgba(255, 255, 255, 0.5);
     font-weight: 400;
+}
+
+#auth-modal[data-theme="dark"] #auth-password::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#auth-modal[data-theme="light"] #auth-password::placeholder,
+.light #auth-modal #auth-password::placeholder,
+[data-theme="light"] #auth-modal #auth-password::placeholder,
+body.light #auth-modal #auth-password::placeholder {
+    color: rgba(26, 26, 26, 0.5) !important;
 }
 
 #auth-password.error {
@@ -240,6 +367,19 @@ html.auth-active {
     flex-shrink: 0;
 }
 
+#auth-modal[data-theme="dark"] .auth-footer {
+    border-top: 1px solid rgba(230, 230, 232, 0.1);
+    background: rgba(249, 249, 249, 0.02);
+}
+
+#auth-modal[data-theme="light"] .auth-footer,
+.light #auth-modal .auth-footer,
+[data-theme="light"] #auth-modal .auth-footer,
+body.light #auth-modal .auth-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
 .auth-submit {
     display: flex;
     gap: 6px;
@@ -260,10 +400,38 @@ html.auth-active {
     overflow: hidden;
 }
 
+#auth-modal[data-theme="dark"] .auth-submit {
+    background: #2D2D2D;
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#auth-modal[data-theme="light"] .auth-submit,
+.light #auth-modal .auth-submit,
+[data-theme="light"] #auth-modal .auth-submit,
+body.light #auth-modal .auth-submit {
+    background: #f0f0f0 !important;
+    color: #1a1a1a !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15) !important;
+}
+
 .auth-submit:hover {
     background: #1a1a1a;
     border-bottom-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-1px);
+}
+
+#auth-modal[data-theme="dark"] .auth-submit:hover {
+    background: #1a1a1a;
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+#auth-modal[data-theme="light"] .auth-submit:hover,
+.light #auth-modal .auth-submit:hover,
+[data-theme="light"] #auth-modal .auth-submit:hover,
+body.light #auth-modal .auth-submit:hover {
+    background: #e0e0e0 !important;
+    border-bottom-color: rgba(0, 0, 0, 0.25) !important;
 }
 
 .auth-submit:active {
@@ -281,6 +449,19 @@ html.auth-active {
     background: #2D2D2D;
     border-bottom-color: rgba(255, 255, 255, 0.2);
     transform: none;
+}
+
+#auth-modal[data-theme="dark"] .auth-submit:disabled:hover {
+    background: #2D2D2D;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+#auth-modal[data-theme="light"] .auth-submit:disabled:hover,
+.light #auth-modal .auth-submit:disabled:hover,
+[data-theme="light"] #auth-modal .auth-submit:disabled:hover,
+body.light #auth-modal .auth-submit:disabled:hover {
+    background: #f0f0f0 !important;
+    border-bottom-color: rgba(0, 0, 0, 0.15) !important;
 }
 
 .auth-submit-icon {
