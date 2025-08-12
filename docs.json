@@ -156,5 +156,8 @@
     },
     "stylesheets": [
         "/styles.css"
+    ],
+    "scripts": [
+        "/auth.js"
     ]
 }
