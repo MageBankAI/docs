@@ -56,24 +56,57 @@
         modal.innerHTML = `
             <div class="auth-overlay">
                 <div class="auth-modal">
+                    <!-- Header - Fixed -->
                     <div class="auth-header">
-                        <img src="/logo/logo-light.svg" alt="Mage Logo" class="auth-logo">
-                        <h2>Access Required</h2>
-                        <p>Please enter the password to access the documentation</p>
-                    </div>
-                    <form id="auth-form" class="auth-form">
-                        <div class="auth-input-group">
-                            <input 
-                                type="password" 
-                                id="auth-password" 
-                                placeholder="Enter password"
-                                autocomplete="current-password"
-                                required
-                            >
+                        <div class="auth-header-content">
+                            <div class="auth-icon-container">
+                                <svg class="auth-logo" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="auth-header-text">
+                                <h2>Access Required</h2>
+                                <p>Please enter the password to access the documentation</p>
+                            </div>
                         </div>
-                        <button type="submit" class="auth-submit">Access Documentation</button>
-                        <div id="auth-error" class="auth-error"></div>
-                    </form>
+                    </div>
+                    
+                    <!-- Scrollable Content -->
+                    <div class="auth-content">
+                        <form id="auth-form" class="auth-form">
+                            <div class="auth-input-group">
+                                <label class="auth-input-label">
+                                    <svg class="auth-label-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17a2 2 0 0 0 2-2c0-1.11-.89-2-2-2a2 2 0 0 0-2 2 2 2 0 0 0 2 2m6-9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h1V6a5 5 0 0 1 5-5 5 5 0 0 1 5 5v2h1m-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3Z"/>
+                                    </svg>
+                                    Password *
+                                </label>
+                                <input 
+                                    type="password" 
+                                    id="auth-password" 
+                                    placeholder="Enter password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+                            </div>
+                            <div id="auth-error" class="auth-error" style="display: none;">
+                                <svg class="auth-error-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"/>
+                                </svg>
+                                <span class="auth-error-text"></span>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Footer Buttons - Fixed -->
+                    <div class="auth-footer">
+                        <button type="submit" form="auth-form" class="auth-submit">
+                            <svg class="auth-submit-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2Z"/>
+                            </svg>
+                            Access Documentation
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -94,7 +127,9 @@
                 document.body.removeChild(modal);
                 showContent();
             } else {
-                errorDiv.textContent = 'Invalid password. Please try again.';
+                const errorText = errorDiv.querySelector('.auth-error-text');
+                errorText.textContent = 'Invalid password. Please try again.';
+                errorDiv.style.display = 'flex';
                 passwordInput.value = '';
                 passwordInput.focus();
                 passwordInput.classList.add('error');
