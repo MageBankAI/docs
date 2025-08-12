@@ -94,10 +94,10 @@
     function hideContent() {
         const style = document.createElement('style');
         style.id = 'auth-hide-content';
+        document.documentElement.classList.add('auth-active');
+        document.body.classList.add('auth-active');
+        
         style.textContent = `
-            body {
-                overflow: hidden !important;
-            }
             body > *:not(#auth-modal) {
                 filter: blur(15px) !important;
                 pointer-events: none !important;
@@ -112,6 +112,8 @@
         if (hideStyle) {
             hideStyle.remove();
         }
+        document.documentElement.classList.remove('auth-active');
+        document.body.classList.remove('auth-active');
     }
 
     function init() {
