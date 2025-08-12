@@ -1,6 +1,18 @@
 (function() {
     'use strict';
     
+    // Add authenticated class if user is authenticated
+    if (localStorage.getItem('mage_docs_authenticated')) {
+        try {
+            const authData = JSON.parse(localStorage.getItem('mage_docs_authenticated'));
+            const isExpired = Date.now() - authData.timestamp > 24 * 60 * 60 * 1000;
+            if (!isExpired) {
+                document.documentElement.classList.add('auth-authenticated');
+                document.body.classList.add('auth-authenticated');
+            }
+        } catch (e) {}
+    }
+    
     const AUTH_CONFIG = {
         password: 'MAGE2025',
         sessionKey: 'mage_docs_authenticated',
@@ -114,13 +126,19 @@
         }
         document.documentElement.classList.remove('auth-active');
         document.body.classList.remove('auth-active');
+        document.documentElement.classList.add('auth-authenticated');
+        document.body.classList.add('auth-authenticated');
     }
 
     function init() {
         if (!isAuthenticated()) {
-            hideContent();
             createLoginModal();
         }
+    }
+
+    // Hide content immediately if not authenticated
+    if (!isAuthenticated()) {
+        hideContent();
     }
 
     window.addEventListener('beforeunload', function() {
