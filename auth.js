@@ -119,12 +119,7 @@
     function init() {
         if (!isAuthenticated()) {
             hideContent();
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', createLoginModal);
-            } else {
-                createLoginModal();
-            }
+            createLoginModal();
         }
     }
 
